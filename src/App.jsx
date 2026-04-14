@@ -133,18 +133,21 @@ function VCard({v,onClick,large}) {
 }
 
 function VModal({v,onClose}) {
-  if(!v) return null;
   useEffect(()=>{
+    if(!v) return;
     const fn=e=>{if(e.key==='Escape')onClose();};
     window.addEventListener('keydown',fn);
     return()=>window.removeEventListener('keydown',fn);
-  },[onClose]);
+  },[v,onClose]);
+  
+  if(!v) return null;
+  
   return (
     <div style={{position:'fixed',inset:0,zIndex:9000,background:'rgba(0,0,0,0.94)',backdropFilter:'blur(20px)',display:'flex',alignItems:'center',justifyContent:'center'}} onClick={onClose}>
       <div style={{width:'100%',maxWidth:960,margin:'0 16px'}} onClick={e=>e.stopPropagation()}>
         <button onClick={onClose} style={{position:'absolute',top:20,right:20,background:'none',border:'none',color:'rgba(255,255,255,0.4)',cursor:'pointer',padding:8}}><X size={26}/></button>
         <div style={{aspectRatio:'16/9',background:'#000',border:'1px solid rgba(255,255,255,0.06)'}}>
-          <iframe src={`https://drive.google.com/file/d/${v.did}/preview`} width="100%" height="100%" allow="autoplay;encrypted-media" allowFullScreen style={{border:'none'}}/>
+          <iframe src={`https://drive.google.com/file/d/${v.did}/preview`} width="100%" height="100%" allow="autoplay;encrypted-media" allowFullScreen style={{border:'none'}} title={v.title}/>
         </div>
         <div style={{marginTop:14,display:'flex',justifyContent:'space-between',alignItems:'start',flexWrap:'wrap',gap:14}}>
           <div>
