@@ -77,7 +77,7 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection 
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="mobile-panel glass-heavy"
+            className="mobile-panel glass-dark"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
