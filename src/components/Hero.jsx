@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
-import { Film, Pen, Eye, ArrowDown } from 'lucide-react';
+import { Film, Pen, Eye, ArrowDown, Mail, MessageCircle } from 'lucide-react';
 
 /* ══════════════════════════════════════
    Hero V2 — Kinetic 3D parallax hero
@@ -51,10 +51,14 @@ function ParallaxPhoto({ photo, mouseX, mouseY }) {
   );
 }
 
-const SKILLS = [
-  { icon: <Film size={11} />, label: 'Music Videos' },
-  { icon: <Eye size={11} />, label: 'Stream / Vlog' },
-  { icon: <Pen size={11} />, label: 'Creative Direction' },
+const HERO_ACTIONS = [
+  { label: 'See My Work', section: 'work' },
+  { label: 'Why Me', section: 'pitch' },
+  { label: 'Contact', section: 'contact' },
+];
+const DM_LINKS = [
+  { icon: <MessageCircle size={11} />, label: 'DM on X', href: 'https://x.com/messages/compose?recipient_id=lonerfss', directHref: 'https://x.com/lonerfss' },
+  { icon: <MessageCircle size={11} />, label: 'DM on IG', href: 'https://ig.me/m/lonerkid', directHref: 'https://instagram.com/lonerkid' },
 ];
 
 export default function Hero({ scrollToSection }) {
@@ -194,14 +198,47 @@ export default function Hero({ scrollToSection }) {
           </motion.p>
         </motion.div>
 
-        {/* Skills pills */}
+        {/* Nav buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.85, duration: 0.8 }}
-          style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 28, flexWrap: 'wrap' }}
+          style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 32, flexWrap: 'wrap' }}
         >
-          {SKILLS.map((s, i) => (
-            <span key={i} className="pill" style={{ fontSize: 8 }}>{s.icon} {s.label}</span>
+          {HERO_ACTIONS.map((a, i) => (
+            <motion.button key={i}
+              onClick={() => scrollToSection(a.section)}
+              whileHover={{ y: -2, scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              style={{
+                padding: '12px 24px', borderRadius: 'var(--radius-full)',
+                fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 2.5, textTransform: 'uppercase',
+                color: i === 0 ? '#080808' : 'var(--fg)',
+                background: i === 0 ? 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' : 'rgba(255,255,255,0.06)',
+                border: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                cursor: 'none', transition: 'all 0.4s var(--ease-expo)',
+                fontWeight: i === 0 ? 500 : 400,
+              }}
+            >{a.label}</motion.button>
+          ))}
+        </motion.div>
+
+        {/* DM links */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.7 }}
+          style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}
+        >
+          {DM_LINKS.map((d, i) => (
+            <motion.a key={i} href={d.directHref} target="_blank" rel="noopener noreferrer"
+              whileHover={{ y: -1 }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '8px 16px', borderRadius: 'var(--radius-full)',
+                fontFamily: 'var(--mono)', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase',
+                color: 'var(--fg-muted)', textDecoration: 'none',
+                border: '1px solid rgba(255,255,255,0.06)',
+                cursor: 'none', transition: 'all 0.3s',
+              }}
+            >{d.icon} {d.label}</motion.a>
           ))}
         </motion.div>
       </div>
