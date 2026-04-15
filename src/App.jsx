@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, FileText, ArrowDown, ExternalLink, ChevronRight, X, Film, Pen, Eye, ArrowLeft } from 'lucide-react';
 
 /* ═══ IMAGE HELPERS ═══ */
@@ -20,7 +20,6 @@ function Img({ id, alt = '', style = {} }) {
 /* ═══ DATA ═══ */
 const VIDEOS = [
   { id: '10m', title: '10 Million', cat: 'Music Video', role: 'DP / Editor', year: '2026', desc: 'High-energy visual rhythm. Every cut lands on the beat, every frame tells a story of ambition. Shot, lit, and edited solo — built to stand alongside any major release.', did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', thumb: null, feat: true },
-  // ↓ Replace REPLACE_WITH_DRIVE_ID with your Black Stuff Google Drive file ID
   { id: 'blackstuff', title: 'Black Stuff', cat: 'Music Video', role: 'DP / Editor', year: '2025', desc: 'Raw, intentional, and cinematic. A music video that proves dark aesthetics can carry deep narrative weight.', did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', thumb: null, feat: true },
   { id: 'intv', title: 'Live Interview Show', cat: 'Live Multi-Cam', role: 'Camera Op / Director', year: '2025', desc: 'Sit-down interview series. Real-time direction across multiple operators — the same instincts needed behind the stream camera.', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t', thumb: null },
   { id: 'cook', title: 'Live Cooking Demo', cat: 'Live Multi-Cam', role: 'Camera Op / Switcher', year: '2025', desc: 'Live multi-camera production. Real-time switching, no second takes. Every moment captured clean.', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ', thumb: null },
@@ -48,10 +47,10 @@ const PHOTOS = [
 /* ═══ SEEDED RNG ═══ */
 function sR(seed) { let s = seed; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
 
-/* ═══ PARALLAX PHOTO ATMOSPHERE (non-interactive) ═══ */
+/* ═══ PARALLAX PHOTO ATMOSPHERE ═══ */
 function PhotoAtmosphere({ scrollY }) {
   const rng = sR(777);
-  const items = PHOTOS.map((id, i) => ({
+  const items = PHOTOS.map((id) => ({
     id, x: rng() * 82 + 5, y: rng() * 160 + 10,
     rot: (rng() - 0.5) * 28, w: 80 + rng() * 100,
     z: Math.floor(rng() * 10), speed: 0.015 + rng() * 0.045,
@@ -82,68 +81,97 @@ function PhotoAtmosphere({ scrollY }) {
   );
 }
 
-/* ═══ VIDEO CARD — mobile-first ═══ */
-function VCard({ v, onClick }) {
+/* ═══ SECTION REVEAL HOOK ═══ */
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.dataset.visible = '1'; obs.unobserve(el); } },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+/* ═══ VIDEO CARD ═══ */
+function VCard({ v, onClick, large = false }) {
+  const [hovered, setHovered] = useState(false);
   const thumbId = v.thumb || v.did;
   return (
     <div
       style={{
         position: 'relative', overflow: 'hidden',
-        aspectRatio: '16/9', background: '#0e0e0e',
+        aspectRatio: large ? '16/9' : '16/9',
+        background: '#0e0e0e',
         border: '1px solid rgba(255,255,255,0.05)',
+        cursor: 'pointer',
+        transform: hovered ? 'scale(1.02)' : 'scale(1)',
+        transition: 'transform 0.3s ease',
       }}
       onClick={() => onClick(v)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <Img id={thumbId} alt={v.title} style={{
-        position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.45,
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        opacity: hovered ? 0.65 : 0.45,
+        transition: 'opacity 0.3s ease',
       }} />
       <div style={{
         position: 'absolute', inset: 0,
         background: 'linear-gradient(transparent 25%, rgba(0,0,0,0.9) 100%)',
       }} />
 
-      {/* Category */}
       <div style={{
         position: 'absolute', top: 12, right: 12, zIndex: 5,
         fontSize: 8, letterSpacing: 3, textTransform: 'uppercase',
         color: 'var(--accent)', fontFamily: 'var(--mono)',
       }}>{v.cat}</div>
 
-      {/* Play */}
       <div style={{
         position: 'absolute', inset: 0, display: 'flex',
         alignItems: 'center', justifyContent: 'center', zIndex: 5,
       }}>
         <div style={{
-          width: 52, height: 52, borderRadius: '50%',
+          width: large ? 64 : 52, height: large ? 64 : 52, borderRadius: '50%',
           border: '2px solid rgba(255,255,255,0.35)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(255,60,0,0.08)',
+          background: hovered ? 'rgba(255,60,0,0.25)' : 'rgba(255,60,0,0.08)',
+          transition: 'background 0.3s ease',
         }}>
-          <Play size={20} fill="#fff" color="#fff" style={{ marginLeft: 3 }} />
+          <Play size={large ? 24 : 20} fill="#fff" color="#fff" style={{ marginLeft: 3 }} />
         </div>
       </div>
 
-      {/* Info */}
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, padding: 16, zIndex: 5, width: '100%',
+        position: 'absolute', bottom: 0, left: 0, padding: large ? 20 : 16, zIndex: 5, width: '100%',
       }}>
         <h3 style={{
-          fontFamily: 'var(--display)', fontSize: '1.5rem',
+          fontFamily: 'var(--display)', fontSize: large ? '2rem' : '1.5rem',
           letterSpacing: 2, lineHeight: 1, color: 'var(--fg)',
         }}>{v.title}</h3>
         <p style={{
           fontSize: 9, fontFamily: 'var(--mono)', letterSpacing: 2,
           color: 'rgba(255,255,255,0.35)', marginTop: 4, textTransform: 'uppercase',
         }}>{v.role} · {v.year}</p>
+        {hovered && (
+          <p style={{
+            fontFamily: 'var(--serif)', fontSize: 12, lineHeight: 1.55,
+            color: 'rgba(255,255,255,0.55)', fontStyle: 'italic', marginTop: 8,
+            animation: 'fadeIn 0.2s ease-out',
+          }}>{v.desc}</p>
+        )}
       </div>
     </div>
   );
 }
 
-/* ═══ VIDEO DETAIL — full-screen overlay, mobile-optimized ═══ */
+/* ═══ VIDEO DETAIL — full-screen overlay ═══ */
 function VideoDetail({ v, onClose }) {
-  // FIXED: useEffect must be called before any early return
   useEffect(() => {
     if (!v) return;
     document.body.style.overflow = 'hidden';
@@ -157,8 +185,8 @@ function VideoDetail({ v, onClose }) {
       position: 'fixed', inset: 0, zIndex: 9000,
       background: 'var(--bg)', overflowY: 'auto',
       WebkitOverflowScrolling: 'touch',
+      animation: 'slideInBottom 0.35s cubic-bezier(0.16,1,0.3,1)',
     }}>
-      {/* Header */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 10, padding: '14px 16px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -174,8 +202,7 @@ function VideoDetail({ v, onClose }) {
         </button>
       </div>
 
-      <div style={{ padding: '0 16px 60px' }}>
-        {/* Player */}
+      <div style={{ padding: '0 16px 100px' }}>
         <div style={{
           aspectRatio: '16/9', background: '#000', marginTop: 12,
           border: '1px solid rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden',
@@ -189,7 +216,6 @@ function VideoDetail({ v, onClose }) {
           />
         </div>
 
-        {/* Info */}
         <div style={{ marginTop: 20 }}>
           <span style={{
             fontSize: 9, letterSpacing: 4, textTransform: 'uppercase',
@@ -244,10 +270,121 @@ function SectionLabel({ text }) {
   );
 }
 
+/* ═══ REVEAL WRAPPER ═══ */
+function Reveal({ children, delay = 0, style = {} }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} style={{
+      opacity: 0, transform: 'translateY(28px)',
+      transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+      ...style,
+    }}
+    data-reveal
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ═══ FLOATING BOTTOM NAV ═══ */
+function BottomNav({ activeSection }) {
+  const navItems = [
+    { id: 'work', label: 'WORK' },
+    { id: 'writing', label: 'WRITING' },
+    { id: 'story', label: 'STORY' },
+    { id: 'contact', label: 'CONTACT' },
+  ];
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+      zIndex: 8000,
+      background: 'rgba(8,8,8,0.75)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: 100,
+      padding: '10px 16px',
+      display: 'flex', gap: 4,
+      boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+    }}>
+      {navItems.map(item => (
+        <button
+          key={item.id}
+          onClick={() => scrollTo(item.id)}
+          style={{
+            background: activeSection === item.id ? 'var(--accent)' : 'transparent',
+            border: 'none',
+            borderRadius: 100,
+            padding: '8px 16px',
+            cursor: 'pointer',
+            fontFamily: 'var(--mono)',
+            fontSize: 9,
+            letterSpacing: 3,
+            color: activeSection === item.id ? '#080808' : 'rgba(240,236,228,0.4)',
+            transition: 'all 0.25s ease',
+            whiteSpace: 'nowrap',
+            fontWeight: activeSection === item.id ? 500 : 400,
+          }}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ═══ STATS BAR ═══ */
+function StatsBar() {
+  const ref = useReveal();
+  const stats = [
+    { n: '11', label: 'Projects' },
+    { n: '4+', label: 'Years' },
+    { n: '5', label: 'Disciplines' },
+    { n: '0', label: 'Days Until Available' },
+  ];
+  return (
+    <div ref={ref} data-reveal style={{
+      opacity: 0, transform: 'translateY(28px)',
+      transition: 'opacity 0.6s ease, transform 0.6s ease',
+      borderTop: '1px solid rgba(255,255,255,0.04)',
+      borderBottom: '1px solid rgba(255,255,255,0.04)',
+      padding: '32px 16px',
+      display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24,
+    }}>
+      {stats.map((s, i) => (
+        <div key={i} style={{ textAlign: 'center' }}>
+          <div style={{
+            fontFamily: 'var(--display)',
+            fontSize: 'clamp(2.4rem, 8vw, 4rem)',
+            lineHeight: 1, color: 'var(--accent)',
+            letterSpacing: -1,
+          }}>{s.n}</div>
+          <div style={{
+            fontFamily: 'var(--mono)', fontSize: 8,
+            letterSpacing: 4, textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.25)', marginTop: 6,
+          }}>{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══ CATEGORY FILTER PILLS ═══ */
+const CATS = ['ALL', 'Music Video', 'Live Multi-Cam', 'Short Film', 'Commercial', 'Doc Teaser', 'Documentary', 'Broadcast'];
+
 /* ═══ APP ═══ */
 export default function App() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [scrollY, setScrollY] = useState(0);
+  const [activeSection, setActiveSection] = useState('');
+  const [activeFilter, setActiveFilter] = useState('ALL');
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -255,6 +392,44 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Section tracking for nav */
+  useEffect(() => {
+    const sections = ['work', 'writing', 'story', 'contact'];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { threshold: 0.3 }
+    );
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  /* Reveal observer */
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.target.dataset.reveal !== undefined) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    const elements = document.querySelectorAll('[data-reveal]');
+    elements.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  });
+
+  /* Inject styles */
   useEffect(() => {
     const s = document.createElement('style');
     s.textContent = `
@@ -278,6 +453,14 @@ export default function App() {
         from { opacity: 0; transform: translateY(28px); }
         to { opacity: 1; transform: translateY(0); }
       }
+      @keyframes slideInBottom {
+        from { opacity: 0; transform: translateY(60px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
       @keyframes marquee {
         from { transform: translateX(0); }
         to { transform: translateX(-50%); }
@@ -290,10 +473,15 @@ export default function App() {
         70%{transform:translate(0%,15%)}
         90%{transform:translate(-10%,10%)}
       }
+
+      .writing-scroll::-webkit-scrollbar { height: 2px; }
+      .writing-scroll::-webkit-scrollbar-track { background: transparent; }
+      .writing-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+      .filter-pill:hover { background: rgba(255,60,0,0.15) !important; color: var(--fg) !important; }
     `;
     document.head.appendChild(s);
 
-    // Viewport meta for mobile
     let meta = document.querySelector('meta[name="viewport"]');
     if (!meta) {
       meta = document.createElement('meta');
@@ -304,6 +492,30 @@ export default function App() {
 
     return () => s.remove();
   }, []);
+
+  const featuredVideos = VIDEOS.filter(v => v.feat && v.cat === 'Music Video');
+  const filteredVideos = activeFilter === 'ALL'
+    ? VIDEOS
+    : VIDEOS.filter(v => v.cat === activeFilter);
+  const nonFeaturedFiltered = activeFilter === 'ALL'
+    ? VIDEOS.filter(v => !v.feat)
+    : filteredVideos.filter(v => !v.feat || v.cat !== 'Music Video');
+
+  const writingItems = [
+    { type: 'Show Bible', title: 'Misfits Cavern', excerpt: 'Full show bible for an original series. Character arcs, episode breakdowns, world-building, tone guides.', did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
+    { type: 'Production Book', title: 'Studio Music Video', excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography.', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
+    { type: 'Documentary One Sheet', title: 'The Audio Blueprint', excerpt: 'A witty 5-minute documentary about the unseen magic of sound design in film.', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
+    { type: 'PSA Script', title: 'A Stage for Every Story', excerpt: 'For over a century, The Grand Theatre has been the heartbeat of art and creativity in Calgary.', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
+    { type: 'Short Film Script', title: 'The Briefcase', excerpt: '"Stop stressing man. We ain\'t gonna mess up." — "No. Cuz you said that last time, and last time it was a shit show."', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
+  ];
+
+  const pitchItems = [
+    { req: 'Creative Vision', proof: 'Every project started as a concept in my head. I bring the idea, the look, the execution.' },
+    { req: 'Music Video Experience', proof: '10 Million and Black Stuff — shot, lit, edited solo. Study the frames.' },
+    { req: 'Passionate About Camera', proof: 'I dropped out of film school to prove this isn\'t a degree. It\'s my vocation.' },
+    { req: 'Full-Time Ready', proof: 'Available immediately. Ready to relocate. I go wherever the camera goes.' },
+    { req: 'Stream & Daily Content', proof: 'Live multi-cam productions across cooking shows, interview series, sports. Real moments, no staging.' },
+  ];
 
   return (
     <div style={{
@@ -319,9 +531,10 @@ export default function App() {
         animation: 'grain 0.5s steps(6) infinite',
       }} />
 
-      {/* ═══════════════════════════════════
-          HERO — full viewport, photos behind
-         ═══════════════════════════════════ */}
+      {/* FLOATING BOTTOM NAV */}
+      <BottomNav activeSection={activeSection} />
+
+      {/* ═══ HERO ═══ */}
       <section style={{
         minHeight: '100svh', display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
@@ -329,22 +542,18 @@ export default function App() {
       }}>
         <PhotoAtmosphere scrollY={scrollY} />
 
-        {/* Radial glow */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
           background: 'radial-gradient(ellipse at 50% 50%, rgba(255,60,0,0.07) 0%, transparent 60%)',
         }} />
 
-        {/* Content */}
         <div style={{ position: 'relative', zIndex: 3, textAlign: 'center', width: '100%', animation: 'slideUp 0.8s ease-out' }}>
-          {/* For tag */}
           <p style={{
             fontSize: 9, letterSpacing: 5, textTransform: 'uppercase',
             color: 'var(--accent)', marginBottom: 12,
             fontFamily: 'var(--mono)', opacity: 0.7,
           }}>Built for @plaqueboymax</p>
 
-          {/* Name */}
           <p style={{
             fontSize: 10, letterSpacing: 6, textTransform: 'uppercase',
             color: 'rgba(240,236,228,0.4)', marginBottom: 20,
@@ -396,75 +605,134 @@ export default function App() {
         }}><ArrowDown size={16} /></a>
       </section>
 
-      {/* ═══════════════════════════════════
-          DIRECT PITCH — for Max / Yahya
-         ═══════════════════════════════════ */}
-      <section style={{ padding: '64px 16px 48px', maxWidth: 700, margin: '0 auto' }}>
-        <SectionLabel text="Why I'm Your Cameraman" />
+      {/* ═══ STATS BAR ═══ */}
+      <StatsBar />
 
-        {/* Requirements checklist */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 28 }}>
-          {[
-            { req: 'Creative vision', proof: 'Every project below started as a concept in my head — I brought the idea, the look, and the execution.' },
-            { req: 'Experience with music videos', proof: '10 Million and Black Stuff — shot, lit, and edited solo. Study the frames.' },
-            { req: 'Passionate about holding a camera', proof: 'I dropped out of film school to prove this wasn\'t a degree for me. It\'s my vocation.' },
-            { req: 'Ready to work full time', proof: 'Available immediately. Ready to relocate. I go wherever the camera goes.' },
-            { req: 'Stream camera / document your life', proof: 'I\'ve run live multi-cam productions — cooking shows, interview series, sports. I know how to capture real moments in real time without making them feel staged.' },
-          ].map((item, i) => (
-            <div key={i} style={{
-              border: '1px solid rgba(255,255,255,0.04)',
-              background: '#0a0a0a', padding: '18px 16px',
-              display: 'flex', gap: 14, alignItems: 'flex-start',
-            }}>
+      {/* ═══ PITCH SECTION ═══ */}
+      <section style={{ padding: '64px 16px 48px', maxWidth: 900, margin: '0 auto' }}>
+        <Reveal>
+          <SectionLabel text="Why I'm Your Cameraman" />
+        </Reveal>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 2, marginBottom: 28,
+        }}>
+          {pitchItems.map((item, i) => (
+            <Reveal key={i} delay={i * 0.07}>
               <div style={{
-                width: 18, height: 18, borderRadius: '50%',
-                background: 'rgba(255,60,0,0.15)',
-                border: '1px solid var(--accent)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, marginTop: 1,
+                border: '1px solid rgba(255,255,255,0.04)',
+                background: '#0a0a0a', padding: '24px 20px',
+                position: 'relative', overflow: 'hidden',
+                minHeight: 120,
               }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+                {/* Ghost number */}
+                <div style={{
+                  position: 'absolute', top: -10, right: 12,
+                  fontFamily: 'var(--display)',
+                  fontSize: '5rem', lineHeight: 1,
+                  color: 'rgba(255,255,255,0.03)',
+                  userSelect: 'none', pointerEvents: 'none',
+                }}>{String(i + 1).padStart(2, '0')}</div>
+
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <p style={{
+                    fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 3,
+                    textTransform: 'uppercase', color: 'var(--fg)', marginBottom: 8,
+                  }}>{item.req}</p>
+                  <p style={{
+                    fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.65,
+                    color: 'rgba(255,255,255,0.4)', fontStyle: 'italic',
+                  }}>{item.proof}</p>
+                </div>
               </div>
-              <div>
-                <p style={{
-                  fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 3,
-                  textTransform: 'uppercase', color: 'var(--fg)', marginBottom: 6,
-                }}>{item.req}</p>
-                <p style={{
-                  fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.65,
-                  color: 'rgba(255,255,255,0.4)', fontStyle: 'italic',
-                }}>{item.proof}</p>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
-        {/* Direct letter */}
-        <div style={{
-          borderLeft: '2px solid var(--accent)', paddingLeft: 20,
-          fontFamily: 'var(--serif)', fontSize: '1rem', lineHeight: 1.85,
-          color: 'rgba(255,255,255,0.45)', fontStyle: 'italic',
-        }}>
-          <p style={{ marginBottom: 14 }}>
-            Max — I&apos;ve watched how you build. The way your content moves, the way it sits between raw and refined. You don&apos;t just need someone who can hold a camera. You need someone who can feel a room, anticipate a moment, and make sure it lives forever in the frame.
-          </p>
-          <p style={{ color: 'var(--fg)', fontStyle: 'normal', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 2 }}>
-            That&apos;s what I do. Scroll down.
-          </p>
-        </div>
+        <Reveal delay={0.3}>
+          <div style={{
+            borderLeft: '2px solid var(--accent)', paddingLeft: 20,
+            fontFamily: 'var(--serif)', fontSize: '1rem', lineHeight: 1.85,
+            color: 'rgba(255,255,255,0.45)', fontStyle: 'italic',
+          }}>
+            <p style={{ marginBottom: 14 }}>
+              Max — I&apos;ve watched how you build. The way your content moves, the way it sits between raw and refined. You don&apos;t just need someone who can hold a camera. You need someone who can feel a room, anticipate a moment, and make sure it lives forever in the frame.
+            </p>
+            <p style={{ color: 'var(--fg)', fontStyle: 'normal', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 2 }}>
+              That&apos;s what I do. Scroll down.
+            </p>
+          </div>
+        </Reveal>
       </section>
 
-      {/* ═══════════════════════════════════
-          WORK — stacked cards, single column on mobile
-         ═══════════════════════════════════ */}
+      {/* ═══ WORK SECTION ═══ */}
       <section id="work" style={{ padding: '64px 0 48px' }}>
-        <SectionLabel text={`The Work — ${VIDEOS.length} Projects`} />
+        <Reveal style={{ padding: '0 16px' }}>
+          <SectionLabel text={`The Work — ${VIDEOS.length} Projects`} />
+        </Reveal>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '0 16px' }}>
-          {VIDEOS.map(v => (
-            <VCard key={v.id} v={v} onClick={setActiveVideo} />
-          ))}
-        </div>
+        {/* Category filter pills */}
+        <Reveal delay={0.1} style={{ padding: '0 16px', marginBottom: 24 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {CATS.map(cat => (
+              <button
+                key={cat}
+                className="filter-pill"
+                onClick={() => setActiveFilter(cat)}
+                style={{
+                  background: activeFilter === cat ? 'var(--accent)' : 'rgba(255,255,255,0.04)',
+                  border: '1px solid',
+                  borderColor: activeFilter === cat ? 'var(--accent)' : 'rgba(255,255,255,0.08)',
+                  borderRadius: 100,
+                  padding: '7px 14px',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 8, letterSpacing: 3,
+                  textTransform: 'uppercase',
+                  color: activeFilter === cat ? '#080808' : 'rgba(255,255,255,0.35)',
+                  transition: 'all 0.2s ease',
+                }}
+              >{cat}</button>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Featured music videos — large 2-col */}
+        {(activeFilter === 'ALL' || activeFilter === 'Music Video') && (
+          <Reveal delay={0.15} style={{ padding: '0 16px', marginBottom: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 2, marginBottom: 2,
+            }}>
+              {featuredVideos.map(v => (
+                <VCard key={v.id} v={v} onClick={setActiveVideo} large />
+              ))}
+            </div>
+          </Reveal>
+        )}
+
+        {/* Remaining videos — tighter 2-col grid */}
+        <Reveal delay={0.2} style={{ padding: '0 16px' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: 2,
+          }}>
+            {nonFeaturedFiltered.map(v => (
+              <VCard key={v.id} v={v} onClick={setActiveVideo} />
+            ))}
+          </div>
+          {filteredVideos.length === 0 && (
+            <p style={{
+              textAlign: 'center', padding: '40px 0',
+              fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 3,
+              color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase',
+            }}>No projects in this category yet</p>
+          )}
+        </Reveal>
       </section>
 
       {/* ═══ MARQUEE ═══ */}
@@ -491,146 +759,177 @@ export default function App() {
         </div>
       </div>
 
-      {/* ═══════════════════════════════════
-          WRITING — with excerpts, mobile stacked
-         ═══════════════════════════════════ */}
-      <section id="writing" style={{ padding: '64px 16px 48px' }}>
-        <SectionLabel text="The Writing" />
+      {/* ═══ WRITING SECTION ═══ */}
+      <section id="writing" style={{ padding: '64px 0 48px' }}>
+        <Reveal style={{ padding: '0 16px' }}>
+          <SectionLabel text="The Writing" />
+        </Reveal>
 
-        {/* FEMME FATALE — featured */}
-        <div style={{
-          border: '1px solid rgba(255,255,255,0.05)', padding: '28px 20px',
-          marginBottom: 2, position: 'relative', overflow: 'hidden',
-        }}>
+        {/* FEMME FATALE — featured hero */}
+        <Reveal delay={0.1} style={{ padding: '0 16px', marginBottom: 16 }}>
           <div style={{
-            position: 'absolute', top: 0, right: 0, width: 200, height: 200,
-            background: 'radial-gradient(circle, rgba(255,60,0,0.06) 0%, transparent 70%)',
-          }} />
-
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <span style={{ fontSize: 8, letterSpacing: 5, textTransform: 'uppercase', color: 'var(--accent)' }}>
-              Screenplay · Draft 9 · 133 Pages
-            </span>
-            <h3 style={{
-              fontFamily: 'var(--display)', fontSize: '2.4rem',
-              letterSpacing: 2, marginTop: 4, fontStyle: 'italic',
-            }}>Femme Fatale</h3>
-            <p style={{
-              fontSize: 9, letterSpacing: 2, color: 'rgba(255,255,255,0.2)',
-              marginTop: 3, textTransform: 'uppercase',
-            }}>Political Noir · Limited Series · For A24 / Proximity Media</p>
-
-            {/* Logline */}
+            border: '1px solid rgba(255,255,255,0.05)', padding: '28px 20px',
+            position: 'relative', overflow: 'hidden',
+          }}>
             <div style={{
-              fontFamily: 'var(--serif)', fontSize: '0.95rem', lineHeight: 1.75,
-              fontStyle: 'italic', color: 'rgba(255,255,255,0.45)',
-              borderLeft: '2px solid var(--accent)', paddingLeft: 16,
-              marginTop: 20,
-            }}>
-              A deconstruction of narrative control and the fabrication of reality. Set between Port-au-Prince in 1957 and a Parisian television studio, <span style={{ color: 'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.
-            </div>
+              position: 'absolute', top: 0, right: 0, width: 200, height: 200,
+              background: 'radial-gradient(circle, rgba(255,60,0,0.06) 0%, transparent 70%)',
+            }} />
 
-            {/* Scene Excerpts */}
-            <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {[
-                { label: 'Opening', text: 'A MAKEUP ARTIST works on IRIS BEAUMONT\'s face. Her eyes open. Fixed on the mirror. On the monitor above: a close-up of her own face from a press shoot. She watches herself watching herself.' },
-                { label: 'The Market', text: 'Two MEN come through. Civilian clothes. Dark glasses. Machetes at their belts. "Too pretty for this market, little bird." Iris meets his gaze. She doesn\'t give him anything.' },
-                { label: 'The Invitation', text: 'A POSTER on the wall. A Black woman in white feathers caught mid-arc — arms wide, face up. LES ÉTOILES DE PARIS. "Auditions tonight. Eight o\'clock. We leave for Paris in two weeks."' },
-              ].map((ex, i) => (
-                <div key={i} style={{
-                  background: 'rgba(255,255,255,0.02)', padding: '16px 14px',
-                  borderLeft: '2px solid rgba(255,60,0,0.15)',
-                }}>
-                  <span style={{
-                    fontSize: 7, letterSpacing: 4, textTransform: 'uppercase',
-                    color: 'var(--accent)', display: 'block', marginBottom: 6,
-                  }}>{ex.label}</span>
-                  <p style={{
-                    fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.65,
-                    color: 'rgba(255,255,255,0.38)', fontStyle: 'italic',
-                  }}>&quot;{ex.text}&quot;</p>
-                </div>
-              ))}
-            </div>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <span style={{ fontSize: 8, letterSpacing: 5, textTransform: 'uppercase', color: 'var(--accent)' }}>
+                Screenplay · Draft 9 · 133 Pages
+              </span>
+              <h3 style={{
+                fontFamily: 'var(--display)', fontSize: '2.4rem',
+                letterSpacing: 2, marginTop: 4, fontStyle: 'italic',
+              }}>Femme Fatale</h3>
+              <p style={{
+                fontSize: 9, letterSpacing: 2, color: 'rgba(255,255,255,0.2)',
+                marginTop: 3, textTransform: 'uppercase',
+              }}>Political Noir · Limited Series · For A24 / Proximity Media</p>
 
-            <a href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
-              target="_blank" rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                marginTop: 20, padding: '14px 20px',
-                fontSize: 9, fontFamily: 'var(--mono)', letterSpacing: 3,
-                textTransform: 'uppercase', color: 'var(--fg)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                textDecoration: 'none',
-              }}
-            >
-              <FileText size={12} /> Read Latest Draft
-            </a>
+              <div style={{
+                fontFamily: 'var(--serif)', fontSize: '0.95rem', lineHeight: 1.75,
+                fontStyle: 'italic', color: 'rgba(255,255,255,0.45)',
+                borderLeft: '2px solid var(--accent)', paddingLeft: 16,
+                marginTop: 20,
+              }}>
+                A deconstruction of narrative control and the fabrication of reality. Set between Port-au-Prince in 1957 and a Parisian television studio, <span style={{ color: 'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.
+              </div>
+
+              <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {[
+                  { label: 'Opening', text: 'A MAKEUP ARTIST works on IRIS BEAUMONT\'s face. Her eyes open. Fixed on the mirror. On the monitor above: a close-up of her own face from a press shoot. She watches herself watching herself.' },
+                  { label: 'The Market', text: 'Two MEN come through. Civilian clothes. Dark glasses. Machetes at their belts. "Too pretty for this market, little bird." Iris meets his gaze. She doesn\'t give him anything.' },
+                  { label: 'The Invitation', text: 'A POSTER on the wall. A Black woman in white feathers caught mid-arc — arms wide, face up. LES ÉTOILES DE PARIS. "Auditions tonight. Eight o\'clock. We leave for Paris in two weeks."' },
+                ].map((ex, i) => (
+                  <div key={i} style={{
+                    background: 'rgba(255,255,255,0.02)', padding: '16px 14px',
+                    borderLeft: '2px solid rgba(255,60,0,0.15)',
+                  }}>
+                    <span style={{
+                      fontSize: 7, letterSpacing: 4, textTransform: 'uppercase',
+                      color: 'var(--accent)', display: 'block', marginBottom: 6,
+                    }}>{ex.label}</span>
+                    <p style={{
+                      fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.65,
+                      color: 'rgba(255,255,255,0.38)', fontStyle: 'italic',
+                    }}>&quot;{ex.text}&quot;</p>
+                  </div>
+                ))}
+              </div>
+
+              <a href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
+                target="_blank" rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  marginTop: 20, padding: '14px 20px',
+                  fontSize: 9, fontFamily: 'var(--mono)', letterSpacing: 3,
+                  textTransform: 'uppercase', color: 'var(--fg)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  textDecoration: 'none',
+                }}
+              >
+                <FileText size={12} /> Read Latest Draft
+              </a>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Other Writing */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {[
-            { type: 'Show Bible', title: 'Misfits Cavern — Original Series', excerpt: 'Full show bible for an original series. Character arcs, episode breakdowns, world-building, tone guides. This is how I think before a single frame is shot.', did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
-            { type: 'Production Book', title: 'Studio Music Video', excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography — targeted at the introspective aesthetic Frank Ocean\'s music portrays.', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-            { type: 'Documentary One Sheet', title: 'The Audio Blueprint', excerpt: 'A witty 5-minute documentary that dives into the unseen magic of sound design in film, mixing eye-catching visuals with real expert insights to show why audio is the secret sauce behind the most influential movie moments.', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
-            { type: 'PSA Script', title: 'A Stage for Every Story', excerpt: 'For over a century, The Grand Theatre has been more than just a stage… it\'s been the heartbeat of art and creativity in Calgary. A living archive of creativity, built on generations of talent.', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
-            { type: 'Short Film Screenplay', title: 'The Briefcase', excerpt: '"Stop stressing man. We ain\'t gonna mess up." — "No. Cuz you said that last time, and last time it was a shit show. People died." — A confident chuckle. "Heh, ya they did."', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
-          ].map((w, i) => (
+        {/* Scroll indicator */}
+        <Reveal delay={0.15} style={{ padding: '0 16px', marginBottom: 10 }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            fontFamily: 'var(--mono)', fontSize: 8, letterSpacing: 4,
+            color: 'rgba(255,255,255,0.18)', textTransform: 'uppercase',
+          }}>
+            <span>← scroll →</span>
+          </div>
+        </Reveal>
+
+        {/* Horizontal scroll row */}
+        <div
+          className="writing-scroll"
+          style={{
+            display: 'flex', gap: 2, overflowX: 'auto',
+            padding: '0 16px 16px',
+            scrollbarWidth: 'thin',
+            cursor: 'grab',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          {writingItems.map((w, i) => (
             <a key={i} href={`https://drive.google.com/file/d/${w.did}/view`}
               target="_blank" rel="noopener noreferrer"
               style={{
-                textDecoration: 'none', color: 'inherit', display: 'block',
-                border: '1px solid rgba(255,255,255,0.04)', padding: '20px 18px',
+                textDecoration: 'none', color: 'inherit',
+                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                minWidth: 280, height: 200,
+                border: '1px solid rgba(255,255,255,0.04)',
                 background: '#0c0c0c',
+                padding: '20px 18px',
+                flexShrink: 0,
+                position: 'relative', overflow: 'hidden',
               }}
             >
-              <span style={{ fontSize: 8, letterSpacing: 4, textTransform: 'uppercase', color: 'var(--accent)' }}>{w.type}</span>
-              <h4 style={{ fontFamily: 'var(--display)', fontSize: '1.15rem', letterSpacing: 2, marginTop: 4 }}>{w.title}</h4>
-              <p style={{
-                fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.6,
-                color: 'rgba(255,255,255,0.33)', fontStyle: 'italic', marginTop: 8,
-              }}>&quot;{w.excerpt}&quot;</p>
+              {/* Ghost number */}
+              <div style={{
+                position: 'absolute', bottom: -10, right: 8,
+                fontFamily: 'var(--display)', fontSize: '4.5rem',
+                color: 'rgba(255,255,255,0.03)', userSelect: 'none',
+                lineHeight: 1,
+              }}>{String(i + 1).padStart(2, '0')}</div>
+
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <span style={{ fontSize: 8, letterSpacing: 4, textTransform: 'uppercase', color: 'var(--accent)', display: 'block', marginBottom: 6 }}>{w.type}</span>
+                <h4 style={{ fontFamily: 'var(--display)', fontSize: '1.15rem', letterSpacing: 2 }}>{w.title}</h4>
+                <p style={{
+                  fontFamily: 'var(--serif)', fontSize: 12, lineHeight: 1.6,
+                  color: 'rgba(255,255,255,0.33)', fontStyle: 'italic', marginTop: 8,
+                }}>&quot;{w.excerpt}&quot;</p>
+              </div>
+
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 4,
-                marginTop: 10, fontSize: 8, letterSpacing: 3, color: 'rgba(255,255,255,0.2)',
+                fontSize: 8, letterSpacing: 3, color: 'rgba(255,255,255,0.2)',
+                position: 'relative', zIndex: 1,
               }}>READ <ChevronRight size={9} /></span>
             </a>
           ))}
         </div>
       </section>
 
-      {/* ═══════════════════════════════════
-          STORY
-         ═══════════════════════════════════ */}
+      {/* ═══ STORY SECTION ═══ */}
       <section id="story" style={{ padding: '64px 16px 48px', maxWidth: 700, margin: '0 auto' }}>
-        <SectionLabel text="The Narrative" />
+        <Reveal>
+          <SectionLabel text="The Narrative" />
+        </Reveal>
 
-        <div style={{
-          fontFamily: 'var(--serif)', fontSize: '1.05rem', lineHeight: 1.9,
-          color: 'rgba(255,255,255,0.5)', padding: '0 4px',
-        }}>
-          <p style={{ marginBottom: 18 }}>It began a couple months before I dropped out of film school.</p>
-          <p style={{ marginBottom: 18 }}>At 19, I was overwhelmed and realizing that the institution was a structure I no longer needed to validate my vision. I didn&apos;t drop out because it was too hard — I dropped out to prove this wasn&apos;t just a degree for me. <span style={{ color: 'var(--fg)', fontWeight: 600 }}>It was my vocation.</span></p>
-          <p style={{ marginBottom: 18 }}>From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a courtroom, the disappointment was palpable. But I embraced it.</p>
-          <p style={{ marginBottom: 18 }}>I&apos;ve spent years in the dark writing scripts like <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Femme Fatale</span> — a 133-page screenplay submitted to A24 and Proximity Media. I&apos;ve shot music videos, directed live multi-cam shows, built broadcast news packages, created documentaries. I&apos;ve done every job on set because I wanted to understand the whole machine, not just one gear. That means when I&apos;m behind your stream camera, I&apos;m not just holding a rig — I&apos;m framing history.</p>
-          <p style={{ marginBottom: 18 }}>I&apos;ve also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn&apos;t turn off because we&apos;re live.</p>
-          <p style={{ color: 'var(--fg)', fontWeight: 400 }}>I&apos;m not looking for a job. I&apos;m looking for the right mission. I&apos;ve watched you build for years — I know this is it. The work below exists to prove I can move with you at that level.</p>
-        </div>
+        <Reveal delay={0.1}>
+          <div style={{
+            fontFamily: 'var(--serif)', fontSize: '1.05rem', lineHeight: 1.9,
+            color: 'rgba(255,255,255,0.5)', padding: '0 4px',
+          }}>
+            <p style={{ marginBottom: 18 }}>It began a couple months before I dropped out of film school.</p>
+            <p style={{ marginBottom: 18 }}>At 19, I was overwhelmed and realizing that the institution was a structure I no longer needed to validate my vision. I didn&apos;t drop out because it was too hard — I dropped out to prove this wasn&apos;t just a degree for me. <span style={{ color: 'var(--fg)', fontWeight: 600 }}>It was my vocation.</span></p>
+            <p style={{ marginBottom: 18 }}>From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a courtroom, the disappointment was palpable. But I embraced it.</p>
+            <p style={{ marginBottom: 18 }}>I&apos;ve spent years in the dark writing scripts like <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Femme Fatale</span> — a 133-page screenplay submitted to A24 and Proximity Media. I&apos;ve shot music videos, directed live multi-cam shows, built broadcast news packages, created documentaries. I&apos;ve done every job on set because I wanted to understand the whole machine, not just one gear. That means when I&apos;m behind your stream camera, I&apos;m not just holding a rig — I&apos;m framing history.</p>
+            <p style={{ marginBottom: 18 }}>I&apos;ve also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn&apos;t turn off because we&apos;re live.</p>
+            <p style={{ color: 'var(--fg)', fontWeight: 400 }}>I&apos;m not looking for a job. I&apos;m looking for the right mission. I&apos;ve watched you build for years — I know this is it. The work below exists to prove I can move with you at that level.</p>
+          </div>
+        </Reveal>
       </section>
 
-      {/* ═══════════════════════════════════
-          CONTACT
-         ═══════════════════════════════════ */}
+      {/* ═══ CONTACT SECTION ═══ */}
       <section id="contact" style={{
-        padding: '80px 16px 100px', textAlign: 'center', position: 'relative',
+        padding: '80px 16px 120px', textAlign: 'center', position: 'relative',
       }}>
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
           background: 'radial-gradient(ellipse at 50% 50%, rgba(255,60,0,0.04) 0%, transparent 55%)',
         }} />
-        <div style={{ position: 'relative', zIndex: 2 }}>
+        <Reveal style={{ position: 'relative', zIndex: 2 }}>
           <div style={{
             fontFamily: 'var(--display)',
             fontSize: 'clamp(2.8rem, 14vw, 7rem)',
@@ -677,7 +976,7 @@ export default function App() {
           }}>
             Available immediately · Calgary, AB<br />Ready to relocate · Full time · Passport ready
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <footer style={{
