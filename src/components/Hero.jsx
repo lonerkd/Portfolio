@@ -1,55 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
-import { Film, Pen, Eye, ArrowDown, Mail, MessageCircle } from 'lucide-react';
-
-/* ══════════════════════════════════════
-   Hero V2 — Kinetic 3D parallax hero
-   Text layers move at different depths
-   following the mouse position
-   ══════════════════════════════════════ */
-
-const IMG = (id, w = 600) => `https://lh3.googleusercontent.com/d/${id}=w${w}`;
-
-const PHOTOS = [
-  '1E_vf5yeYCtRaB8CMGIrkJu5zBNT-MRLO', '1owmYc9lTuoas80z6uX68Zh5gjWc_HFzm',
-  '1tfFCE5ORbHwHb_HFIS3SeYGoXcQRpdfS', '1KwIxNlnl2vUuH6Wo57LToYa2b9Sj7Bhm',
-  '1wcmVwR9mWMHv9WP9nWHBX9RpI5rPjXge', '1VRjE0VIvLoDaOdGfPAvx8Z_5NRlzxutw',
-  '1s8gA48BIhJddg-Mk2Ns_bfjb0rP5l6v5', '1CfevkaSmrmpUEaetdGnM8quZAQBV6fLB',
-  '1d73j2enoH-IkFGAXRG6JsX1lK2N_tWP4', '1GuvBsMJ80PCEgGlhFwHerkgxJPHXgmIT',
-  '1QAY4u44Ltse_FSbtj2lvSnxXon0yg0Wj', '1Quwts5Lrg1rHZn-whJLkm2T_MoWTPBDB',
-  '1ILTYjQTcZrHA5jXsWOcLcUVvHRUxf5_G', '124P4ZdzSU_ow_CeafQjuCuLXU5kZ_sZx',
-  '1s_Jvg7pOvxdgNnBXY1wVVHv7XzV5XYp9', '1XldskBnYHylvXLu1Bgeaj7zsgKl7AAaQ',
-  '1gHeCdlcsgxFsJY4WwgU8Br-SZl_tz1IP', '1fKjkXrPXUlgGUTREDiSG7Z43kjjxVdV2',
-];
-
-function sR(s) { return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
-
-// Parallax photo item — its own component (hooks rule)
-function ParallaxPhoto({ photo, mouseX, mouseY }) {
-  const x = useTransform(mouseX, [-1, 1], [-photo.px * 40, photo.px * 40]);
-  const y = useTransform(mouseY, [-1, 1], [-photo.py * 30, photo.py * 30]);
-
-  return (
-    <motion.div style={{
-      position: 'absolute',
-      left: `${photo.left}%`, top: `${photo.top}%`,
-      width: photo.w, height: photo.w * 0.68,
-      zIndex: photo.z, x, y, rotate: photo.rot,
-    }}>
-      <div style={{
-        width: '100%', height: '100%', borderRadius: 6,
-        overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.07)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.7)',
-      }}>
-        <img src={IMG(photo.id, 400)} alt="" loading="lazy"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.35) contrast(1.15)' }}
-          onError={e => { e.target.style.display = 'none'; }}
-        />
-      </div>
-    </motion.div>
-  );
-}
+import { ArrowDown, MessageCircle } from 'lucide-react';
 
 const HERO_ACTIONS = [
   { label: 'See My Work', section: 'work' },
@@ -62,16 +13,6 @@ const DM_LINKS = [
 ];
 
 export default function Hero({ scrollToSection }) {
-  const rng = sR(777);
-  const photos = PHOTOS.map(id => ({
-    id,
-    left: rng() * 84 + 4, top: rng() * 160 + 8,
-    rot: (rng() - 0.5) * 24, w: 80 + rng() * 120,
-    z: Math.floor(rng() * 8),
-    px: rng() * 0.8 + 0.2,
-    py: rng() * 0.8 + 0.2,
-  }));
-
   const mouseX = useSpring(0, { stiffness: 60, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 60, damping: 20 });
 
@@ -100,13 +41,6 @@ export default function Hero({ scrollToSection }) {
       justifyContent: 'center', alignItems: 'center',
       overflow: 'hidden', padding: '0 24px',
     }}>
-      {/* Parallax photo field */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.14 }}>
-        {photos.map((p, i) => (
-          <ParallaxPhoto key={i} photo={p} mouseX={mouseX} mouseY={mouseY} />
-        ))}
-      </div>
-
       {/* Pulsing ambient orb */}
       <motion.div
         animate={{ scale: [1, 1.25, 1], opacity: [0.06, 0.14, 0.06] }}

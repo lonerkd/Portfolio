@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown } from 'lucide-react';
 
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
@@ -12,6 +12,7 @@ import VideoCard3D from './components/VideoCard';
 import VideoOverlay from './components/VideoOverlay';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientBackground from './components/AmbientBackground';
+import PhotoField from './components/PhotoField';
 
 /* ═══ DATA ═══ */
 const VIDEOS = [
@@ -69,7 +70,7 @@ function SectionLabel({ text }) {
   );
 }
 
-/* ═══ STATS BAR — hits immediately after hero ═══ */
+/* ═══ STATS BAR ═══ */
 function StatsBar() {
   const stats = [
     { num: '12', label: 'Projects' },
@@ -91,17 +92,11 @@ function StatsBar() {
   );
 }
 
-/* ═══ PITCH — visual checklist, no paragraphs ═══ */
+/* ═══ PITCH — visual checklist ═══ */
 function PitchStrip() {
-  const items = [
-    'Creative Vision',
-    'Music Video Experience',
-    'Camera Obsessed',
-    'Full-Time Ready',
-    'Stream & Vlog',
-  ];
+  const items = ['Creative Vision','Music Video Experience','Camera Obsessed','Full-Time Ready','Stream & Vlog'];
   return (
-    <section id="pitch" style={{ padding:'40px 20px 48px', maxWidth:900, margin:'0 auto' }}>
+    <section id="pitch" style={{ padding:'40px 20px 20px', maxWidth:900, margin:'0 auto' }}>
       <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.7 }}
         style={{ display:'flex', flexWrap:'wrap', gap:10, justifyContent:'center' }}>
         {items.map((item, i) => (
@@ -121,19 +116,78 @@ function PitchStrip() {
         ))}
       </motion.div>
       <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.35 }} viewport={{ once:true }} transition={{ delay:0.4 }}
-        style={{ textAlign:'center', marginTop:20, fontFamily:'var(--serif)', fontSize:'0.95rem', fontStyle:'italic', color:'var(--fg-muted)' }}>
+        style={{ textAlign:'center', marginTop:16, fontFamily:'var(--serif)', fontSize:'0.95rem', fontStyle:'italic', color:'var(--fg-muted)' }}>
         You said you need all five. I've got all five.
       </motion.p>
     </section>
   );
 }
 
-/* ═══ WRITING — compact, no excerpts ═══ */
-const WRITING = [
-  { type: 'Screenplay · 133pg', title: 'Femme Fatale', sub: 'A24 / Proximity Media submission', did: '15UV22p-90rGDGfhROKqiIxELp87vCsik', accent: true },
+/* ═══ STORY — expanded personal narrative, comes early ═══ */
+function StorySection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <section id="story" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
+      <div className="section__inner" style={{ maxWidth:800 }}>
+        <SectionLabel text="The Narrative" />
+        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.8 }}
+          style={{ fontFamily:'var(--serif)', fontSize:'clamp(1.1rem,3vw,1.28rem)', lineHeight:1.88, color:'var(--fg-muted)' }}>
+
+          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
+            viewport={{ once:true }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }}
+            style={{ marginBottom:24 }}>
+            I'm from a family of Yale and Columbia grads, multinational business owners. My path was set — business, law, or medicine. When I chose a camera over a courtroom at 17, nobody understood. When I dropped out of film school at 19, even fewer did.
+          </motion.p>
+
+          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
+            viewport={{ once:true }} transition={{ duration:0.9, delay:0.05, ease:[0.16,1,0.3,1] }}
+            style={{ marginBottom:24 }}>
+            I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove this wasn't just a degree for me — it was my vocation.</span> The institution couldn't move fast enough for what I needed to build.
+          </motion.p>
+
+          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
+            viewport={{ once:true }} transition={{ duration:0.9, delay:0.1, ease:[0.16,1,0.3,1] }}
+            style={{ marginBottom:24 }}>
+            Since then I've been in the trenches — shooting music videos solo from concept to color grade, directing live multi-cam productions where there are no second takes, building broadcast news packages under real deadlines, writing a 133-page screenplay that I submitted to A24 and Proximity Media.
+          </motion.p>
+
+          <AnimatePresence>
+            {expanded && (
+              <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} transition={{ duration:0.5, ease:[0.16,1,0.3,1] }}>
+                <p style={{ marginBottom:24 }}>
+                  I've done every job on set because I wanted to understand the whole machine, not just one gear. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind your stream camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm framing history.</span>
+                </p>
+                <p style={{ marginBottom:24 }}>
+                  I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.
+                </p>
+                <p style={{ color:'var(--fg)', fontWeight:500 }}>
+                  I'm not looking for a job. I'm looking for the right mission. I've watched you build for years — I know this is it.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <motion.button
+            onClick={() => setExpanded(!expanded)}
+            whileHover={{ x:4 }} whileTap={{ scale:0.97 }}
+            style={{ marginTop:16, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', display:'flex', alignItems:'center', gap:6, cursor:'none', transition:'color 0.6s' }}>
+            {expanded ? 'Less' : 'The full story'} <ChevronDown size={12} style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition:'transform 0.3s' }} />
+          </motion.button>
+        </motion.div>
+
+        {/* Decorative line */}
+        <motion.div initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }} transition={{ duration:1.4, ease:[0.16,1,0.3,1] }}
+          style={{ height:1, transformOrigin:'left', background:'linear-gradient(90deg, rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b)), transparent)', marginTop:32, transition:'background 0.6s' }} />
+      </div>
+    </section>
+  );
+}
+
+/* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
+const OTHER_WRITING = [
   { type: 'Show Bible', title: 'Misfits Cavern', sub: 'Original series', did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
   { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design documentary', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
+  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
   { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
   { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
 ];
@@ -143,15 +197,78 @@ function WritingSection() {
     <section id="writing" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
       <div className="section__inner">
         <SectionLabel text="The Writing" />
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(240px, 1fr))', gap:10 }}>
-          {WRITING.map((w, i) => (
+
+        {/* FEMME FATALE — cinematic preview card */}
+        <motion.a
+          href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
+          target="_blank" rel="noopener noreferrer"
+          className="card"
+          initial={{ opacity:0, y:50 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-80px' }}
+          transition={{ duration:0.8, ease:[0.16,1,0.3,1] }}
+          whileHover={{ y:-4, transition:{ duration:0.3 } }}
+          style={{
+            display:'block', textDecoration:'none', cursor:'none',
+            padding:0, marginBottom:18, overflow:'hidden',
+            position:'relative', minHeight:280,
+          }}
+        >
+          {/* Cinematic gradient backdrop */}
+          <div style={{
+            position:'absolute', inset:0,
+            background:'linear-gradient(135deg, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.12) 0%, rgba(0,0,0,0.95) 60%)',
+            transition:'background 0.6s',
+          }} />
+
+          {/* Large ghost title */}
+          <div style={{
+            position:'absolute', top:-20, right:-10,
+            fontFamily:'var(--display)', fontSize:'clamp(6rem,20vw,14rem)',
+            lineHeight:0.85, color:'rgba(255,255,255,0.025)', userSelect:'none',
+            pointerEvents:'none', letterSpacing:-4,
+          }}>FF</div>
+
+          {/* Content */}
+          <div style={{ position:'relative', zIndex:1, padding:'clamp(28px,5vw,48px)' }}>
+            <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginBottom:16 }}>
+              <span className="pill pill--accent" style={{ fontSize:7 }}>Screenplay</span>
+              <span className="pill" style={{ fontSize:7 }}>133 Pages</span>
+              <span className="pill" style={{ fontSize:7 }}>Draft 9</span>
+              <span className="pill" style={{ fontSize:7 }}>A24 / Proximity Media</span>
+            </div>
+
+            <h3 style={{ fontFamily:'var(--display)', fontSize:'clamp(2.8rem,8vw,5rem)', letterSpacing:2, lineHeight:0.9, marginBottom:16 }}>
+              Femme Fatale
+            </h3>
+
+            <p style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, color:'var(--fg-subtle)', textTransform:'uppercase', marginBottom:20 }}>
+              Political Noir · Limited Series
+            </p>
+
+            <div style={{
+              fontFamily:'var(--serif)', fontSize:'clamp(0.9rem,2.5vw,1.05rem)', lineHeight:1.82,
+              fontStyle:'italic', color:'var(--fg-muted)',
+              borderLeft:'2px solid rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
+              paddingLeft:20, maxWidth:600, transition:'border-color 0.6s',
+            }}>
+              A deconstruction of narrative control set between Port-au-Prince in 1957 and a Parisian television studio. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.
+            </div>
+
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginTop:24, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>
+              <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
+            </div>
+          </div>
+        </motion.a>
+
+        {/* Other writing — compact grid */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:10 }}>
+          {OTHER_WRITING.map((w, i) => (
             <motion.a key={i} href={`https://drive.google.com/file/d/${w.did}/view`} target="_blank" rel="noopener noreferrer"
               className="card" initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.06, duration:0.5 }} whileHover={{ y:-4, transition:{ duration:0.25 } }}
-              style={{ textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'20px 18px', minHeight:120, cursor:'none' }}>
+              style={{ textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'20px 18px', minHeight:110, cursor:'none' }}>
               <div>
-                <span className={w.accent ? 'pill pill--accent' : 'pill'} style={{ fontSize:7 }}>{w.type}</span>
-                <h4 style={{ fontFamily:'var(--display)', fontSize:'1.3rem', letterSpacing:2, marginTop:10 }}>{w.title}</h4>
+                <span className="pill" style={{ fontSize:7 }}>{w.type}</span>
+                <h4 style={{ fontFamily:'var(--display)', fontSize:'1.2rem', letterSpacing:2, marginTop:10 }}>{w.title}</h4>
                 <p style={{ fontFamily:'var(--mono)', fontSize:9, color:'var(--fg-subtle)', marginTop:4, letterSpacing:1 }}>{w.sub}</p>
               </div>
               <span style={{ display:'inline-flex', alignItems:'center', gap:4, marginTop:12, fontSize:8, letterSpacing:3, fontFamily:'var(--mono)', color:'var(--fg-subtle)', textTransform:'uppercase' }}>
@@ -165,47 +282,7 @@ function WritingSection() {
   );
 }
 
-/* ═══ STORY — collapsed, expandable ═══ */
-function StorySection() {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section id="story" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
-      <div className="section__inner" style={{ maxWidth:800 }}>
-        <SectionLabel text="The Narrative" />
-        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-          style={{ fontFamily:'var(--serif)', fontSize:'clamp(1.1rem,3vw,1.28rem)', lineHeight:1.88, color:'var(--fg-muted)' }}>
-          <p style={{ marginBottom:20 }}>
-            I dropped out of film school at 19 to prove this wasn't just a degree for me — <span style={{ color:'var(--fg)', fontWeight:500 }}>it was my vocation.</span> From
-            a family of Yale and Columbia grads, I chose a camera over a courtroom.
-          </p>
-          <p>
-            I've shot music videos, directed live multi-cam shows, built broadcast news packages, written a 133-page screenplay submitted to A24. When I'm behind your stream camera, I'm not just holding a rig — <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm framing history.</span>
-          </p>
-
-          {expanded && (
-            <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} transition={{ duration:0.5 }}>
-              <p style={{ marginTop:20 }}>
-                I've also been a writer my whole career — show bible, screenplays, production books. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.
-              </p>
-              <p style={{ marginTop:20, color:'var(--fg)', fontWeight:500 }}>
-                I'm not looking for a job. I'm looking for the right mission. I've watched you build for years — I know this is it.
-              </p>
-            </motion.div>
-          )}
-
-          <motion.button
-            onClick={() => setExpanded(!expanded)}
-            whileHover={{ x:4 }} whileTap={{ scale:0.97 }}
-            style={{ marginTop:16, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', display:'flex', alignItems:'center', gap:6, cursor:'none', transition:'color 0.6s' }}>
-            {expanded ? 'Less' : 'Read more'} <ChevronRight size={10} style={{ transform: expanded ? 'rotate(90deg)' : 'none', transition:'transform 0.3s' }} />
-          </motion.button>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══ CONTACT — one screen, one action ═══ */
+/* ═══ CONTACT ═══ */
 const CONTACT_LINKS = [
   { label:'Email Me',             href:'mailto:peterolowude@gmail.com',                                                      icon:<Mail size={15} />,           primary: true },
   { label:'X / Twitter',          href:'https://twitter.com/5stariah',                                                        icon:<Twitter size={15} /> },
@@ -245,8 +322,8 @@ function ContactSection() {
           GUY
         </motion.div>
         <motion.p initial={{ opacity:0, y:14 }} whileInView={{ opacity:0.4, y:0 }} viewport={{ once:true }} transition={{ delay:0.15, duration:0.6 }}
-          style={{ marginTop:24, fontFamily:'var(--serif)', fontSize:'1rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:340, margin:'24px auto 0', lineHeight:1.7 }}>
-          DM me or reach out to @yharca directly.
+          style={{ marginTop:24, fontFamily:'var(--serif)', fontSize:'1.05rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:340, margin:'24px auto 0', lineHeight:1.7 }}>
+          DM me directly. Let's get to work.
         </motion.p>
         <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.2, duration:0.7 }}
           style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, marginTop:36 }}>
@@ -268,8 +345,8 @@ function ContactSection() {
 
 /* ═══ SIDE DOT NAV ═══ */
 function DotNav({ activeSection }) {
-  const sections = ['pitch','work','writing','story','contact'];
-  const labels = ['Why Me','Work','Writing','Story','Contact'];
+  const sections = ['pitch','story','work','writing','contact'];
+  const labels = ['Why Me','Story','Work','Writing','Contact'];
   return (
     <div style={{
       position:'fixed', right:16, top:'50%', transform:'translateY(-50%)',
@@ -286,7 +363,6 @@ function DotNav({ activeSection }) {
             background: activeSection === id ? 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' : 'rgba(255,255,255,0.15)',
             transition:'all 0.4s var(--ease-expo)',
             cursor:'none',
-            position:'relative',
           }}
           title={labels[i]}
         />
@@ -301,7 +377,7 @@ export default function App() {
   const [activeVideoColor, setActiveVideoColor] = useState(null);
 
   const { setAmbientColor, extractColor, resetColor } = useColorExtractor();
-  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['pitch','work','writing','story','contact']);
+  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['pitch','story','work','writing','contact']);
 
   const handleVideoClick = useCallback((video, color) => {
     setActiveVideo(video);
@@ -324,6 +400,7 @@ export default function App() {
 
       <div style={{ background:'var(--bg)', color:'var(--fg)', minHeight:'100vh', overflowX:'hidden', position:'relative' }}>
         <AmbientBackground />
+        <PhotoField />
         <ScrollProgress progress={scrollProgress} />
         <div className="grain" />
 
@@ -334,10 +411,15 @@ export default function App() {
         <StatsBar />
         <PitchStrip />
 
+        {/* ── STORY — early, personal ── */}
+        <StorySection />
+
         {/* ── WORK — the main event ── */}
         <section id="work" className="section">
           <div className="section__inner">
             <SectionLabel text={`The Work — ${VIDEOS.length} Projects`} />
+
+            {/* Featured — music videos, big cinematic aspect ratio */}
             <div className="video-grid" style={{ marginBottom:18 }}>
               {featuredVideos.map(v => (
                 <VideoCard3D key={v.id} video={v} featured
@@ -345,18 +427,28 @@ export default function App() {
                   setAmbientColor={setAmbientColor} resetColor={resetColor} />
               ))}
             </div>
-            <div className="video-grid">
-              {otherVideos.map(v => (
-                <VideoCard3D key={v.id} video={v}
-                  onClick={handleVideoClick} extractColor={extractColor}
-                  setAmbientColor={setAmbientColor} resetColor={resetColor} />
+
+            {/* Other videos — varied layout: 3-column masonry-style */}
+            <div style={{
+              display:'grid',
+              gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',
+              gap:14,
+              gridAutoRows:'auto',
+            }}>
+              {otherVideos.map((v, i) => (
+                <div key={v.id} style={{
+                  gridRow: (i === 0 || i === 4) ? 'span 2' : 'span 1',
+                }}>
+                  <VideoCard3D video={v}
+                    onClick={handleVideoClick} extractColor={extractColor}
+                    setAmbientColor={setAmbientColor} resetColor={resetColor} />
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         <WritingSection />
-        <StorySection />
         <ContactSection />
 
         <footer style={{ textAlign:'center', padding:'24px 20px 44px', fontSize:7, letterSpacing:4, textTransform:'uppercase', opacity:0.05, fontFamily:'var(--mono)' }}>

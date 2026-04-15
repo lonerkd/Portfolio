@@ -9,9 +9,9 @@ import { X } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'pitch', label: 'Why Me' },
+  { id: 'story', label: 'Story' },
   { id: 'work', label: 'Work' },
   { id: 'writing', label: 'Writing' },
-  { id: 'story', label: 'Story' },
   { id: 'contact', label: 'Contact' },
 ];
 
