@@ -19,14 +19,16 @@ function Img({ id, alt = '', style = {} }) {
 
 /* ═══ DATA ═══ */
 const VIDEOS = [
-  { id: '10m', title: '10 Million', cat: 'Music Video', role: 'DP / Editor', year: '2026', desc: 'High-energy visual rhythm. Every cut lands on the beat, every frame tells a story of ambition.', did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', thumb: null, feat: true },
-  { id: 'brief', title: 'The Briefcase', cat: 'Short Film', role: 'Writer / DP', year: '2024', desc: 'A crime thriller about two couriers, a mysterious briefcase, and a deal that has to go right.', did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', thumb: null, feat: true },
-  { id: 'audio', title: 'The Audio Blueprint', cat: 'Doc Teaser', role: 'Director / Writer / Editor', year: '2025', desc: 'The invisible art of sound design — why audio is the secret weapon behind iconic movie moments.', did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n', thumb: null },
+  { id: '10m', title: '10 Million', cat: 'Music Video', role: 'DP / Editor', year: '2026', desc: 'High-energy visual rhythm. Every cut lands on the beat, every frame tells a story of ambition. Shot, lit, and edited solo — built to stand alongside any major release.', did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', thumb: null, feat: true },
+  // ↓ Replace REPLACE_WITH_DRIVE_ID with your Black Stuff Google Drive file ID
+  { id: 'blackstuff', title: 'Black Stuff', cat: 'Music Video', role: 'DP / Editor', year: '2025', desc: 'Raw, intentional, and cinematic. A music video that proves dark aesthetics can carry deep narrative weight.', did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', thumb: null, feat: true },
+  { id: 'intv', title: 'Live Interview Show', cat: 'Live Multi-Cam', role: 'Camera Op / Director', year: '2025', desc: 'Sit-down interview series. Real-time direction across multiple operators — the same instincts needed behind the stream camera.', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t', thumb: null },
+  { id: 'cook', title: 'Live Cooking Demo', cat: 'Live Multi-Cam', role: 'Camera Op / Switcher', year: '2025', desc: 'Live multi-camera production. Real-time switching, no second takes. Every moment captured clean.', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ', thumb: null },
+  { id: 'brief', title: 'The Briefcase', cat: 'Short Film', role: 'Writer / DP', year: '2024', desc: 'A crime thriller about two couriers, a mysterious briefcase, and a deal that has to go right. Proof that cinematic vision doesn\'t need a big budget.', did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', thumb: null, feat: true },
   { id: 'psa', title: 'The Grand PSA', cat: 'Commercial', role: 'Writer / Director / DP / Editor', year: '2025', desc: 'A love letter to The Grand Theatre. Wrote, directed, shot, and graded the final cut.', did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00', thumb: null },
+  { id: 'audio', title: 'The Audio Blueprint', cat: 'Doc Teaser', role: 'Director / Writer / Editor', year: '2025', desc: 'The invisible art of sound design — why audio is the secret weapon behind iconic movie moments.', did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n', thumb: null },
   { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Documentary', role: 'DP / Editor', year: '2024', desc: 'Chasing elevation, literal and metaphorical. Visual storytelling through landscape and movement.', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE', thumb: null },
-  { id: 'cook', title: 'Live Cooking Demo', cat: 'Live Multi-Cam', role: 'Camera Op / Switcher', year: '2025', desc: 'Live multi-camera production. Real-time switching, no second takes.', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ', thumb: null },
-  { id: 'intv', title: 'Live Interview Show', cat: 'Live Multi-Cam', role: 'Camera Op / Director', year: '2025', desc: 'Sit-down interview. Directing multiple camera operators in real time.', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t', thumb: null },
-  { id: 'news', title: 'Banded Peak News Pack', cat: 'Broadcast', role: 'Camera Op / Editor', year: '2024', desc: 'Professional broadcast news package under deadline pressure.', did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u', thumb: null },
+  { id: 'news', title: 'Banded Peak News Pack', cat: 'Broadcast', role: 'Camera Op / Editor', year: '2024', desc: 'Professional broadcast news package under deadline pressure. Broadcast-grade work, delivered clean.', did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u', thumb: null },
   { id: 'tiktok', title: 'TikTok Addiction', cat: 'Doc Teaser', role: 'Director / Editor', year: '2024', desc: 'Examining our relationship with infinite scroll.', did: '1o61DVHh8QhTYWKSOQOvs9P4kEoZQqygI', thumb: null },
   { id: 'fraud', title: 'Fraud', cat: 'Doc Teaser', role: 'Director / Editor', year: '2024', desc: 'Deception as a system. How fraud operates in plain sight.', did: '10AfFlmGp1qbqI_9BKSQnYfyTi7o_SFbp', thumb: null },
 ];
@@ -335,6 +337,13 @@ export default function App() {
 
         {/* Content */}
         <div style={{ position: 'relative', zIndex: 3, textAlign: 'center', width: '100%', animation: 'slideUp 0.8s ease-out' }}>
+          {/* For tag */}
+          <p style={{
+            fontSize: 9, letterSpacing: 5, textTransform: 'uppercase',
+            color: 'var(--accent)', marginBottom: 12,
+            fontFamily: 'var(--mono)', opacity: 0.7,
+          }}>Built for @plaqueboymax</p>
+
           {/* Name */}
           <p style={{
             fontSize: 10, letterSpacing: 6, textTransform: 'uppercase',
@@ -369,9 +378,9 @@ export default function App() {
             animation: 'slideUp 0.8s ease-out 0.3s both', flexWrap: 'wrap',
           }}>
             {[
-              { i: <Film size={11} />, l: 'Cinematography' },
-              { i: <Pen size={11} />, l: 'Writing' },
-              { i: <Eye size={11} />, l: 'Creative Direction' },
+              { i: <Film size={11} />, l: 'Music Videos' },
+              { i: <Eye size={11} />, l: 'Stream / Vlog' },
+              { i: <Pen size={11} />, l: 'Creative Direction' },
             ].map((t, i) => (
               <span key={i} style={{
                 fontSize: 8, letterSpacing: 3, textTransform: 'uppercase',
@@ -385,6 +394,64 @@ export default function App() {
           position: 'absolute', bottom: 28, color: 'var(--fg)', opacity: 0.18,
           textDecoration: 'none', zIndex: 3,
         }}><ArrowDown size={16} /></a>
+      </section>
+
+      {/* ═══════════════════════════════════
+          DIRECT PITCH — for Max / Yahya
+         ═══════════════════════════════════ */}
+      <section style={{ padding: '64px 16px 48px', maxWidth: 700, margin: '0 auto' }}>
+        <SectionLabel text="Why I'm Your Cameraman" />
+
+        {/* Requirements checklist */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 28 }}>
+          {[
+            { req: 'Creative vision', proof: 'Every project below started as a concept in my head — I brought the idea, the look, and the execution.' },
+            { req: 'Experience with music videos', proof: '10 Million and Black Stuff — shot, lit, and edited solo. Study the frames.' },
+            { req: 'Passionate about holding a camera', proof: 'I dropped out of film school to prove this wasn\'t a degree for me. It\'s my vocation.' },
+            { req: 'Ready to work full time', proof: 'Available immediately. Ready to relocate. I go wherever the camera goes.' },
+            { req: 'Stream camera / document your life', proof: 'I\'ve run live multi-cam productions — cooking shows, interview series, sports. I know how to capture real moments in real time without making them feel staged.' },
+          ].map((item, i) => (
+            <div key={i} style={{
+              border: '1px solid rgba(255,255,255,0.04)',
+              background: '#0a0a0a', padding: '18px 16px',
+              display: 'flex', gap: 14, alignItems: 'flex-start',
+            }}>
+              <div style={{
+                width: 18, height: 18, borderRadius: '50%',
+                background: 'rgba(255,60,0,0.15)',
+                border: '1px solid var(--accent)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0, marginTop: 1,
+              }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+              </div>
+              <div>
+                <p style={{
+                  fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 3,
+                  textTransform: 'uppercase', color: 'var(--fg)', marginBottom: 6,
+                }}>{item.req}</p>
+                <p style={{
+                  fontFamily: 'var(--serif)', fontSize: 13, lineHeight: 1.65,
+                  color: 'rgba(255,255,255,0.4)', fontStyle: 'italic',
+                }}>{item.proof}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Direct letter */}
+        <div style={{
+          borderLeft: '2px solid var(--accent)', paddingLeft: 20,
+          fontFamily: 'var(--serif)', fontSize: '1rem', lineHeight: 1.85,
+          color: 'rgba(255,255,255,0.45)', fontStyle: 'italic',
+        }}>
+          <p style={{ marginBottom: 14 }}>
+            Max — I&apos;ve watched how you build. The way your content moves, the way it sits between raw and refined. You don&apos;t just need someone who can hold a camera. You need someone who can feel a room, anticipate a moment, and make sure it lives forever in the frame.
+          </p>
+          <p style={{ color: 'var(--fg)', fontStyle: 'normal', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 2 }}>
+            That&apos;s what I do. Scroll down.
+          </p>
+        </div>
       </section>
 
       {/* ═══════════════════════════════════
@@ -410,10 +477,10 @@ export default function App() {
           display: 'flex', gap: 36,
           animation: 'marquee 25s linear infinite', whiteSpace: 'nowrap',
         }}>
-          {['CINEMATOGRAPHY', 'DIRECTING', 'MUSIC VIDEOS', 'CREATIVE DIRECTION',
-            'EDITING', 'STORYTELLING', 'WRITING', 'LIVE MULTI-CAM',
-            'CINEMATOGRAPHY', 'DIRECTING', 'MUSIC VIDEOS', 'CREATIVE DIRECTION',
-            'EDITING', 'STORYTELLING', 'WRITING', 'LIVE MULTI-CAM',
+          {['CINEMATOGRAPHY', 'MUSIC VIDEOS', 'STREAM CAMERA', 'CREATIVE DIRECTION',
+            'EDITING', 'STORYTELLING', 'WRITING', 'LIVE MULTI-CAM', 'VLOG / DAILY CONTENT', 'DIRECTING',
+            'CINEMATOGRAPHY', 'MUSIC VIDEOS', 'STREAM CAMERA', 'CREATIVE DIRECTION',
+            'EDITING', 'STORYTELLING', 'WRITING', 'LIVE MULTI-CAM', 'VLOG / DAILY CONTENT', 'DIRECTING',
           ].map((s, i) => (
             <span key={i} style={{
               fontFamily: 'var(--display)', fontSize: '0.95rem', letterSpacing: 5, flexShrink: 0,
@@ -486,7 +553,7 @@ export default function App() {
               ))}
             </div>
 
-            <a href="https://drive.google.com/file/d/1cIynCQgJtWfLRpb5xZzgQw0rHMKauSO9/view"
+            <a href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
               target="_blank" rel="noopener noreferrer"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -497,7 +564,7 @@ export default function App() {
                 textDecoration: 'none',
               }}
             >
-              <FileText size={12} /> Read Full Script
+              <FileText size={12} /> Read Latest Draft
             </a>
           </div>
         </div>
@@ -505,6 +572,7 @@ export default function App() {
         {/* Other Writing */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {[
+            { type: 'Show Bible', title: 'Misfits Cavern — Original Series', excerpt: 'Full show bible for an original series. Character arcs, episode breakdowns, world-building, tone guides. This is how I think before a single frame is shot.', did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
             { type: 'Production Book', title: 'Studio Music Video', excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography — targeted at the introspective aesthetic Frank Ocean\'s music portrays.', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
             { type: 'Documentary One Sheet', title: 'The Audio Blueprint', excerpt: 'A witty 5-minute documentary that dives into the unseen magic of sound design in film, mixing eye-catching visuals with real expert insights to show why audio is the secret sauce behind the most influential movie moments.', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
             { type: 'PSA Script', title: 'A Stage for Every Story', excerpt: 'For over a century, The Grand Theatre has been more than just a stage… it\'s been the heartbeat of art and creativity in Calgary. A living archive of creativity, built on generations of talent.', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
@@ -546,8 +614,9 @@ export default function App() {
           <p style={{ marginBottom: 18 }}>It began a couple months before I dropped out of film school.</p>
           <p style={{ marginBottom: 18 }}>At 19, I was overwhelmed and realizing that the institution was a structure I no longer needed to validate my vision. I didn&apos;t drop out because it was too hard — I dropped out to prove this wasn&apos;t just a degree for me. <span style={{ color: 'var(--fg)', fontWeight: 600 }}>It was my vocation.</span></p>
           <p style={{ marginBottom: 18 }}>From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a courtroom, the disappointment was palpable. But I embraced it.</p>
-          <p style={{ marginBottom: 18 }}>I&apos;ve spent years in the dark writing scripts like <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Femme Fatale</span> — a 133-page screenplay submitted to A24 and Proximity Media. I&apos;ve shot music videos, directed live multi-cam shows, built news packages, created documentaries. I&apos;ve done every job on set because I wanted to understand the whole machine, not just one gear.</p>
-          <p style={{ color: 'var(--fg)', fontWeight: 400 }}>I believe in the vision being built here. I have the work to show I can do it, and the dedication to ensure it&apos;s done right.</p>
+          <p style={{ marginBottom: 18 }}>I&apos;ve spent years in the dark writing scripts like <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Femme Fatale</span> — a 133-page screenplay submitted to A24 and Proximity Media. I&apos;ve shot music videos, directed live multi-cam shows, built broadcast news packages, created documentaries. I&apos;ve done every job on set because I wanted to understand the whole machine, not just one gear. That means when I&apos;m behind your stream camera, I&apos;m not just holding a rig — I&apos;m framing history.</p>
+          <p style={{ marginBottom: 18 }}>I&apos;ve also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn&apos;t turn off because we&apos;re live.</p>
+          <p style={{ color: 'var(--fg)', fontWeight: 400 }}>I&apos;m not looking for a job. I&apos;m looking for the right mission. I&apos;ve watched you build for years — I know this is it. The work below exists to prove I can move with you at that level.</p>
         </div>
       </section>
 
@@ -567,25 +636,36 @@ export default function App() {
             fontSize: 'clamp(2.8rem, 14vw, 7rem)',
             lineHeight: 0.9, letterSpacing: -1,
           }}>
-            LET&apos;S<br /><span style={{ color: 'var(--accent)' }}>BUILD</span><br />SOMETHING
+            I&apos;M<br /><span style={{ color: 'var(--accent)' }}>YOUR</span><br />GUY
           </div>
+
+          <p style={{
+            marginTop: 20, fontFamily: 'var(--serif)',
+            fontSize: '1rem', fontStyle: 'italic',
+            color: 'rgba(255,255,255,0.4)', maxWidth: 340, margin: '20px auto 0',
+            lineHeight: 1.7,
+          }}>
+            DM me or reach out to @yharca directly. I&apos;m available immediately and ready to relocate.
+          </p>
 
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center',
-            gap: 10, marginTop: 36,
+            gap: 10, marginTop: 32,
           }}>
             {[
-              { l: 'Email', h: 'mailto:peterolowude@gmail.com' },
+              { l: 'Email Me', h: 'mailto:peterolowude@gmail.com' },
               { l: 'X / Twitter', h: 'https://twitter.com/5stariah' },
-              { l: 'View Everything', h: 'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0' },
+              { l: 'Full Drive Portfolio', h: 'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0' },
             ].map((l, i) => (
               <a key={i} href={l.h} target="_blank" rel="noopener noreferrer"
                 style={{
                   fontSize: 10, fontFamily: 'var(--mono)', letterSpacing: 4,
-                  textTransform: 'uppercase', color: 'var(--fg)',
-                  textDecoration: 'none', border: '1px solid rgba(255,255,255,0.2)',
-                  padding: '14px 32px', width: '100%', maxWidth: 280,
-                  textAlign: 'center',
+                  textTransform: 'uppercase', color: i === 0 ? '#080808' : 'var(--fg)',
+                  textDecoration: 'none',
+                  border: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.2)',
+                  background: i === 0 ? 'var(--accent)' : 'transparent',
+                  padding: '16px 32px', width: '100%', maxWidth: 300,
+                  textAlign: 'center', fontWeight: i === 0 ? 500 : 400,
                 }}
               >{l.l}</a>
             ))}
@@ -595,7 +675,7 @@ export default function App() {
             marginTop: 28, fontFamily: 'var(--serif)',
             fontSize: '0.9rem', fontStyle: 'italic', opacity: 0.28,
           }}>
-            Available immediately · Calgary, AB<br />Ready to relocate · Full time
+            Available immediately · Calgary, AB<br />Ready to relocate · Full time · Passport ready
           </p>
         </div>
       </section>
