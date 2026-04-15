@@ -112,9 +112,13 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerLeave}
         onPointerLeave={handlePointerLeave}
+        onContextMenu={(e) => e.preventDefault()}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         style={{
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          WebkitTouchCallout: 'none',
           width: 54,
           height: 54,
           borderRadius: '50%',
