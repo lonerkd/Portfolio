@@ -422,31 +422,26 @@ export default function App() {
           <div className="section__inner">
             <SectionLabel text={`The Work — ${VIDEOS.length} Projects`} />
 
-            {/* Featured — music videos, big cinematic aspect ratio */}
-            <div className="video-grid" style={{ marginBottom:18 }}>
-              {featuredVideos.map(v => (
-                <VideoCard3D key={v.id} video={v} featured
-                  onClick={handleVideoClick} extractColor={extractColor}
-                  setAmbientColor={setAmbientColor} resetColor={resetColor} />
-              ))}
-            </div>
+            <div className="bento-grid">
+              {VIDEOS.map((v, i) => {
+                let bentoClass = 'bento-item--standard';
+                // Pattern to create a varied bento box look
+                if (v.feat) {
+                  bentoClass = 'bento-item--large';
+                } else if (i === 2 || i === 8) {
+                  bentoClass = 'bento-item--tall';
+                } else if (i === 5 || i === 11) {
+                  bentoClass = 'bento-item--wide';
+                }
 
-            {/* Other videos — varied layout: 3-column masonry-style */}
-            <div style={{
-              display:'grid',
-              gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',
-              gap:14,
-              gridAutoRows:'auto',
-            }}>
-              {otherVideos.map((v, i) => (
-                <div key={v.id} style={{
-                  gridRow: (i === 0 || i === 4) ? 'span 2' : 'span 1',
-                }}>
-                  <VideoCard3D video={v}
-                    onClick={handleVideoClick} extractColor={extractColor}
-                    setAmbientColor={setAmbientColor} resetColor={resetColor} />
-                </div>
-              ))}
+                return (
+                  <div key={v.id} className={bentoClass}>
+                    <VideoCard3D video={v} featured={v.feat || bentoClass === 'bento-item--large'}
+                      onClick={handleVideoClick} extractColor={extractColor}
+                      setAmbientColor={setAmbientColor} resetColor={resetColor} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

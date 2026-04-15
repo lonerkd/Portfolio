@@ -54,7 +54,7 @@ export default function Hero({ scrollToSection }) {
       />
 
       {/* ── KINETIC TEXT ── */}
-      <div style={{ position: 'relative', zIndex: 3, width: '100%', maxWidth: 1000, textAlign: 'center' }}>
+      <div style={{ position: 'relative', zIndex: 3, width: '100%', maxWidth: 1000, textAlign: 'center', paddingBottom: '60px' }}>
 
         {/* Built for PBM tag */}
         <motion.div
@@ -182,7 +182,7 @@ export default function Hero({ scrollToSection }) {
         transition={{ delay: 1.4 }}
         onClick={() => scrollToSection('work')}
         style={{
-          position: 'absolute', bottom: 36, zIndex: 4,
+          position: 'absolute', bottom: 20, zIndex: 4,
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
           background: 'none', border: 'none', color: 'var(--fg)', cursor: 'none',
         }}
