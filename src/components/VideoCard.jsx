@@ -82,7 +82,10 @@ export default function VideoCard({ video, onClick, extractColor, setAmbientColo
           }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+            width: '100%', height: '100%', 
+            objectFit: 'cover', 
+            objectPosition: video.objectPosition || 'center',
+            display: 'block',
           }}
           onError={e => {
             if (!e.target.dataset.fb) { e.target.dataset.fb = '1'; e.target.src = thumbFallback(video); }

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { ArrowDown, MessageCircle } from 'lucide-react';
+import { HERO_TAGLINE, HERO_TITLE_1, HERO_TITLE_2, HERO_SUBTEXT_1 } from '../data/content';
 
 const HERO_ACTIONS = [
   { label: 'See My Work', section: 'work' },
@@ -62,7 +63,7 @@ export default function Hero({ scrollToSection }) {
           transition={{ duration: 0.8, delay: 0.05 }}
           style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 5, textTransform: 'uppercase', color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', marginBottom: 10, transition: 'color 0.6s' }}
         >
-          Built for @plaqueboymax
+          {HERO_TAGLINE}
         </motion.div>
 
         {/* Name tagline — depth 0 */}
@@ -92,7 +93,7 @@ export default function Hero({ scrollToSection }) {
               userSelect: 'none',
             }}
           >
-            I DON'T
+            {HERO_TITLE_1}
           </motion.div>
         </motion.div>
 
@@ -111,7 +112,7 @@ export default function Hero({ scrollToSection }) {
               userSelect: 'none',
             }}
           >
-            JUST FILM
+            {HERO_TITLE_2}
           </motion.div>
         </motion.div>
 
@@ -127,7 +128,7 @@ export default function Hero({ scrollToSection }) {
               fontStyle: 'italic', fontWeight: 300,
             }}
           >
-            I build worlds. I write stories.
+            {HERO_SUBTEXT_1}
           </motion.p>
         </motion.div>
 
