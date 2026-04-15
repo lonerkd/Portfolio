@@ -3,4 +3,13 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    include: ['framer-motion'],
+  },
+  build: {
+    target: 'esnext',
+    commonjsOptions: {
+      include: [/node_modules/], // Default behavior, ensure commonjs packages are processed
+    },
+  }
 })
