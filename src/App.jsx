@@ -186,7 +186,6 @@ function StorySection() {
 
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
 const OTHER_WRITING = [
-  { type: 'Show Bible', title: 'Misfits Cavern', sub: 'Original series', did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
   { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
   { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
   { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
@@ -200,22 +199,18 @@ function WritingSection() {
         <SectionLabel text="The Writing" />
 
         {/* FEMME FATALE — cinematic preview card */}
-        <motion.a
-          href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
-          target="_blank" rel="noopener noreferrer"
+        <motion.div
           className="card"
           initial={{ opacity:0, y:50 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-80px' }}
           transition={{ duration:0.8, ease:[0.16,1,0.3,1] }}
-          whileHover={{ y:-4, transition:{ duration:0.3 } }}
           style={{
-            display:'block', textDecoration:'none', cursor:'none',
-            padding:0, marginBottom:18, overflow:'hidden',
-            position:'relative', minHeight:280,
+            position:'relative', overflow:'hidden', marginBottom:18,
+            minHeight:280,
           }}
         >
           {/* Cinematic gradient backdrop */}
           <div style={{
-            position:'absolute', inset:0,
+            position:'absolute', inset:0, pointerEvents:'none',
             background:'linear-gradient(135deg, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.12) 0%, rgba(0,0,0,0.95) 60%)',
             transition:'background 0.6s',
           }} />
@@ -254,11 +249,41 @@ function WritingSection() {
               A deconstruction of narrative control set between Port-au-Prince in 1957 and a Parisian television studio. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.
             </div>
 
-            <div style={{ display:'flex', alignItems:'center', gap:8, marginTop:24, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>
-              <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
+            <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
+              <motion.a 
+                href="https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view"
+                target="_blank" rel="noopener noreferrer"
+                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                style={{ 
+                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
+                  letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', 
+                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
+                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
+                  border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.3)',
+                  background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.05)'
+                }}
+              >
+                <FileText size={13} /> View Show Bible <ChevronRight size={10} />
+              </motion.a>
+
+              <motion.a 
+                href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
+                target="_blank" rel="noopener noreferrer"
+                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                style={{ 
+                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
+                  letterSpacing:3, textTransform:'uppercase', color:'var(--fg)', 
+                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
+                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.02)'
+                }}
+              >
+                <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
+              </motion.a>
             </div>
           </div>
-        </motion.a>
+        </motion.div>
 
         {/* Other writing — compact grid */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:10 }}>
