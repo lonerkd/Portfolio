@@ -18,16 +18,19 @@ import AmbientBackground from './components/AmbientBackground';
 // yt  = YouTube video ID  → used for embed + thumbnail (preferred)
 // did = Google Drive ID   → fallback for videos not yet on YouTube
 const VIDEOS = [
-  { id: '10m',      title: '10 Million',             cat: 'Music Video',    role: 'DP / Editor',                     year: '2026', desc: 'High-energy visual rhythm. Every cut lands on the beat, every frame tells a story of ambition.',    yt: '3frfHolmYkE',  did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', feat: true },
-  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Writer / DP',                     year: '2024', desc: 'A crime thriller about two couriers, a mysterious briefcase, and a deal that has to go right.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true },
-  { id: 'black',    title: 'Black Stuff',             cat: 'Music Video',    role: 'DP / Editor',                     year: '2025', desc: 'Gritty, visceral. A visual language built from contrast and controlled chaos.',                    yt: 'NqcGtFr95oM',  did: null,                                feat: true },
-  { id: 'audio',    title: 'The Audio Blueprint',     cat: 'Doc Teaser',     role: 'Director / Writer / Editor',      year: '2025', desc: 'The invisible art of sound design — why audio is the secret weapon behind iconic movie moments.',  yt: 'FiTiVNZxTPs',  did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n' },
-  { id: 'psa',      title: 'The Grand PSA',           cat: 'Commercial',     role: 'Writer / Director / DP / Editor', year: '2025', desc: 'A love letter to The Grand Theatre. Wrote, directed, shot, and graded the final cut.',             yt: 'Z9hXm2u4cZw',  did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00' },
+  // Music Videos first — this is what PBM needs to see
+  { id: '10m',      title: '10 Million',             cat: 'Music Video',    role: 'DP / Editor',                     year: '2026', desc: 'High-energy visual rhythm. Every cut lands on the beat, every frame tells a story of ambition. Shot, lit, and edited solo.',    yt: '3frfHolmYkE',  did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', feat: true },
+  { id: 'black',    title: 'Black Stuff',             cat: 'Music Video',    role: 'DP / Editor',                     year: '2025', desc: 'Gritty, visceral. A visual language built from contrast and controlled chaos.',                    yt: 'NqcGtFr95oM',  did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', feat: true },
+  // Live multi-cam — stream camera instincts
+  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Camera Op / Director',            year: '2025', desc: 'Sit-down interview. Directing multiple camera operators in real time — the instincts needed behind the stream camera.',  yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t' },
   { id: 'sports',   title: 'Live Sports Show Intro',  cat: 'Live Multi-Cam', role: 'Director / Editor',               year: '2025', desc: 'High-energy live sports broadcast opener. Motion graphics meets live production energy.',           yt: 'gWYoZh9kl9I',  did: null },
-  { id: 'news',     title: 'Banded Peak News Pack',   cat: 'Broadcast',      role: 'Camera Op / Editor',              year: '2024', desc: 'Professional broadcast news package under deadline pressure.',                                     yt: 'l6JnCA7e3DY',  did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u' },
-  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Documentary',    role: 'DP / Editor',                     year: '2024', desc: 'Chasing elevation, literal and metaphorical. Visual storytelling through landscape and movement.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE' },
   { id: 'cook',     title: 'Live Cooking Demo',       cat: 'Live Multi-Cam', role: 'Camera Op / Switcher',            year: '2025', desc: 'Live multi-camera production. Real-time switching, no second takes.',                              yt: 'R2IZKAHYmME', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ' },
-  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Camera Op / Director',            year: '2025', desc: 'Sit-down interview. Directing multiple camera operators in real time.',                            yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t' },
+  // Short film + narrative range
+  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Writer / DP',                     year: '2024', desc: 'A crime thriller about two couriers, a mysterious briefcase, and a deal that has to go right.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true },
+  { id: 'psa',      title: 'The Grand PSA',           cat: 'Commercial',     role: 'Writer / Director / DP / Editor', year: '2025', desc: 'A love letter to The Grand Theatre. Wrote, directed, shot, and graded the final cut.',             yt: 'Z9hXm2u4cZw',  did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00' },
+  { id: 'audio',    title: 'The Audio Blueprint',     cat: 'Doc Teaser',     role: 'Director / Writer / Editor',      year: '2025', desc: 'The invisible art of sound design — why audio is the secret weapon behind iconic movie moments.',  yt: 'FiTiVNZxTPs',  did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n' },
+  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Documentary',    role: 'DP / Editor',                     year: '2024', desc: 'Chasing elevation, literal and metaphorical. Visual storytelling through landscape and movement.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE' },
+  { id: 'news',     title: 'Banded Peak News Pack',   cat: 'Broadcast',      role: 'Camera Op / Editor',              year: '2024', desc: 'Professional broadcast news package under deadline pressure.',                                     yt: 'l6JnCA7e3DY',  did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u' },
   { id: 'tiktok',   title: 'TikTok Addiction',        cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'Examining our relationship with infinite scroll.',                                                  yt: 'KQHjrvuthYE', did: '1o61DVHh8QhTYWKSOQOvs9P4kEoZQqygI' },
   { id: 'fraud',    title: 'Fraud',                   cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'Deception as a system. How fraud operates in plain sight.',                                        yt: 'E6rydhe1PAY', did: '10AfFlmGp1qbqI_9BKSQnYfyTi7o_SFbp' },
 ];
@@ -74,7 +77,7 @@ function SectionLabel({ text }) {
 
 /* ═══ MARQUEE ═══ */
 function Marquee() {
-  const skills = ['CINEMATOGRAPHY','DIRECTING','MUSIC VIDEOS','CREATIVE DIRECTION','EDITING','STORYTELLING','WRITING','LIVE MULTI-CAM'];
+  const skills = ['CINEMATOGRAPHY','MUSIC VIDEOS','STREAM CAMERA','CREATIVE DIRECTION','EDITING','STORYTELLING','WRITING','LIVE MULTI-CAM','VLOG / DAILY CONTENT','DIRECTING'];
   return (
     <div style={{ padding:'40px 0', overflow:'hidden', borderTop:'1px solid rgba(255,255,255,0.03)', borderBottom:'1px solid rgba(255,255,255,0.03)', background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.025)', transition:'background 0.6s' }}>
       <motion.div animate={{ x:[0,-2400] }} transition={{ duration:45, repeat:Infinity, ease:'linear' }} style={{ display:'flex', gap:56, whiteSpace:'nowrap' }}>
@@ -97,8 +100,9 @@ const SCENE_EX = [
   { label: 'The Invitation', text: 'A POSTER on the wall. A Black woman in white feathers caught mid-arc — arms wide, face up. LES ÉTOILES DE PARIS. "Auditions tonight. Eight o\'clock. We leave for Paris in two weeks."' },
 ];
 const OTHER_WRITING = [
+  { type: 'Show Bible',            title: 'Misfits Cavern — Series',  excerpt: 'Full show bible for an original series. Character arcs, episode breakdowns, world-building, tone guides.',  did: '1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ' },
   { type: 'Production Book',       title: 'Studio Music Video',      excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography.',  did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Documentary One Sheet', title: 'The Audio Blueprint',      excerpt: 'A witty 5-minute documentary that dives into the unseen magic of sound design in film.',            did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
+  { type: 'Documentary One Sheet', title: 'The Audio Blueprint',      excerpt: 'A witty 5-minute documentary about the unseen magic of sound design in film.',            did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
   { type: 'PSA Script',            title: 'A Stage for Every Story',  excerpt: 'For over a century, The Grand Theatre has been more than just a stage.',                            did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
   { type: 'Short Film Screenplay', title: 'The Briefcase',            excerpt: '"Stop stressing man. We ain\'t gonna mess up." — "People died." — A confident chuckle. "Heh, ya they did."', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
 ];
@@ -127,11 +131,11 @@ function WritingSection() {
               </motion.div>
             ))}
           </div>
-          <motion.a href="https://drive.google.com/file/d/1cIynCQgJtWfLRpb5xZzgQw0rHMKauSO9/view"
+          <motion.a href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
             target="_blank" rel="noopener noreferrer" className="magnetic-btn"
             whileHover={{ scale:1.02 }} whileTap={{ scale:0.97 }}
             style={{ marginTop:28, display:'inline-flex', textDecoration:'none', cursor:'none' }}>
-            <FileText size={13} /> Read Full Script
+            <FileText size={13} /> Read Latest Draft
           </motion.a>
         </motion.div>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(270px,1fr))', gap:12 }}>
@@ -157,8 +161,9 @@ const STORY = [
   { plain: "It began a couple months before I dropped out of film school." },
   { pre: "At 19, I was overwhelmed and realizing that the institution was a structure I no longer needed to validate my vision. I didn't drop out because it was too hard — I dropped out to prove this wasn't just a degree for me.", em: "It was my vocation." },
   { plain: "From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a courtroom, the disappointment was palpable. But I embraced it." },
-  { pre: "I've spent years in the dark writing scripts like", accent: "Femme Fatale", post: "— a 133-page screenplay submitted to A24 and Proximity Media. I've shot music videos, directed live multi-cam shows, built news packages, created documentaries. I've done every job on set because I wanted to understand the whole machine, not just one gear." },
-  { em: "I believe in the vision being built here. I have the work to show I can do it, and the dedication to ensure it's done right." },
+  { pre: "I've spent years in the dark writing scripts like", accent: "Femme Fatale", post: "— a 133-page screenplay submitted to A24 and Proximity Media. I've shot music videos, directed live multi-cam shows, built broadcast news packages, created documentaries. I've done every job on set because I wanted to understand the whole machine, not just one gear. That means when I'm behind your stream camera, I'm not just holding a rig — I'm framing history." },
+  { plain: "I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live." },
+  { em: "I'm not looking for a job. I'm looking for the right mission. I've watched you build for years — I know this is it. The work below exists to prove I can move with you at that level." },
 ];
 
 function StorySection() {
@@ -187,9 +192,9 @@ function StorySection() {
 
 /* ═══ CONTACT SECTION ═══ */
 const CONTACT_LINKS = [
-  { label:'Email',           href:'mailto:peterolowude@gmail.com',                                                      icon:<Mail size={15} /> },
-  { label:'X / Twitter',     href:'https://twitter.com/5stariah',                                                        icon:<Twitter size={15} /> },
-  { label:'View Everything', href:'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0',           icon:<ExternalLink size={15} /> },
+  { label:'Email Me',             href:'mailto:peterolowude@gmail.com',                                                      icon:<Mail size={15} />,           primary: true },
+  { label:'X / Twitter',          href:'https://twitter.com/5stariah',                                                        icon:<Twitter size={15} /> },
+  { label:'Full Drive Portfolio',  href:'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0',           icon:<ExternalLink size={15} /> },
 ];
 
 function MagBtn({ href, icon, label }) {
@@ -217,12 +222,16 @@ function ContactSection() {
         <motion.div initial={{ opacity:0, scale:0.9, filter:'blur(10px)' }} whileInView={{ opacity:1, scale:1, filter:'blur(0px)' }}
           viewport={{ once:true }} transition={{ duration:1, ease:[0.16,1,0.3,1] }}
           style={{ fontFamily:'var(--display)', fontSize:'clamp(4rem,18vw,12rem)', lineHeight:0.84, letterSpacing:-3 }}>
-          LET'S<br />
-          <span style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>BUILD</span><br />
-          SOMETHING
+          I'M<br />
+          <span style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>YOUR</span><br />
+          GUY
         </motion.div>
+        <motion.p initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.15, duration:0.6 }}
+          style={{ marginTop:28, fontFamily:'var(--serif)', fontSize:'1.05rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:380, margin:'28px auto 0', lineHeight:1.75 }}>
+          DM me or reach out to @yharca directly. I'm available immediately and ready to relocate.
+        </motion.p>
         <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.2, duration:0.7 }}
-          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, marginTop:60 }}>
+          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, marginTop:40 }}>
           {CONTACT_LINKS.map((l,i) => (
             <motion.div key={i} initial={{ opacity:0, y:15 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3+i*0.1 }}
               style={{ width:'100%', display:'flex', justifyContent:'center' }}>
@@ -232,8 +241,75 @@ function ContactSection() {
         </motion.div>
         <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.38 }} viewport={{ once:true }} transition={{ delay:0.7 }}
           style={{ marginTop:52, fontFamily:'var(--serif)', fontSize:'1rem', fontStyle:'italic', lineHeight:1.9 }}>
-          Available immediately · Calgary, AB<br />Ready to relocate · Full time
+          Available immediately · Calgary, AB<br />Ready to relocate · Full time · Passport ready
         </motion.p>
+      </div>
+    </section>
+  );
+}
+
+/* ═══ STATS BAR ═══ */
+function StatsBar() {
+  const stats = [
+    { num: '12', label: 'Projects' },
+    { num: '4+', label: 'Years' },
+    { num: '5', label: 'Disciplines' },
+    { num: '0', label: 'Days Until Available' },
+  ];
+  return (
+    <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ duration:0.8 }}
+      style={{ display:'flex', justifyContent:'center', gap:'clamp(24px,6vw,64px)', padding:'48px 20px', borderTop:'1px solid rgba(255,255,255,0.03)', borderBottom:'1px solid rgba(255,255,255,0.03)', background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.02)', transition:'background 0.6s' }}>
+      {stats.map((s,i) => (
+        <motion.div key={i} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*0.1, duration:0.6 }}
+          style={{ textAlign:'center' }}>
+          <div style={{ fontFamily:'var(--display)', fontSize:'clamp(2rem,6vw,3.5rem)', lineHeight:1, color:'var(--fg)', letterSpacing:1 }}>{s.num}</div>
+          <div style={{ fontFamily:'var(--mono)', fontSize:7, letterSpacing:3, textTransform:'uppercase', color:'var(--fg-subtle)', marginTop:6 }}>{s.label}</div>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+
+/* ═══ PITCH SECTION ═══ */
+const PITCH_ITEMS = [
+  { req: 'Creative Vision', proof: 'Every project started as a concept in my head. I bring the idea, the look, the execution.' },
+  { req: 'Music Video Experience', proof: '10 Million and Black Stuff — shot, lit, edited solo. Study the frames.' },
+  { req: 'Passionate About Camera', proof: "Dropped out of film school to prove this isn't a degree. It's my vocation." },
+  { req: 'Full-Time Ready', proof: 'Available immediately. Ready to relocate. I go wherever the camera goes.' },
+  { req: 'Stream & Daily Content', proof: "Live multi-cam productions across cooking shows, interview series, sports. Real moments, no staging." },
+];
+
+function PitchSection() {
+  return (
+    <section id="pitch" className="section" style={{ paddingTop:80, paddingBottom:60 }}>
+      <div className="section__inner" style={{ maxWidth:900 }}>
+        <SectionLabel text="Why I'm Your Cameraman" />
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:12, marginBottom:36 }}>
+          {PITCH_ITEMS.map((item, i) => (
+            <motion.div key={i} initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+              transition={{ delay:i*0.07, duration:0.7, ease:[0.16,1,0.3,1] }}
+              className="card" style={{ padding:'28px 22px', position:'relative', overflow:'hidden', minHeight:130 }}>
+              {/* Ghost number */}
+              <div style={{ position:'absolute', top:-14, right:10, fontFamily:'var(--display)', fontSize:'5.5rem', lineHeight:1, color:'rgba(255,255,255,0.025)', userSelect:'none', pointerEvents:'none' }}>
+                {String(i+1).padStart(2,'0')}
+              </div>
+              <div style={{ position:'relative', zIndex:1 }}>
+                <p style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'var(--fg)', marginBottom:10 }}>{item.req}</p>
+                <p style={{ fontFamily:'var(--serif)', fontSize:14, lineHeight:1.7, color:'var(--fg-muted)', fontStyle:'italic' }}>{item.proof}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {/* Direct letter */}
+        <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3, duration:0.8 }}
+          style={{ borderLeft:'2px solid rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', paddingLeft:24, fontFamily:'var(--serif)', fontSize:'1.05rem', lineHeight:1.85, color:'var(--fg-muted)', fontStyle:'italic', transition:'border-color 0.6s' }}>
+          <p style={{ marginBottom:16 }}>
+            Max — I've watched how you build. The way your content moves, the way it sits between raw and refined. You don't just need someone who can hold a camera. You need someone who can feel a room, anticipate a moment, and make sure it lives forever in the frame.
+          </p>
+          <p style={{ color:'var(--fg)', fontStyle:'normal', fontFamily:'var(--mono)', fontSize:10, letterSpacing:2 }}>
+            That's what I do. Scroll down.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
@@ -245,7 +321,7 @@ export default function App() {
   const [activeVideoColor, setActiveVideoColor] = useState(null);
 
   const { setAmbientColor, extractColor, resetColor } = useColorExtractor();
-  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['work','writing','story','contact']);
+  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['pitch','work','writing','story','contact']);
 
   const handleVideoClick = useCallback((video, color) => {
     setActiveVideo(video);
@@ -274,6 +350,9 @@ export default function App() {
 
         <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} />
         <Hero scrollToSection={scrollToSection} />
+
+        <StatsBar />
+        <PitchSection />
 
         {/* ── WORK ── */}
         <section id="work" className="section">

@@ -8,6 +8,7 @@ import { X } from 'lucide-react';
    ══════════════════════════════════════ */
 
 const NAV_ITEMS = [
+  { id: 'pitch', label: 'Why Me' },
   { id: 'work', label: 'Work' },
   { id: 'writing', label: 'Writing' },
   { id: 'story', label: 'Story' },

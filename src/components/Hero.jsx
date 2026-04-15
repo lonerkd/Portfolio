@@ -52,9 +52,9 @@ function ParallaxPhoto({ photo, mouseX, mouseY }) {
 }
 
 const SKILLS = [
-  { icon: <Film size={11} />, label: 'Cinematography' },
-  { icon: <Pen size={11} />, label: 'Writing' },
-  { icon: <Eye size={11} />, label: 'Creative Direction' },
+  { icon: <Film size={11} />, label: 'Music Videos' },
+  { icon: <Eye size={11} />, label: 'Stream / Vlog' },
+  { icon: <Pen size={11} />, label: 'Creative Direction' },
 ];
 
 export default function Hero({ scrollToSection }) {
@@ -117,6 +117,15 @@ export default function Hero({ scrollToSection }) {
 
       {/* ── KINETIC TEXT ── */}
       <div style={{ position: 'relative', zIndex: 3, width: '100%', maxWidth: 1000, textAlign: 'center' }}>
+
+        {/* Built for PBM tag */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.7, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.05 }}
+          style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 5, textTransform: 'uppercase', color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', marginBottom: 10, transition: 'color 0.6s' }}
+        >
+          Built for @plaqueboymax
+        </motion.div>
 
         {/* Name tagline — depth 0 */}
         <motion.div style={{ x: tx0, y: ty0 }}>
