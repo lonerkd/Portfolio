@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown, Instagram, Tv } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
@@ -480,6 +481,7 @@ export default function App() {
 
         <VideoOverlay video={activeVideo} dominantColor={activeVideoColor} onClose={handleVideoClose} />
       </div>
+      <Analytics />
     </>
   );
 }
