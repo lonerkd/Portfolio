@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown } from 'lucide-react';
+import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown, Instagram, Tv } from 'lucide-react';
 
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
@@ -284,8 +284,10 @@ function WritingSection() {
 
 /* ═══ CONTACT ═══ */
 const CONTACT_LINKS = [
-  { label:'Email Me',             href:'mailto:peterolowude@gmail.com',                                                      icon:<Mail size={15} />,           primary: true },
-  { label:'X / Twitter',          href:'https://twitter.com/5stariah',                                                        icon:<Twitter size={15} /> },
+  { label:'Email Me',             href:'mailto:peterolowude@icloud.com',                                                      icon:<Mail size={15} />,           primary: true },
+  { label:'X / Twitter',          href:'https://x.com/lonerfss',                                                              icon:<Twitter size={15} /> },
+  { label:'Instagram',            href:'https://www.instagram.com/lonerkid',                                                   icon:<Instagram size={15} /> },
+  { label:'Twitch',               href:'https://www.twitch.tv/lonerfs',                                                       icon:<Tv size={15} /> },
   { label:'Full Drive Portfolio',  href:'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0',           icon:<ExternalLink size={15} /> },
 ];
 

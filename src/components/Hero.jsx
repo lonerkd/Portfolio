@@ -8,8 +8,8 @@ const HERO_ACTIONS = [
   { label: 'Contact', section: 'contact' },
 ];
 const DM_LINKS = [
-  { icon: <MessageCircle size={11} />, label: 'DM on X', href: 'https://x.com/messages/compose?recipient_id=lonerfss', directHref: 'https://x.com/lonerfss' },
-  { icon: <MessageCircle size={11} />, label: 'DM on IG', href: 'https://ig.me/m/lonerkid', directHref: 'https://instagram.com/lonerkid' },
+  { icon: <MessageCircle size={11} />, label: 'DM on X', directHref: 'https://x.com/lonerfss' },
+  { icon: <MessageCircle size={11} />, label: 'DM on IG', directHref: 'https://www.instagram.com/lonerkid' },
 ];
 
 export default function Hero({ scrollToSection }) {
