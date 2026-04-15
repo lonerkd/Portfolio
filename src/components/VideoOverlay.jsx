@@ -8,7 +8,7 @@ import { embedUrl, watchUrl } from '../App';
    One-click dismiss, swipe-down mobile
    ══════════════════════════════════════ */
 
-export default function VideoOverlay({ video, dominantColor, onClose }) {
+export default function VideoOverlay({ video, dominantColor, onClose, setAmbientColor }) {
   const overlayRef = useRef(null);
   const contentRef = useRef(null);
   const touchStartY = useRef(0);
@@ -49,6 +49,27 @@ export default function VideoOverlay({ video, dominantColor, onClose }) {
     dragY.current = 0;
   };
 
+  // Cycle ambient color while video is playing to simulate "shots" changing
+  useEffect(() => {
+    if (!video || !setAmbientColor || !dominantColor) return;
+    
+    const variations = [
+      dominantColor,
+      { r: Math.min(255, dominantColor.r + 40), g: Math.max(0, dominantColor.g - 20), b: dominantColor.b },
+      { r: Math.max(0, dominantColor.r - 30), g: Math.min(255, dominantColor.g + 30), b: dominantColor.b },
+      { r: dominantColor.r, g: dominantColor.g, b: Math.min(255, dominantColor.b + 50) },
+      { r: Math.max(0, dominantColor.r - 20), g: dominantColor.g, b: Math.max(0, dominantColor.b - 20) },
+    ];
+    
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx = (idx + 1) % variations.length;
+      setAmbientColor(variations[idx]);
+    }, 3500);
+    
+    return () => clearInterval(interval);
+  }, [video, dominantColor, setAmbientColor]);
+
   const dc = dominantColor || { r: 255, g: 60, b: 0 };
   const gc = `rgba(${dc.r},${dc.g},${dc.b},`;
 
@@ -64,9 +85,9 @@ export default function VideoOverlay({ video, dominantColor, onClose }) {
           transition={{ duration: 0.35 }}
           style={{
             position: 'fixed', inset: 0, zIndex: 9500,
-            background: 'rgba(0,0,0,0.92)',
-            backdropFilter: 'blur(24px) saturate(140%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(140%)',
+            background: 'rgba(0,0,0,0.4)',
+            backdropFilter: 'blur(8px) saturate(120%)',
+            WebkitBackdropFilter: 'blur(8px) saturate(120%)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
             cursor: 'none',

@@ -478,7 +478,12 @@ export default function App() {
           © 2026 Peter Olowude · Misfits Cavern Productions
         </footer>
 
-        <VideoOverlay video={activeVideo} dominantColor={activeVideoColor} onClose={handleVideoClose} />
+        <VideoOverlay 
+          video={activeVideo} 
+          dominantColor={activeVideoColor} 
+          onClose={handleVideoClose} 
+          setAmbientColor={setAmbientColor} 
+        />
       </div>
     </>
   );
