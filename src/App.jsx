@@ -76,8 +76,8 @@ function StatsBar() {
   const stats = [
     { num: '12', label: 'Projects' },
     { num: '4+', label: 'Years' },
-    { num: '5', label: 'Disciplines' },
-    { num: '0', label: 'Days Until Available' },
+    { num: '5', label: 'Hats' },
+    { num: '2', label: 'Working on Now' },
   ];
   return (
     <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ duration:0.8 }}
@@ -137,32 +137,32 @@ function StorySection() {
           <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
             viewport={{ once:true }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }}
             style={{ marginBottom:24 }}>
-            I'm from a family of Yale and Columbia grads, multinational business owners. My path was set — business, law, or medicine. When I chose a camera over a courtroom at 17, nobody understood. When I dropped out of film school at 19, even fewer did.
+            I'm from a family of Yale and Columbia grads, multinational business owners. So from birth my path was set — business, law, or medicine. When I chose a camera over a labcoat at 17, nobody understood. When I dropped out of film school at 19, even fewer did.
           </motion.p>
 
           <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
             viewport={{ once:true }} transition={{ duration:0.9, delay:0.05, ease:[0.16,1,0.3,1] }}
             style={{ marginBottom:24 }}>
-            I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove this wasn't just a degree for me — it was my vocation.</span> The institution couldn't move fast enough for what I needed to build.
+            I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove I didn't have to limit my vision.</span> The institutional structure couldn't move fast enough for what I was crafting.
           </motion.p>
 
           <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
             viewport={{ once:true }} transition={{ duration:0.9, delay:0.1, ease:[0.16,1,0.3,1] }}
             style={{ marginBottom:24 }}>
-            Since then I've been in the trenches — shooting music videos solo from concept to color grade, directing live multi-cam productions where there are no second takes, building broadcast news packages under real deadlines, writing a 133-page screenplay that I submitted to A24 and Proximity Media.
+            Since then I've been in the trenches — shooting music videos solo from concept to delivery, directing productions where there are no second takes, building project packages under real deadlines, writing my debut 133-page non-linear screenplay.
           </motion.p>
 
           <AnimatePresence>
             {expanded && (
               <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} transition={{ duration:0.5, ease:[0.16,1,0.3,1] }}>
                 <p style={{ marginBottom:24 }}>
-                  I've done every job on set because I wanted to understand the whole machine, not just one gear. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind your stream camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm framing history.</span>
+                  I've done every job on set because I wanted to understand the whole system. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind the camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm crafting narrative.</span>
                 </p>
                 <p style={{ marginBottom:24 }}>
                   I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.
                 </p>
                 <p style={{ color:'var(--fg)', fontWeight:500 }}>
-                  I'm not looking for a job. I'm looking for the right mission. I've watched you build for years — I know this is it.
+                  I'm not looking for a job. I'm looking for the right mission to dedicate my soul to. I've watched you build 5$STAR — I know this is it.
                 </p>
               </motion.div>
             )}
@@ -237,7 +237,7 @@ function WritingSection() {
             </h3>
 
             <p style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, color:'var(--fg-subtle)', textTransform:'uppercase', marginBottom:20 }}>
-              Political Noir · Limited Series
+              Noir Thriller · Feature Film
             </p>
 
             <div style={{
@@ -246,7 +246,7 @@ function WritingSection() {
               borderLeft:'2px solid rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
               paddingLeft:20, maxWidth:600, transition:'border-color 0.6s',
             }}>
-              A deconstruction of narrative control set between Port-au-Prince in 1957 and a Parisian television studio. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.
+              A deconstruction of narrative control set between Port-au-Prince in 1957 and 1960s Paris. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the story she chooses to tell.
             </div>
 
             <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
@@ -475,7 +475,7 @@ export default function App() {
         <ContactSection />
 
         <footer style={{ textAlign:'center', padding:'24px 20px 44px', fontSize:7, letterSpacing:4, textTransform:'uppercase', opacity:0.05, fontFamily:'var(--mono)' }}>
-          © 2026 Peter Olowude · Misfits Cavern Productions
+          © 2026 Peter Olowude · Misfits Cavern
         </footer>
 
         <VideoOverlay 

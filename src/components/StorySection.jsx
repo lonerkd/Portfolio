@@ -8,9 +8,9 @@ import { motion } from 'framer-motion';
 
 const PARAGRAPHS = [
   "It began a couple months before I dropped out of film school.",
-  { text: "At 19, I was overwhelmed and realizing that the institution was a structure I no longer needed to validate my vision. I didn't drop out because it was too hard — I dropped out to prove this wasn't just a degree for me.", highlight: "It was my vocation." },
-  "From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a courtroom, the disappointment was palpable. But I embraced it.",
-  { text: "I've spent years in the dark writing scripts like", accent: "Femme Fatale", after: "— a 133-page screenplay submitted to A24 and Proximity Media. I've shot music videos, directed live multi-cam shows, built news packages, created documentaries. I've done every job on set because I wanted to understand the whole machine, not just one gear." },
+  { text: "At 19, I was overwhelmed and realizing that the institutional structure wasn't for me at the time and couldn't validate my vision. I didn't drop out because it was too hard — I dropped out to prove to myself that I didn't have to limit my vision.", highlight: "I didn't have to limit my vision." },
+  "From a family of Yale and Columbia grads, multinational business owners — my path was set. Business, law, or medicine. When I chose to chase a camera instead of a labcoat, the disappointment was palpable. But I embraced it.",
+  { text: "I spent a year writing my debut feature", accent: "Femme Fatale", after: "— a 133-page non-linear screenplay. I've shot music videos, directed live multi-cam shows, professional news packages, created documentaries. I've done every job on set because I wanted to understand the whole system." },
   { text: "", highlight: "I believe in the vision being built here. I have the work to show I can do it, and the dedication to ensure it's done right." },
 ];
 
