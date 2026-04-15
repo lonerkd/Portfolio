@@ -407,7 +407,6 @@ export default function App() {
         <div className="grain" />
 
         <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} />
-        <DotNav activeSection={activeSection} />
         <Hero scrollToSection={scrollToSection} />
 
         <StatsBar />
