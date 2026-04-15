@@ -127,8 +127,7 @@ export default function Hero({ scrollToSection }) {
               fontStyle: 'italic', fontWeight: 300,
             }}
           >
-            I build worlds. I write stories.<br />
-            I hold the camera like it owes me something.
+            I build worlds. I write stories.
           </motion.p>
         </motion.div>
 
