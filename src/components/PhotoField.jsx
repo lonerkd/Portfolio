@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 
 /* ══════════════════════════════════════
@@ -142,7 +142,7 @@ function PhotoItem({ photo, mouseX, mouseY }) {
     <motion.div style={{
       position: 'absolute',
       left: `${photo.left}%`, top: `${photo.top}px`,
-      width: photo.w, height: photo.w * 0.65,
+      width: photo.w, height: photo.h,
       zIndex: photo.z, x, y, rotate: photo.rot,
     }}>
       <div style={{
@@ -151,7 +151,7 @@ function PhotoItem({ photo, mouseX, mouseY }) {
         border: '1px solid rgba(255,255,255,0.05)',
         boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
       }}>
-        <img src={IMG(photo.id)} alt="" loading="lazy"
+        <img src={IMG(photo.id, Math.round(photo.w))} alt="" loading="lazy"
           style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.4) contrast(1.1)' }}
           onError={e => { e.target.style.display = 'none'; }}
         />
@@ -162,7 +162,6 @@ function PhotoItem({ photo, mouseX, mouseY }) {
 
 export default function PhotoField() {
   const [pageHeight, setPageHeight] = useState(5000);
-  const rng = sR(42);
 
   useEffect(() => {
     const update = () => setPageHeight(document.body.scrollHeight);
@@ -171,26 +170,6 @@ export default function PhotoField() {
     obs.observe(document.body);
     return () => obs.disconnect();
   }, []);
-
-  // Grid-based distribution: divide page into rows, place 2-3 photos per row
-  // This ensures even spread from top to bottom with no clustering
-  const rowCount = Math.max(8, Math.floor(pageHeight / 600));
-  const rowHeight = pageHeight / rowCount;
-
-  const photos = PHOTOS.map((id, i) => {
-    const row = i % rowCount;
-    const colSide = i % 2 === 0; // alternate left/right sides
-    return {
-      id,
-      left: colSide ? (rng() * 30 + 2) : (rng() * 30 + 62), // left or right side
-      top: row * rowHeight + rng() * rowHeight * 0.6, // within row, some jitter
-      rot: (rng() - 0.5) * 18,
-      w: 70 + rng() * 90,
-      z: Math.floor(rng() * 5),
-      px: rng() * 0.6 + 0.2,
-      py: rng() * 0.6 + 0.2,
-    };
-  });
 
   const mouseX = useSpring(0, { stiffness: 40, damping: 25 });
   const mouseY = useSpring(0, { stiffness: 40, damping: 25 });
@@ -204,11 +183,71 @@ export default function PhotoField() {
     return () => window.removeEventListener('mousemove', handleMove);
   }, [mouseX, mouseY]);
 
+  // Compute layout once to prevent re-renders shuffling the photos
+  const photos = useMemo(() => {
+    const rng = sR(42);
+    
+    // Shuffle the array to break up similar consecutive shots
+    const shuffled = [...PHOTOS].sort(() => rng() - 0.5);
+
+    // 4 columns to spread out the photos nicely along the edges
+    const cols = [
+      { left: 2, currentY: 50 },
+      { left: 16, currentY: 200 }, // stagger
+      { left: 74, currentY: 50 },
+      { left: 88, currentY: 200 }
+    ];
+
+    return shuffled.map((id, i) => {
+      // 1 in 5 photos is "large"
+      const isLarge = i % 5 === 0;
+      
+      const w = isLarge ? (160 + rng() * 100) : (70 + rng() * 50);
+      const h = w * 0.65;
+      
+      // Find shortest column to keep them balanced
+      let colIdx = 0;
+      let minY = Infinity;
+      for(let j=0; j<4; j++) {
+        if (cols[j].currentY < minY) {
+          minY = cols[j].currentY;
+          colIdx = j;
+        }
+      }
+      
+      const col = cols[colIdx];
+      const top = col.currentY + rng() * 60; 
+      
+      // Advance this column, ensuring space between photos
+      col.currentY = top + h + 40 + rng() * 60;
+      
+      // If large, push down the adjacent column slightly to avoid major overlapping
+      if (isLarge) {
+        if (colIdx === 0) cols[1].currentY = Math.max(cols[1].currentY, top + h + 20);
+        if (colIdx === 1) cols[0].currentY = Math.max(cols[0].currentY, top + h + 20);
+        if (colIdx === 2) cols[3].currentY = Math.max(cols[3].currentY, top + h + 20);
+        if (colIdx === 3) cols[2].currentY = Math.max(cols[2].currentY, top + h + 20);
+      }
+
+      return {
+        id,
+        left: col.left + (rng() - 0.5) * 3, // slight horizontal jitter
+        top,
+        rot: (rng() - 0.5) * 28, // varied rotation
+        w,
+        h,
+        z: isLarge ? 5 : Math.floor(rng() * 4), // large photos sit slightly above
+        px: rng() * 0.6 + 0.2,
+        py: rng() * 0.6 + 0.2,
+      };
+    });
+  }, []);
+
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, height: pageHeight,
       pointerEvents: 'none', zIndex: 0, overflow: 'hidden',
-      opacity: 0.1,
+      opacity: 0.12,
     }}>
       {photos.map((p, i) => (
         <PhotoItem key={i} photo={p} mouseX={mouseX} mouseY={mouseY} />
