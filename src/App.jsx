@@ -8,6 +8,7 @@ import { useSmoothScroll } from './hooks/useSmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
+import CinematicNav from './components/CinematicNav';
 import VideoCard3D from './components/VideoCard';
 import VideoOverlay from './components/VideoOverlay';
 import ScrollProgress from './components/ScrollProgress';
@@ -407,6 +408,7 @@ export default function App() {
         <div className="grain" />
 
         <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} />
+        <CinematicNav sections={['pitch','story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
         <Hero scrollToSection={scrollToSection} />
 
         <StatsBar />
