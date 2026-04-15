@@ -62,16 +62,16 @@ export const PITCH_TEXT = "You said you need all five. I've got all five.";
 export const STORY_PARAGRAPHS = [
   <>I'm from a family of Yale and Columbia grads, multinational business owners. So from birth my path was set — business, law, or medicine. When I chose a camera over a labcoat at 17, nobody understood. When I dropped out of film school at 19, even fewer did.</>,
   <>I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove I didn't have to limit my vision.</span> The institutional structure couldn't move fast enough for what I was crafting.</>,
-  <>Since then I've been in the trenches — shooting music videos solo from concept to delivery, directing productions where there are no second takes, building project packages under real deadlines, writing my debut 133-page non-linear screenplay.</>
+  <>Since then I've been in the trenches — shooting music videos solo from concept to delivery, directing productions where there are no second takes, building project packages under real deadlines, writing my debut 133-page feature film.</>
 ];
 export const STORY_EXPANDED_PARAGRAPHS = [
   <>I've done every job on set because I wanted to understand the whole system. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind the camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm crafting narrative.</span></>,
   <>I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.</>,
-  <><span style={{ color:'var(--fg)', fontWeight:500 }}>I'm not looking for a job. I'm looking for the right mission to dedicate my soul to. I've watched you build 5$STAR — I know this is it.</span></>
+  <><span style={{ color:'var(--fg)', fontWeight:500 }}>I'm not looking for a job. I'm looking for the right mission to dedicate my soul to.</span></>
 ];
 
 // 6. HERO SECTION
-export const HERO_TAGLINE = "by dreamers, for dreamers.";
+export const HERO_TAGLINE = "By creatives, for creatives.";
 export const HERO_TITLE_1 = "I DON'T";
 export const HERO_TITLE_2 = "JUST FILM";
 export const HERO_SUBTEXT_1 = "I build worlds and craft narratives.";

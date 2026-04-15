@@ -106,7 +106,7 @@ export default function WritingSection() {
               textTransform: 'uppercase',
               fontFamily: 'var(--mono)',
             }}>
-              Political Noir · Limited Series · For A24 / Proximity Media
+              Noir Thriller · Feature Film
             </p>
 
             {/* Logline */}
@@ -122,7 +122,7 @@ export default function WritingSection() {
               transition: 'border-color 0.6s',
             }}>
               A deconstruction of narrative control and the fabrication of reality.
-              Set between Port-au-Prince in 1957 and a Parisian television studio,{' '}
+              Set between Port-au-Prince in 1957 and 1960s Paris,{' '}
               <span style={{ color: 'var(--fg)' }}>Femme Fatale</span> follows
               Iris Beaumont — a woman who survives not with weapons, but with the
               stories she chooses to tell.

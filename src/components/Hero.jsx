@@ -66,18 +66,6 @@ export default function Hero({ scrollToSection }) {
           {HERO_TAGLINE}
         </motion.div>
 
-        {/* Name tagline — depth 0 */}
-        <motion.div style={{ x: tx0, y: ty0 }}>
-          <motion.span
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1 }}
-            className="pill pill--accent"
-            style={{ display: 'inline-flex', marginBottom: 24 }}
-          >
-            Peter Olowude
-          </motion.span>
-        </motion.div>
-
         {/* "I DON'T" — depth 1 (opposite direction) */}
         <motion.div style={{ x: tx1 }}>
           <motion.div
