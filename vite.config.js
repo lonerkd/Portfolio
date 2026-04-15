@@ -8,5 +8,8 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    commonjsOptions: {
+      include: [/node_modules/], // Default behavior, ensure commonjs packages are processed
+    },
   }
 })
