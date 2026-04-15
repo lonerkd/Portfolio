@@ -5,7 +5,7 @@ import { Mail, Twitter, ExternalLink, FileText, ChevronRight } from 'lucide-reac
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 
-import IntroScreen from './components/IntroScreen';
+
 import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
@@ -264,7 +264,7 @@ export default function App() {
 
   return (
     <>
-      <IntroScreen onDone={() => {}} />
+
       <CustomCursor />
 
       <div style={{ background:'var(--bg)', color:'var(--fg)', minHeight:'100vh', overflowX:'hidden', position:'relative' }}>
