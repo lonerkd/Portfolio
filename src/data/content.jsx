@@ -24,20 +24,36 @@ export const VIDEOS = [
 ];
 
 // 2. WRITING / DOCUMENTS
+export const SCENE_EXCERPTS = [
+  {
+    label: 'Opening',
+    text: 'A MAKEUP ARTIST works on IRIS BEAUMONT\'s face. Her eyes open. Fixed on the mirror. On the monitor above: a close-up of her own face from a press shoot. She watches herself watching herself.',
+  },
+  {
+    label: 'The Market',
+    text: 'Two MEN come through. Civilian clothes. Dark glasses. Machetes at their belts. "Too pretty for this market, little bird." Iris meets his gaze. She doesn\'t give him anything.',
+  },
+  {
+    label: 'The Invitation',
+    text: 'A POSTER on the wall. A Black woman in white feathers caught mid-arc — arms wide, face up. LES ÉTOILES DE PARIS. "Auditions tonight. Eight o\'clock. We leave for Paris in two weeks."',
+  },
+];
+
 export const WRITING_FEATURE = {
   title: 'Femme Fatale',
   subtitle: 'Noir Thriller · Feature Film',
-  desc: 'A deconstruction of narrative control set between Port-au-Prince in 1957 and 1960s Paris. Femme Fatale follows Iris Beaumont — a woman who survives not with weapons, but with the story she chooses to tell.',
-  pills: ['Screenplay', '133 Pages', 'Draft 9', 'A24 / Proximity Media'],
+  pills: 'Screenplay · Draft 9 · 133 Pages',
+  logline: 'A deconstruction of narrative control and the fabrication of reality. Set between Port-au-Prince in 1957 and 1960s Paris, Femme Fatale follows Iris Beaumont — a woman who survives not with weapons, but with the stories she chooses to tell.',
+  sceneExcerpts: SCENE_EXCERPTS,
   draftLink: 'https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view',
   bibleLink: 'https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view'
 };
 
 export const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
-  { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
-  { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
+  { type: 'Production Book', title: 'Studio Music Video', excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography — targeted at the introspective aesthetic Frank Ocean\'s music portrays.', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
+  { type: 'Documentary One Sheet', title: 'The Audio Blueprint', excerpt: 'A witty 5-minute documentary that dives into the unseen magic of sound design in film, mixing eye-catching visuals with real expert insights to show why audio is the secret sauce behind the most influential movie moments.', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
+  { type: 'PSA Script', title: 'A Stage for Every Story', excerpt: 'For over a century, The Grand Theatre has been more than just a stage… it\'s been the heartbeat of art and creativity in Calgary. A living archive of creativity, built on generations of talent.', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
+  { type: 'Short Film Screenplay', title: 'The Briefcase', excerpt: '"Stop stressing man. We ain\'t gonna mess up." — "No. Cuz you said that last time, and last time it was a shit show. People died." — A confident chuckle. "Heh, ya they did."', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
 ];
 
 // 3. STATS BAR

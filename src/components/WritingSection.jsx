@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FileText, ChevronRight } from 'lucide-react';
+import { WRITING_FEATURE, SCENE_EXCERPTS, OTHER_WRITING } from '../data/content';
 
 /* ══════════════════════════════════════
    WritingSection
@@ -35,27 +36,7 @@ const SectionLabel = ({ text }) => {
   );
 };
 
-const SCENE_EXCERPTS = [
-  {
-    label: 'Opening',
-    text: 'A MAKEUP ARTIST works on IRIS BEAUMONT\'s face. Her eyes open. Fixed on the mirror. On the monitor above: a close-up of her own face from a press shoot. She watches herself watching herself.',
-  },
-  {
-    label: 'The Market',
-    text: 'Two MEN come through. Civilian clothes. Dark glasses. Machetes at their belts. "Too pretty for this market, little bird." Iris meets his gaze. She doesn\'t give him anything.',
-  },
-  {
-    label: 'The Invitation',
-    text: 'A POSTER on the wall. A Black woman in white feathers caught mid-arc — arms wide, face up. LES ÉTOILES DE PARIS. "Auditions tonight. Eight o\'clock. We leave for Paris in two weeks."',
-  },
-];
 
-const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', excerpt: 'Full production book for a Frank Ocean "Chanel" music video. Shot lists, cam plans, choreography — targeted at the introspective aesthetic Frank Ocean\'s music portrays.', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Documentary One Sheet', title: 'The Audio Blueprint', excerpt: 'A witty 5-minute documentary that dives into the unseen magic of sound design in film, mixing eye-catching visuals with real expert insights to show why audio is the secret sauce behind the most influential movie moments.', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
-  { type: 'PSA Script', title: 'A Stage for Every Story', excerpt: 'For over a century, The Grand Theatre has been more than just a stage… it\'s been the heartbeat of art and creativity in Calgary. A living archive of creativity, built on generations of talent.', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
-  { type: 'Short Film Screenplay', title: 'The Briefcase', excerpt: '"Stop stressing man. We ain\'t gonna mess up." — "No. Cuz you said that last time, and last time it was a shit show. People died." — A confident chuckle. "Heh, ya they did."', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
-];
 
 export default function WritingSection() {
   return (
@@ -87,7 +68,7 @@ export default function WritingSection() {
 
           <div style={{ position: 'relative', zIndex: 1 }}>
             <span className="pill pill--accent" style={{ fontSize: 8 }}>
-              Screenplay · Draft 9 · 133 Pages
+              {WRITING_FEATURE.pills}
             </span>
 
             <h3 style={{
@@ -96,7 +77,7 @@ export default function WritingSection() {
               letterSpacing: 2,
               marginTop: 12,
             }}>
-              Femme Fatale
+              {WRITING_FEATURE.title}
             </h3>
 
             <p style={{
@@ -106,7 +87,7 @@ export default function WritingSection() {
               textTransform: 'uppercase',
               fontFamily: 'var(--mono)',
             }}>
-              Noir Thriller · Feature Film
+              {WRITING_FEATURE.subtitle}
             </p>
 
             {/* Logline */}
@@ -121,16 +102,16 @@ export default function WritingSection() {
               marginTop: 28,
               transition: 'border-color 0.6s',
             }}>
-              A deconstruction of narrative control and the fabrication of reality.
+              {WRITING_FEATURE.logline.split('.')[0]}.
               Set between Port-au-Prince in 1957 and 1960s Paris,{' '}
-              <span style={{ color: 'var(--fg)' }}>Femme Fatale</span> follows
+              <span style={{ color: 'var(--fg)' }}>{WRITING_FEATURE.title}</span> follows
               Iris Beaumont — a woman who survives not with weapons, but with the
               stories she chooses to tell.
             </div>
 
             {/* Scene Excerpts */}
             <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {SCENE_EXCERPTS.map((ex, i) => (
+              {WRITING_FEATURE.sceneExcerpts.map((ex, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
