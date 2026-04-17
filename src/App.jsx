@@ -4,6 +4,20 @@ import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown
 
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
+import {
+  VIDEOS,
+  WRITING_FEATURE,
+  OTHER_WRITING,
+  STATS_DATA,
+  STORY_PARAGRAPHS,
+  STORY_EXPANDED_PARAGRAPHS,
+  HERO_TAGLINE,
+  HERO_TITLE_1,
+  HERO_TITLE_2,
+  HERO_SUBTEXT_1,
+  CONTACT_LINKS,
+  FOOTER_TEXT
+} from './data/content';
 
 import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
@@ -14,22 +28,6 @@ import VideoOverlay from './components/VideoOverlay';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientBackground from './components/AmbientBackground';
 import PhotoField from './components/PhotoField';
-
-/* ═══ DATA ═══ */
-const VIDEOS = [
-  { id: '10m',      title: '10 Million',             cat: 'Music Video',    role: 'Director / DP / Editor',                     year: '2026', desc: 'Shot, lit, and edited solo.',    yt: '3frfHolmYkE',  did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', feat: true },
-  { id: 'black',    title: 'Black Stuff',             cat: 'Music Video',    role: 'Director / DP / Editor',                     year: '2026', desc: 'Stylized aesthetics, deep narrative depth.',                    yt: 'NqcGtFr95oM',  did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', feat: true },
-  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Director / DP',            year: '2025', desc: 'Directing multiple camera operators in real time.',  yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t' },
-  { id: 'sports',   title: 'Live Sports Show Intro',  cat: 'Live Multi-Cam', role: 'Director / Editor',               year: '2025', desc: 'Live broadcast show opener.',           yt: 'gWYoZh9kl9I',  did: null },
-  { id: 'cook',     title: 'Live Cooking Demo',       cat: 'Live Multi-Cam', role: 'Camera Op / Switcher',            year: '2025', desc: 'Real-time switching, no second takes.',                              yt: 'R2IZKAHYmME', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ' },
-  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Writer / Actor / DP / Editor',                     year: '2024', desc: 'Crime thriller. Two couriers, one briefcase.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true },
-  { id: 'psa',      title: 'The Grand PSA',           cat: 'Commercial',     role: 'Writer / Director / DP / Editor', year: '2025', desc: 'Wrote, directed, shot, and graded.',             yt: 'Z9hXm2u4cZw',  did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00' },
-  { id: 'audio',    title: 'The Audio Blueprint',     cat: 'Doc Teaser',     role: 'Director / Writer / Editor',      year: '2025', desc: 'Sound design — the secret weapon behind iconic movies.',  yt: 'FiTiVNZxTPs',  did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n' },
-  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Short Film',    role: 'Director / Writer /DP / Editor',                     year: '2024', desc: 'My first ever project. A visual narrative.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE' },
-  { id: 'news',     title: 'Banded Peak News Pack',   cat: 'Broadcast News',      role: 'Camera Op / Editor',              year: '2024', desc: 'Broadcast standard news package shot under deadline.',                                     yt: 'l6JnCA7e3DY',  did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u' },
-  { id: 'tiktok',   title: 'TikTok Documentary Teaser',        cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'Our relationship with the infinite scroll.',                                                  yt: 'KQHjrvuthYE', did: '1o61DVHh8QhTYWKSOQOvs9P4kEoZQqygI' },
-  { id: 'fraud',    title: 'Fraud Documentary Teaser',                   cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'How credit card scammers took over social media and operate in plain sight.',                                        yt: 'E6rydhe1PAY', did: '10AfFlmGp1qbqI_9BKSQnYfyTi7o_SFbp' },
-];
 
 /* ═══ HELPERS ═══ */
 export function thumbUrl(video) {
@@ -93,36 +91,7 @@ function StatsBar() {
   );
 }
 
-/* ═══ PITCH — visual checklist ═══ */
-function PitchStrip() {
-  const items = ['Creative Vision','Music Video Experience','Camera Obsessed','Full-Time Ready','Stream & Vlog'];
-  return (
-    <section id="pitch" style={{ padding:'40px 20px 20px', maxWidth:900, margin:'0 auto' }}>
-      <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.7 }}
-        style={{ display:'flex', flexWrap:'wrap', gap:10, justifyContent:'center' }}>
-        {items.map((item, i) => (
-          <motion.div key={i}
-            initial={{ opacity:0, scale:0.9 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true }}
-            transition={{ delay:i*0.06, duration:0.5, ease:[0.16,1,0.3,1] }}
-            style={{
-              display:'flex', alignItems:'center', gap:8,
-              padding:'10px 18px', borderRadius:'var(--radius-full)',
-              background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.08)',
-              border:'1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.18)',
-              transition:'all 0.6s',
-            }}>
-            <Check size={12} style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }} />
-            <span style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:'var(--fg)' }}>{item}</span>
-          </motion.div>
-        ))}
-      </motion.div>
-      <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.35 }} viewport={{ once:true }} transition={{ delay:0.4 }}
-        style={{ textAlign:'center', marginTop:16, fontFamily:'var(--serif)', fontSize:'0.95rem', fontStyle:'italic', color:'var(--fg-muted)' }}>
-        You said you need all five. I've got all five.
-      </motion.p>
-    </section>
-  );
-}
+>>>>>>> Stashed changes
 
 /* ═══ STORY — expanded personal narrative, comes early ═══ */
 function StorySection() {
@@ -185,12 +154,7 @@ function StorySection() {
 }
 
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
-const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
-  { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
-  { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
-];
+>>>>>>> Stashed changes
 
 function WritingSection() {
   return (
@@ -309,13 +273,7 @@ function WritingSection() {
 }
 
 /* ═══ CONTACT ═══ */
-const CONTACT_LINKS = [
-  { label:'Email Me',             href:'mailto:peterolowude@icloud.com',                                                      icon:<Mail size={15} />,           primary: true },
-  { label:'X / Twitter',          href:'https://x.com/lonerfss',                                                              icon:<Twitter size={15} /> },
-  { label:'Instagram',            href:'https://www.instagram.com/lonerkid',                                                   icon:<Instagram size={15} /> },
-  { label:'Twitch',               href:'https://www.twitch.tv/lonerfs',                                                       icon:<Tv size={15} /> },
-  { label:'Full Drive Portfolio',  href:'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0',           icon:<ExternalLink size={15} /> },
-];
+>>>>>>> Stashed changes
 
 function MagBtn({ href, icon, label, primary }) {
   const ref = useRef(null);
@@ -436,8 +394,8 @@ export default function App() {
         <CinematicNav sections={['pitch','story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
         <Hero scrollToSection={scrollToSection} />
 
-        <StatsBar />
-        <PitchStrip />
+<StatsBar />
+>>>>>>> Stashed changes
 
         {/* ── STORY — early, personal ── */}
         <StorySection />
