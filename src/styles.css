@@ -13,7 +13,7 @@
   --fg-subtle: rgba(240,236,228,0.22);
   --fg-ghost: rgba(240,236,228,0.07);
 
-  --accent: #ff3c00;
+  --accent: rgb(var(--ambient-r), var(--ambient-g), var(--ambient-b));
   --ambient-r: 255; --ambient-g: 60; --ambient-b: 0;
   --ambient-h: 14; --ambient-s: 100%; --ambient-l: 50%;
 

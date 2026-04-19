@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { HERO_TAGLINE } from '../data/content';
 
 /* ══════════════════════════════════════
    Navigation
@@ -45,8 +46,26 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection 
             zIndex: 2,
           }}
         >
-          PO<span style={{ color: 'var(--ambient)', transition: 'color 0.6s' }}>.</span>
+          <span style={{ color: 'var(--ambient)', transition: 'color 0.6s' }}>PO.</span>
         </motion.button>
+
+        {/* Centered Misfits Cavern stamp */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontFamily: 'var(--mono)',
+            fontSize: 9,
+            letterSpacing: 5,
+            textTransform: 'uppercase',
+            color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
+            transition: 'color 0.6s',
+            zIndex: 2,
+          }}
+        >
+          {HERO_TAGLINE}
+        </motion.div>
 
         {/* Desktop Links */}
         <ul className="nav__links">

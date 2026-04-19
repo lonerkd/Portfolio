@@ -41,7 +41,7 @@ function extractDominantColor(imgElement) {
         if (a < 128) continue;
         const max = Math.max(r,g,b), min = Math.min(r,g,b);
         const l = (max+min)/2;
-        if (l < 20 || l > 235) continue;
+        if (l < 40 || l > 235) continue; // Raised minimum lightness so UI remains visible
         const sat = max===min ? 0 : l>127 ? (max-min)/(510-max-min) : (max-min)/(max+min);
         const key = `${Math.round(r/24)*24},${Math.round(g/24)*24},${Math.round(b/24)*24}`;
         if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: 0 };
@@ -77,7 +77,7 @@ export function useColorExtractor() {
     if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
     const start = { ...currentRef.current };
     const startTime = performance.now();
-    const duration = 700;
+    const duration = 1200; // Slower, more cinematic transition
     const ease = t => 1 - Math.pow(1-t, 4);
     const tick = (now) => {
       const p = Math.min((now-startTime)/duration, 1);

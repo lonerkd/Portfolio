@@ -28,6 +28,7 @@ import VideoOverlay from './components/VideoOverlay';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientBackground from './components/AmbientBackground';
 import PhotoField from './components/PhotoField';
+import StorySection from './components/StorySection';
 
 /* ═══ HELPERS ═══ */
 export function thumbUrl(video) {
@@ -91,70 +92,7 @@ function StatsBar() {
   );
 }
 
->>>>>>> Stashed changes
-
-/* ═══ STORY — expanded personal narrative, comes early ═══ */
-function StorySection() {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section id="story" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
-      <div className="section__inner" style={{ maxWidth:800 }}>
-        <SectionLabel text="The Narrative" />
-        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-          style={{ fontFamily:'var(--serif)', fontSize:'clamp(1.1rem,3vw,1.28rem)', lineHeight:1.88, color:'var(--fg-muted)' }}>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            I'm from a family of Yale and Columbia grads, multinational business owners. So from birth my path was set — business, law, or medicine. When I chose a camera over a labcoat at 17, nobody understood. When I dropped out of film school at 19, even fewer did.
-          </motion.p>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, delay:0.05, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove I didn't have to limit my vision.</span> The institutional structure couldn't move fast enough for what I was crafting.
-          </motion.p>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, delay:0.1, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            Since then I've been in the trenches — shooting music videos solo from concept to delivery, directing productions where there are no second takes, building project packages under real deadlines, writing my debut 133-page non-linear screenplay.
-          </motion.p>
-
-          <AnimatePresence>
-            {expanded && (
-              <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} transition={{ duration:0.5, ease:[0.16,1,0.3,1] }}>
-                <p style={{ marginBottom:24 }}>
-                  I've done every job on set because I wanted to understand the whole system. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind the camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm crafting narrative.</span>
-                </p>
-                <p style={{ marginBottom:24 }}>
-                  I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.
-                </p>
-                <p style={{ color:'var(--fg)', fontWeight:500 }}>
-                  I'm not looking for a job. I'm looking for the right mission to dedicate my soul to. I've watched you build 5$STAR — I know this is it.
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <motion.button
-            onClick={() => setExpanded(!expanded)}
-            whileHover={{ x:4 }} whileTap={{ scale:0.97 }}
-            style={{ marginTop:16, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', display:'flex', alignItems:'center', gap:6, cursor:'none', transition:'color 0.6s' }}>
-            {expanded ? 'Less' : 'The full story'} <ChevronDown size={12} style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition:'transform 0.3s' }} />
-          </motion.button>
-        </motion.div>
-
-        {/* Decorative line */}
-        <motion.div initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }} transition={{ duration:1.4, ease:[0.16,1,0.3,1] }}
-          style={{ height:1, transformOrigin:'left', background:'linear-gradient(90deg, rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b)), transparent)', marginTop:32, transition:'background 0.6s' }} />
-      </div>
-    </section>
-  );
-}
-
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
->>>>>>> Stashed changes
 
 function WritingSection() {
   return (
@@ -273,7 +211,6 @@ function WritingSection() {
 }
 
 /* ═══ CONTACT ═══ */
->>>>>>> Stashed changes
 
 function MagBtn({ href, icon, label, primary }) {
   const ref = useRef(null);
@@ -297,31 +234,111 @@ function MagBtn({ href, icon, label, primary }) {
 
 function ContactSection() {
   return (
-    <section id="contact" className="section" style={{ textAlign:'center', overflow:'visible', paddingTop:80 }}>
-      <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse at 50% 50%, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.09) 0%, transparent 55%)', transition:'background 0.6s' }} />
-      <div style={{ position:'relative', zIndex:2 }}>
-        <motion.div initial={{ opacity:0, scale:0.9, filter:'blur(10px)' }} whileInView={{ opacity:1, scale:1, filter:'blur(0px)' }}
-          viewport={{ once:true }} transition={{ duration:1, ease:[0.16,1,0.3,1] }}
-          style={{ fontFamily:'var(--display)', fontSize:'clamp(4rem,18vw,12rem)', lineHeight:0.84, letterSpacing:-3 }}>
-          I'M<br />
-          <span style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>YOUR</span><br />
-          GUY
-        </motion.div>
+    <section id="contact" className="section" style={{ textAlign:'center', overflow:'visible', paddingTop:120, paddingBottom:160 }}>
+      {/* Background Glow */}
+      <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse at 50% 50%, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.09) 0%, transparent 60%)', transition:'background 0.6s' }} />
+      
+      <div style={{ position:'relative', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center' }}>
+        
+        {/* Misfits Cavern Logo as a Portal */}
+        <motion.a 
+          href="#portal" 
+          initial={{ opacity:0, scale:0.9, filter:'blur(10px)' }} 
+          whileInView={{ opacity:1, scale:1, filter:'blur(0px)' }}
+          viewport={{ once:true }} 
+          transition={{ duration:1, ease:[0.16,1,0.3,1] }}
+          whileHover={{ scale: 1.05 }} 
+          whileTap={{ scale: 0.95 }}
+          style={{ 
+            display: 'block', textDecoration: 'none', cursor: 'none',
+            marginBottom: '40px', width: '100%', maxWidth: '340px', height: '140px',
+            backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
+            WebkitMask: 'url(/logo.svg) no-repeat center',
+            mask: 'url(/logo.svg) no-repeat center',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+            filter: 'drop-shadow(0 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4))',
+            transition: 'filter 0.6s, background-color 0.6s'
+          }}
+          aria-label="Misfits Cavern Portal"
+        />
+
         <motion.p initial={{ opacity:0, y:14 }} whileInView={{ opacity:0.4, y:0 }} viewport={{ once:true }} transition={{ delay:0.15, duration:0.6 }}
-          style={{ marginTop:24, fontFamily:'var(--serif)', fontSize:'1.05rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:340, margin:'24px auto 0', lineHeight:1.7 }}>
-          DM me directly. Let's get to work.
+          style={{ fontFamily:'var(--serif)', fontSize:'1.2rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:400, margin:'0 auto 40px', lineHeight:1.7 }}>
+          Enter the portal. Or let's build something real.
         </motion.p>
+
+        {/* Primary CTAs */}
         <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.2, duration:0.7 }}
-          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, marginTop:36 }}>
-          {CONTACT_LINKS.map((l,i) => (
-            <motion.div key={i} initial={{ opacity:0, y:15 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3+i*0.1 }}
-              style={{ width:'100%', display:'flex', justifyContent:'center' }}>
-              <MagBtn {...l} />
-            </motion.div>
+          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, width: '100%', maxWidth: '340px' }}>
+          
+          {/* Main Direct Message Button */}
+          <motion.a 
+            href="https://ig.me/m/lonerkid" 
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ y:-3, scale: 1.02 }} whileTap={{ scale:0.96 }}
+            style={{
+              width: '100%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+              padding: '18px 32px',
+              borderRadius: 'var(--radius-full)',
+              background: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
+              color: '#080808',
+              fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 600,
+              textDecoration: 'none', cursor: 'none',
+              boxShadow: '0 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.2)',
+              transition: 'background 0.6s, box-shadow 0.6s'
+            }}
+          >
+            <Instagram size={18} /> Direct Message
+          </motion.a>
+          
+          {/* Secondary Email Button */}
+          <motion.a 
+            href="mailto:peterolowude@icloud.com" 
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ y:-3, scale: 1.02 }} whileTap={{ scale:0.96 }}
+            style={{
+              width: '100%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+              padding: '18px 32px',
+              borderRadius: 'var(--radius-full)',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'var(--fg)',
+              fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 500,
+              textDecoration: 'none', cursor: 'none',
+              backdropFilter: 'blur(10px)',
+              transition: 'background 0.3s, border-color 0.3s'
+            }}
+          >
+            <Mail size={18} /> Email Me
+          </motion.a>
+
+        </motion.div>
+
+        {/* Other Social Links Row */}
+        <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.4, duration:0.7 }}
+          style={{ display:'flex', justifyContent:'center', gap:24, marginTop:48, flexWrap:'wrap' }}>
+          {CONTACT_LINKS.filter(l => l.label !== 'Email Me' && l.label !== 'Instagram').map((l, i) => (
+            <motion.a key={i} href={l.href} target="_blank" rel="noopener noreferrer"
+              whileHover={{ y: -3, color: 'var(--fg)' }} whileTap={{ scale: 0.95 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 20px', borderRadius: 'var(--radius-full)',
+                fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 2, textTransform: 'uppercase',
+                color: 'var(--fg-muted)', textDecoration: 'none',
+                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)',
+                cursor: 'none', transition: 'all 0.3s'
+              }}
+            >
+              {l.icon} {l.label}
+            </motion.a>
           ))}
         </motion.div>
-        <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.3 }} viewport={{ once:true }} transition={{ delay:0.7 }}
-          style={{ marginTop:40, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', lineHeight:2.2 }}>
+        
+        <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.3 }} viewport={{ once:true }} transition={{ delay:0.6 }}
+          style={{ marginTop:80, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', lineHeight:2.2 }}>
           Available immediately · Calgary, AB<br />Ready to relocate · Full time · Passport ready
         </motion.p>
       </div>
@@ -395,7 +412,6 @@ export default function App() {
         <Hero scrollToSection={scrollToSection} />
 
 <StatsBar />
->>>>>>> Stashed changes
 
         {/* ── STORY — early, personal ── */}
         <StorySection />

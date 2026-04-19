@@ -1,70 +1,115 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, animate } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, animate, useAnimation } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 /* ══════════════════════════════════════
-   CinematicNav
-   Hold for slow cinematic scroll,
-   Tap to magnetize to the next section
+   CinematicNav - Apple Style
+   Hold to fast scroll, tap to next section
    ══════════════════════════════════════ */
 
 export default function CinematicNav({ sections, activeSection, scrollToSection }) {
-  const scrollSpeed = 3; // Pixels per frame for hold-to-scroll
-  const tapThreshold = 250; // ms
+  const scrollSpeed = 8;
+  const tapThreshold = 250;
   
+  const [isPressed, setIsPressed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   const requestRef = useRef(null);
   const pointerDownTime = useRef(0);
   const isHolding = useRef(false);
+  const scrollTimeout = useRef(null);
+  
+  const ringControls = useAnimation();
 
-  // Clean up animation frames
   useEffect(() => {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     };
   }, []);
 
   const smoothScrollFrame = () => {
     if (isHolding.current) {
-      window.scrollBy({ top: scrollSpeed, behavior: 'instant' });
+      window.scrollBy({ top: scrollSpeed, behavior: 'auto' });
       requestRef.current = requestAnimationFrame(smoothScrollFrame);
     }
   };
 
   const handlePointerDown = (e) => {
-    // Only primary button/touch
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     
+    setIsPressed(true);
     pointerDownTime.current = Date.now();
     isHolding.current = true;
-    requestRef.current = requestAnimationFrame(smoothScrollFrame);
+    
+    // Animate ring filling up to indicate hold action
+    ringControls.start({
+      scale: 1.3,
+      borderWidth: '3px',
+      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.8)',
+      transition: { duration: 0.8, ease: 'easeOut' }
+    });
+
+    scrollTimeout.current = setTimeout(() => {
+      if (isHolding.current) {
+        requestRef.current = requestAnimationFrame(smoothScrollFrame);
+      }
+    }, tapThreshold);
   };
 
   const handlePointerUp = () => {
+    setIsPressed(false);
+    
+    // Reset ring
+    ringControls.start({
+      scale: isHovered ? 1.1 : 1,
+      borderWidth: '1px',
+      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
+      transition: { duration: 0.3, ease: 'easeOut' }
+    });
+
     if (!isHolding.current) return;
     isHolding.current = false;
+    
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     if (requestRef.current) cancelAnimationFrame(requestRef.current);
 
     const duration = Date.now() - pointerDownTime.current;
     if (duration < tapThreshold) {
-      // It was a tap, magnetize to next section
       goToNextSection();
     }
   };
 
   const handlePointerLeave = () => {
-    if (isHolding.current) {
-      isHolding.current = false;
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    setIsPressed(false);
+    setIsHovered(false);
+    isHolding.current = false;
+    
+    ringControls.start({
+      scale: 1,
+      borderWidth: '1px',
+      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
+      transition: { duration: 0.3 }
+    });
+
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    if (requestRef.current) cancelAnimationFrame(requestRef.current);
+  };
+
+  const handlePointerEnter = () => {
+    setIsHovered(true);
+    if (!isPressed) {
+      ringControls.start({
+        scale: 1.1,
+        borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4)',
+        transition: { duration: 0.3 }
+      });
     }
   };
 
   const goToNextSection = () => {
     if (!sections || sections.length === 0) return;
-    
-    // Find next section
     let currentIndex = sections.indexOf(activeSection);
-    
-    // If we're above the first section (currentIndex = -1), go to the first
     let nextIndex = currentIndex === -1 ? 0 : currentIndex + 1;
     
     if (nextIndex < sections.length) {
@@ -75,19 +120,17 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         const navHeight = 56;
         const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
         
-        // Custom slow "magnetize" scroll using framer-motion's animate function
         animate(window.scrollY, top, {
           type: "spring",
-          stiffness: 40,
-          damping: 15,
-          mass: 1.2,
+          stiffness: 50,
+          damping: 18,
+          mass: 1,
           onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'instant' })
         });
       }
     }
   };
 
-  // Hide the button if we are in the last section and near the bottom
   const isAtBottom = activeSection === sections[sections.length - 1];
 
   return (
@@ -107,73 +150,67 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         pointerEvents: isAtBottom ? 'none' : 'auto'
       }}
     >
-      <motion.button
+      <div 
+        style={{ position: 'relative', width: 54, height: 54 }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerLeave}
         onPointerLeave={handlePointerLeave}
+        onPointerEnter={handlePointerEnter}
         onContextMenu={(e) => e.preventDefault()}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        style={{
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          WebkitTouchCallout: 'none',
-          width: 54,
-          height: 54,
-          borderRadius: '50%',
-          background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.08)',
-          border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.25)',
-          color: 'var(--fg)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          cursor: 'none',
-          outline: 'none',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-          transition: 'background 0.3s, border-color 0.3s'
-        }}
       >
-        <motion.div
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <ChevronDown size={22} style={{ color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' }} />
-        </motion.div>
-        
-        {/* Subtle ring effect on hover */}
-        <motion.div 
+        {/* Apple-style frosted base button */}
+        <motion.button
+          animate={{ scale: isPressed ? 0.9 : 1 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
           style={{
-            position: 'absolute', inset: -6, borderRadius: '50%',
-            border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.1)',
-            pointerEvents: 'none'
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            background: isPressed 
+              ? 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.2)' 
+              : 'rgba(10,10,10,0.6)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            cursor: 'none',
+            outline: 'none',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'background 0.3s ease',
+            position: 'relative',
+            zIndex: 2
+          }}
+        >
+          <motion.div
+            animate={{ y: isPressed ? 0 : [0, 3, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown 
+              size={20} 
+              style={{ 
+                color: isHovered || isPressed 
+                  ? 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' 
+                  : 'rgba(255,255,255,0.7)',
+                transition: 'color 0.3s ease'
+              }} 
+            />
+          </motion.div>
+        </motion.button>
+        
+        {/* Dynamic expanding ring */}
+        <motion.div 
+          animate={ringControls}
+          initial={{ scale: 1, borderWidth: '1px', borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)' }}
+          style={{
+            position: 'absolute', inset: -4, borderRadius: '50%',
+            pointerEvents: 'none',
+            zIndex: 1
           }}
         />
-      </motion.button>
-      
-      {/* Label for context (optional, can be removed if too cluttered) */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          bottom: '100%',
-          right: '50%',
-          transform: 'translateX(50%)',
-          marginBottom: 12,
-          fontFamily: 'var(--mono)',
-          fontSize: 8,
-          letterSpacing: 2,
-          textTransform: 'uppercase',
-          color: 'var(--fg-muted)',
-          whiteSpace: 'nowrap',
-          pointerEvents: 'none',
-          textAlign: 'center'
-        }}
-      >
-        Hold/Tap
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
