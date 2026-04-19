@@ -30,54 +30,45 @@ function extractDominantColor(imgElement) {
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      const size = 80;
-      canvas.width = size; canvas.height = size;
+      const size = 64;
+      canvas.width = size;
+      canvas.height = size;
       ctx.drawImage(imgElement, 0, 0, size, size);
+
       const data = ctx.getImageData(0, 0, size, size).data;
       const buckets = {};
-      let best = { score: 0, color: null };
-      
-      for (let i = 0; i < data.length; i += 12) {
-        const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+      let bestBucket = { count: 0, color: null };
+
+      for (let i = 0; i < data.length; i += 8) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
         if (a < 128) continue;
-        
-        const max = Math.max(r,g,b), min = Math.min(r,g,b);
-        const l = (max+min)/2;
-        
-        // Very dark or very light colors are ignored
-        if (l < 20 || l > 240) continue; 
-        
-        const sat = max===min ? 0 : l>127 ? (max-min)/(510-max-min) : (max-min)/(max+min);
-        
-        const key = `${Math.round(r/24)*24},${Math.round(g/24)*24},${Math.round(b/24)*24}`;
-        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: 0 };
-        
-        buckets[key].count++;
-        buckets[key].sat = Math.max(buckets[key].sat, sat);
-        
-        // Base score: relies on frequency and saturation
-        let score = buckets[key].sat * 1.5 * Math.sqrt(buckets[key].count);
-        
-        // If it's a very vibrant color, give it a massive boost
-        if (sat > 0.5) score *= 2;
-        
-        // Penalize likely skin tones or warm grays (r > g > b, lowish sat)
-        if (r > g && g > b && sat < 0.6 && r < 200) {
-          score *= 0.3; // Reduce priority of muddy browns/skin tones
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const l = (max + min) / 2;
+
+        // Skip extremely dark or blown-out pixels
+        if (l < 15 || l > 240) continue;
+
+        const key = `${Math.round(r / 32) * 32},${Math.round(g / 32) * 32},${Math.round(b / 32) * 32}`;
+        if (!buckets[key]) {
+          buckets[key] = { r, g, b, count: 0 };
         }
 
-        if (score > best.score) {
-          best = { score, color: { r: buckets[key].r, g: buckets[key].g, b: buckets[key].b } };
+        buckets[key].count += 1;
+        if (buckets[key].count > bestBucket.count) {
+          bestBucket = { count: buckets[key].count, color: buckets[key] };
         }
       }
-      
-      // If we found a color, make sure it has at least *some* minimum lightness for the UI 
-      if (best.color) {
-        // Boost lightness artificially if it's too dark for UI visibility
-        let { r, g, b } = best.color;
-        const max = Math.max(r,g,b);
-        if (max < 100) {
-          const multiplier = 100 / max;
+
+      if (bestBucket.color) {
+        let { r, g, b } = bestBucket.color;
+        const maxVal = Math.max(r, g, b);
+        if (maxVal < 100) {
+          const multiplier = 100 / Math.max(maxVal, 1);
           r = Math.min(255, Math.round(r * multiplier));
           g = Math.min(255, Math.round(g * multiplier));
           b = Math.min(255, Math.round(b * multiplier));
@@ -86,7 +77,9 @@ function extractDominantColor(imgElement) {
       } else {
         resolve(DEFAULT_COLOR);
       }
-    } catch { resolve(DEFAULT_COLOR); }
+    } catch {
+      resolve(DEFAULT_COLOR);
+    }
   });
 }
 
