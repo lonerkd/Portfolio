@@ -5,7 +5,6 @@ import { HERO_TAGLINE, HERO_TITLE_1, HERO_TITLE_2, HERO_SUBTEXT_1 } from '../dat
 
 const HERO_ACTIONS = [
   { label: 'See My Work', section: 'work' },
-  { label: 'Why Me', section: 'pitch' },
   { label: 'Contact', section: 'contact' },
 ];
 const DM_LINKS = [
@@ -68,8 +67,8 @@ export default function Hero({ scrollToSection, isScrolled, triggerRainbow }) {
           style={{
             display: 'block',
             width: '100%',
-            maxWidth: '600px',
-            height: '250px',
+            maxWidth: '800px', // Increased size
+            height: '350px', // Increased size
             margin: '0 auto',
             backgroundColor: 'var(--fg)',
             WebkitMask: 'url(/logo.svg) no-repeat center',
