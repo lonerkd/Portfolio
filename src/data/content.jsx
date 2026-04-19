@@ -10,14 +10,14 @@ import { Mail, Twitter, Instagram, Tv, ExternalLink } from 'lucide-react';
 // `objectPosition` controls how the thumbnail is cropped (e.g. 'center', 'top', 'bottom', 'left', 'right', '50% 20%')
 export const VIDEOS = [
   { id: '10m',      title: '10 Million',             cat: 'Music Video',    role: 'Solo Shot / Edited',              year: '2026', desc: 'Shot, lit, and edited solo.',    yt: '3frfHolmYkE',  did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', feat: true, objectPosition: 'center' },
-  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Lead Actor / DP / Editor',        year: '2024', desc: 'Crime thriller. Two couriers, one briefcase.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true, objectPosition: 'center' },
-  { id: 'cook',     title: 'Live Cooking Demo',       cat: 'Live Multi-Cam', role: 'Producer / Director / DP',        year: '2025', desc: 'Real-time switching, no second takes.',                              yt: 'R2IZKAHYmME', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ', feat: false, objectPosition: 'center' },
+  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Lead Actor / DP / Editor',        year: '2024', desc: 'Crime thriller. Two couriers, one briefcase.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true, objectPosition: 'top' },
+  { id: 'cook',     title: 'Live Cooking Demo',       cat: 'Live Multi-Cam', role: 'Producer / Director / DP',        year: '2025', desc: 'Real-time switching, no second takes.',                              yt: 'R2IZKAHYmME', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ', feat: false, objectPosition: 'top' },
   { id: 'audio',    title: 'The Audio Blueprint',     cat: 'Doc Teaser',     role: 'Director / Writer / Editor',      year: '2025', desc: 'Sound design — the secret weapon behind iconic movies.',  yt: 'FiTiVNZxTPs',  did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n', feat: false, objectPosition: 'center' },
   { id: 'psa',      title: 'The Grand PSA',           cat: 'Commercial',     role: 'Writer / Director / DP / Editor', year: '2025', desc: 'Wrote, directed, shot, and graded.',             yt: 'Z9hXm2u4cZw',  did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00', feat: false, objectPosition: 'center' },
   { id: 'black',    title: 'Black Stuff',             cat: 'Music Video',    role: 'Solo Shot / Edited',              year: '2025', desc: 'Dark aesthetics, deep narrative weight.',                    yt: 'NqcGtFr95oM',  did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', feat: true, objectPosition: 'center' },
   { id: 'news',     title: 'Banded Peak News Pack',   cat: 'Broadcast',      role: 'Camera Op / Editor',              year: '2024', desc: 'Broadcast news package under deadline.',                                     yt: 'l6JnCA7e3DY',  did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u', feat: false, objectPosition: 'center' },
-  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Director / Producer',             year: '2025', desc: 'Directing multiple camera operators in real time.',  yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t', feat: false, objectPosition: 'center' },
-  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Documentary',    role: 'Writer / Director / DP / Editor', year: '2024', desc: 'Visual storytelling through landscape and movement.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE', feat: false, objectPosition: 'center' },
+  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Director / Producer',             year: '2025', desc: 'Directing multiple camera operators in real time.',  yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t', feat: false, objectPosition: 'left' },
+  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Documentary',    role: 'Writer / Director / DP / Editor', year: '2024', desc: 'Visual storytelling through landscape and movement.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE', feat: false, objectPosition: 'left' },
   { id: 'fraud',    title: 'Fraud',                   cat: 'Doc Teaser',     role: 'Producer / Editor',               year: '2024', desc: 'How fraud operates in plain sight.',                                        yt: 'E6rydhe1PAY', did: '10AfFlmGp1qbqI_9BKSQnYfyTi7o_SFbp', feat: false, objectPosition: 'center' },
   { id: 'sports',   title: 'Live Sports Show Intro',  cat: 'Live Multi-Cam', role: 'Director / Editor',               year: '2025', desc: 'Live broadcast opener. Motion graphics meets live energy.',           yt: 'gWYoZh9kl9I',  did: null, feat: false, objectPosition: 'center' },
 ];
@@ -33,7 +33,7 @@ export const WRITING_FEATURE = {
 };
 
 export const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
+  { type: 'Production Book', title: 'Studio Music Video', sub: 'Live Performance Concept', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
   { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
   { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
   { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
