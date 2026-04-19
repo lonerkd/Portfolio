@@ -30,28 +30,56 @@ function extractDominantColor(imgElement) {
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      const size = 80;
-      canvas.width = size; canvas.height = size;
+      const size = 64;
+      canvas.width = size;
+      canvas.height = size;
       ctx.drawImage(imgElement, 0, 0, size, size);
+
       const data = ctx.getImageData(0, 0, size, size).data;
       const buckets = {};
-      let best = { score: 0, color: DEFAULT_COLOR };
-      for (let i = 0; i < data.length; i += 12) {
-        const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+      let bestBucket = { count: 0, color: null };
+
+      for (let i = 0; i < data.length; i += 8) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
         if (a < 128) continue;
-        const max = Math.max(r,g,b), min = Math.min(r,g,b);
-        const l = (max+min)/2;
-        if (l < 20 || l > 235) continue;
-        const sat = max===min ? 0 : l>127 ? (max-min)/(510-max-min) : (max-min)/(max+min);
-        const key = `${Math.round(r/24)*24},${Math.round(g/24)*24},${Math.round(b/24)*24}`;
-        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: 0 };
-        buckets[key].count++;
-        buckets[key].sat = Math.max(buckets[key].sat, sat);
-        const score = buckets[key].sat * 1.5 * Math.sqrt(buckets[key].count);
-        if (score > best.score) best = { score, color: { r: buckets[key].r, g: buckets[key].g, b: buckets[key].b } };
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const l = (max + min) / 2;
+
+        // Skip extremely dark or blown-out pixels
+        if (l < 15 || l > 240) continue;
+
+        const key = `${Math.round(r / 32) * 32},${Math.round(g / 32) * 32},${Math.round(b / 32) * 32}`;
+        if (!buckets[key]) {
+          buckets[key] = { r, g, b, count: 0 };
+        }
+
+        buckets[key].count += 1;
+        if (buckets[key].count > bestBucket.count) {
+          bestBucket = { count: buckets[key].count, color: buckets[key] };
+        }
       }
-      resolve(best.color);
-    } catch { resolve(DEFAULT_COLOR); }
+
+      if (bestBucket.color) {
+        let { r, g, b } = bestBucket.color;
+        const maxVal = Math.max(r, g, b);
+        if (maxVal < 100) {
+          const multiplier = 100 / Math.max(maxVal, 1);
+          r = Math.min(255, Math.round(r * multiplier));
+          g = Math.min(255, Math.round(g * multiplier));
+          b = Math.min(255, Math.round(b * multiplier));
+        }
+        resolve({ r, g, b });
+      } else {
+        resolve(DEFAULT_COLOR);
+      }
+    } catch {
+      resolve(DEFAULT_COLOR);
+    }
   });
 }
 
@@ -77,7 +105,7 @@ export function useColorExtractor() {
     if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
     const start = { ...currentRef.current };
     const startTime = performance.now();
-    const duration = 700;
+    const duration = 1200; // Slower, more cinematic transition
     const ease = t => 1 - Math.pow(1-t, 4);
     const tick = (now) => {
       const p = Math.min((now-startTime)/duration, 1);
@@ -152,6 +180,52 @@ export function useColorExtractor() {
 
   const resetColor = useCallback(() => setAmbientColor(null), [setAmbientColor]);
 
+  const isRainbowActive = useRef(false);
+
+  const triggerRainbow = useCallback(() => {
+    if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
+    
+    // Toggle rainbow mode
+    isRainbowActive.current = !isRainbowActive.current;
+    
+    if (!isRainbowActive.current) {
+      // Revert to active color if turning off
+      setAmbientColor(currentRef.current);
+      return;
+    }
+
+    let startTime = performance.now();
+    const duration = 3000; // 3 seconds per full rotation
+    
+    const hslToRgb = (h, s, l) => {
+      s /= 100; l /= 100;
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+      return { r: Math.round(255 * f(0)), g: Math.round(255 * f(8)), b: Math.round(255 * f(4)) };
+    };
+
+    const tick = (now) => {
+      if (!isRainbowActive.current) return;
+      
+      const elapsed = now - startTime;
+      // Spin hue from 0 to 360 endlessly
+      const currentHue = ((elapsed / duration) * 360) % 360;
+      const c = hslToRgb(currentHue, 100, 50);
+      
+      const root = document.documentElement;
+      root.style.setProperty('--ambient-r', c.r);
+      root.style.setProperty('--ambient-g', c.g);
+      root.style.setProperty('--ambient-b', c.b);
+      root.style.setProperty('--ambient-h', currentHue);
+      root.style.setProperty('--ambient-s', '100%');
+      root.style.setProperty('--ambient-l', '50%');
+      
+      transitionRef.current = requestAnimationFrame(tick);
+    };
+    transitionRef.current = requestAnimationFrame(tick);
+  }, [setAmbientColor]);
+
   useEffect(() => () => {
     if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
     if (videoSamplerRef.current) cancelAnimationFrame(videoSamplerRef.current);
@@ -160,6 +234,6 @@ export function useColorExtractor() {
   return {
     activeColor, colorCache,
     setAmbientColor, extractColor, resetColor,
-    startLiveFrameSampling, stopLiveFrameSampling,
+    startLiveFrameSampling, stopLiveFrameSampling, triggerRainbow
   };
 }

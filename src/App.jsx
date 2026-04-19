@@ -4,6 +4,20 @@ import { Mail, Twitter, ExternalLink, FileText, ChevronRight, Check, ChevronDown
 
 import { useColorExtractor } from './hooks/useColorExtractor';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
+import {
+  VIDEOS,
+  WRITING_FEATURE,
+  OTHER_WRITING,
+  STATS_DATA,
+  STORY_PARAGRAPHS,
+  STORY_EXPANDED_PARAGRAPHS,
+  HERO_TAGLINE,
+  HERO_TITLE_1,
+  HERO_TITLE_2,
+  HERO_SUBTEXT_1,
+  CONTACT_LINKS,
+  FOOTER_TEXT
+} from './data/content';
 
 import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
@@ -14,22 +28,8 @@ import VideoOverlay from './components/VideoOverlay';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientBackground from './components/AmbientBackground';
 import PhotoField from './components/PhotoField';
-
-/* ═══ DATA ═══ */
-const VIDEOS = [
-  { id: '10m',      title: '10 Million',             cat: 'Music Video',    role: 'Director / DP / Editor',                     year: '2026', desc: 'Shot, lit, and edited solo.',    yt: '3frfHolmYkE',  did: '10A2uzDxrEEgx-6tiS3M_qbhAq72dglZt', feat: true },
-  { id: 'black',    title: 'Black Stuff',             cat: 'Music Video',    role: 'Director / DP / Editor',                     year: '2026', desc: 'Stylized aesthetics, deep narrative depth.',                    yt: 'NqcGtFr95oM',  did: '1KHdETMZDHqrRzkL7Ook-61KHxFwcGnKB', feat: true },
-  { id: 'intv',     title: 'Live Interview Show',     cat: 'Live Multi-Cam', role: 'Director / DP',            year: '2025', desc: 'Directing multiple camera operators in real time.',  yt: 'rctvfSJsO9Y', did: '1A7dgksrR-9KJ6TyxfO6Ch3TOc2bqbL0t' },
-  { id: 'sports',   title: 'Live Sports Show Intro',  cat: 'Live Multi-Cam', role: 'Director / Editor',               year: '2025', desc: 'Live broadcast show opener.',           yt: 'gWYoZh9kl9I',  did: null },
-  { id: 'cook',     title: 'Live Cooking Demo',       cat: 'Live Multi-Cam', role: 'Camera Op / Switcher',            year: '2025', desc: 'Real-time switching, no second takes.',                              yt: 'R2IZKAHYmME', did: '13fmSRFNiGZl2b57-cd0qVnjcPx9IDUUZ' },
-  { id: 'brief',    title: 'The Briefcase',           cat: 'Short Film',     role: 'Writer / Actor / DP / Editor',                     year: '2024', desc: 'Crime thriller. Two couriers, one briefcase.',    yt: 'pUZkiH74yTU',  did: '1EM1AVe-50e6IMKL2m8teeakg6aSL3ctr', feat: true },
-  { id: 'psa',      title: 'The Grand PSA',           cat: 'Commercial',     role: 'Writer / Director / DP / Editor', year: '2025', desc: 'Wrote, directed, shot, and graded.',             yt: 'Z9hXm2u4cZw',  did: '1Mmk_nM_WXCskja0NEIa6PlM51cul-z00' },
-  { id: 'audio',    title: 'The Audio Blueprint',     cat: 'Doc Teaser',     role: 'Director / Writer / Editor',      year: '2025', desc: 'Sound design — the secret weapon behind iconic movies.',  yt: 'FiTiVNZxTPs',  did: '1hpS5fIfDRthOgzCD0jda5IcuHiverR8n' },
-  { id: 'altitude', title: 'The Pursuit of Altitude', cat: 'Short Film',    role: 'Director / Writer /DP / Editor',                     year: '2024', desc: 'My first ever project. A visual narrative.',  yt: 'wHwXBw2xk5M', did: '1-bPAYnQROhT9awRMEBWuDCGSw04CtBgE' },
-  { id: 'news',     title: 'Banded Peak News Pack',   cat: 'Broadcast News',      role: 'Camera Op / Editor',              year: '2024', desc: 'Broadcast standard news package shot under deadline.',                                     yt: 'l6JnCA7e3DY',  did: '1iw925ZsP2evEINyDqP6iesQYellQ4Z9u' },
-  { id: 'tiktok',   title: 'TikTok Documentary Teaser',        cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'Our relationship with the infinite scroll.',                                                  yt: 'KQHjrvuthYE', did: '1o61DVHh8QhTYWKSOQOvs9P4kEoZQqygI' },
-  { id: 'fraud',    title: 'Fraud Documentary Teaser',                   cat: 'Doc Teaser',     role: 'Director / Editor',               year: '2024', desc: 'How credit card scammers took over social media and operate in plain sight.',                                        yt: 'E6rydhe1PAY', did: '10AfFlmGp1qbqI_9BKSQnYfyTi7o_SFbp' },
-];
+import StorySection from './components/StorySection';
+import MagBtn from './components/MagBtn';
 
 /* ═══ HELPERS ═══ */
 export function thumbUrl(video) {
@@ -71,126 +71,7 @@ function SectionLabel({ text }) {
   );
 }
 
-/* ═══ STATS BAR ═══ */
-function StatsBar() {
-  const stats = [
-    { num: '12', label: 'Projects' },
-    { num: '4+', label: 'Years' },
-    { num: '5', label: 'Hats' },
-    { num: '2', label: 'Working on Now' },
-  ];
-  return (
-    <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-      style={{ display:'flex', justifyContent:'center', gap:'clamp(20px,6vw,64px)', padding:'44px 20px', borderTop:'1px solid rgba(255,255,255,0.03)', borderBottom:'1px solid rgba(255,255,255,0.03)', background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.02)', transition:'background 0.6s' }}>
-      {stats.map((s,i) => (
-        <motion.div key={i} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*0.08, duration:0.5 }}
-          style={{ textAlign:'center' }}>
-          <div style={{ fontFamily:'var(--display)', fontSize:'clamp(2rem,6vw,3.5rem)', lineHeight:1, color:'var(--fg)', letterSpacing:1 }}>{s.num}</div>
-          <div style={{ fontFamily:'var(--mono)', fontSize:7, letterSpacing:3, textTransform:'uppercase', color:'var(--fg-subtle)', marginTop:6 }}>{s.label}</div>
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-}
-
-/* ═══ PITCH — visual checklist ═══ */
-function PitchStrip() {
-  const items = ['Creative Vision','Music Video Experience','Camera Obsessed','Full-Time Ready','Stream & Vlog'];
-  return (
-    <section id="pitch" style={{ padding:'40px 20px 20px', maxWidth:900, margin:'0 auto' }}>
-      <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.7 }}
-        style={{ display:'flex', flexWrap:'wrap', gap:10, justifyContent:'center' }}>
-        {items.map((item, i) => (
-          <motion.div key={i}
-            initial={{ opacity:0, scale:0.9 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true }}
-            transition={{ delay:i*0.06, duration:0.5, ease:[0.16,1,0.3,1] }}
-            style={{
-              display:'flex', alignItems:'center', gap:8,
-              padding:'10px 18px', borderRadius:'var(--radius-full)',
-              background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.08)',
-              border:'1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.18)',
-              transition:'all 0.6s',
-            }}>
-            <Check size={12} style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }} />
-            <span style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, textTransform:'uppercase', color:'var(--fg)' }}>{item}</span>
-          </motion.div>
-        ))}
-      </motion.div>
-      <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.35 }} viewport={{ once:true }} transition={{ delay:0.4 }}
-        style={{ textAlign:'center', marginTop:16, fontFamily:'var(--serif)', fontSize:'0.95rem', fontStyle:'italic', color:'var(--fg-muted)' }}>
-        You said you need all five. I've got all five.
-      </motion.p>
-    </section>
-  );
-}
-
-/* ═══ STORY — expanded personal narrative, comes early ═══ */
-function StorySection() {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section id="story" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
-      <div className="section__inner" style={{ maxWidth:800 }}>
-        <SectionLabel text="The Narrative" />
-        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-          style={{ fontFamily:'var(--serif)', fontSize:'clamp(1.1rem,3vw,1.28rem)', lineHeight:1.88, color:'var(--fg-muted)' }}>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            I'm from a family of Yale and Columbia grads, multinational business owners. So from birth my path was set — business, law, or medicine. When I chose a camera over a labcoat at 17, nobody understood. When I dropped out of film school at 19, even fewer did.
-          </motion.p>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, delay:0.05, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            I didn't drop out because it was too hard. <span style={{ color:'var(--fg)', fontWeight:500 }}>I dropped out to prove I didn't have to limit my vision.</span> The institutional structure couldn't move fast enough for what I was crafting.
-          </motion.p>
-
-          <motion.p initial={{ opacity:0, y:20, filter:'blur(4px)' }} whileInView={{ opacity:1, y:0, filter:'blur(0px)' }}
-            viewport={{ once:true }} transition={{ duration:0.9, delay:0.1, ease:[0.16,1,0.3,1] }}
-            style={{ marginBottom:24 }}>
-            Since then I've been in the trenches — shooting music videos solo from concept to delivery, directing productions where there are no second takes, building project packages under real deadlines, writing my debut 133-page non-linear screenplay.
-          </motion.p>
-
-          <AnimatePresence>
-            {expanded && (
-              <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} transition={{ duration:0.5, ease:[0.16,1,0.3,1] }}>
-                <p style={{ marginBottom:24 }}>
-                  I've done every job on set because I wanted to understand the whole system. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind the camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm crafting narrative.</span>
-                </p>
-                <p style={{ marginBottom:24 }}>
-                  I've also been a writer my whole career — I have a show bible, screenplays, production books. I understand narrative. I understand what makes a moment worth remembering. That instinct doesn't turn off because we're live.
-                </p>
-                <p style={{ color:'var(--fg)', fontWeight:500 }}>
-                  I'm not looking for a job. I'm looking for the right mission to dedicate my soul to. I've watched you build 5$STAR — I know this is it.
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <motion.button
-            onClick={() => setExpanded(!expanded)}
-            whileHover={{ x:4 }} whileTap={{ scale:0.97 }}
-            style={{ marginTop:16, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', display:'flex', alignItems:'center', gap:6, cursor:'none', transition:'color 0.6s' }}>
-            {expanded ? 'Less' : 'The full story'} <ChevronDown size={12} style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition:'transform 0.3s' }} />
-          </motion.button>
-        </motion.div>
-
-        {/* Decorative line */}
-        <motion.div initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }} transition={{ duration:1.4, ease:[0.16,1,0.3,1] }}
-          style={{ height:1, transformOrigin:'left', background:'linear-gradient(90deg, rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b)), transparent)', marginTop:32, transition:'background 0.6s' }} />
-      </div>
-    </section>
-  );
-}
-
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
-const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', sub: 'Frank Ocean "Chanel"', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
-  { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
-  { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
-];
 
 function WritingSection() {
   return (
@@ -226,18 +107,17 @@ function WritingSection() {
           {/* Content */}
           <div style={{ position:'relative', zIndex:1, padding:'clamp(28px,5vw,48px)' }}>
             <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginBottom:16 }}>
-              <span className="pill pill--accent" style={{ fontSize:7 }}>Screenplay</span>
-              <span className="pill" style={{ fontSize:7 }}>133 Pages</span>
-              <span className="pill" style={{ fontSize:7 }}>Draft 9</span>
-              <span className="pill" style={{ fontSize:7 }}>A24 / Proximity Media</span>
+              {WRITING_FEATURE.pills.map((pill, i) => (
+                <span key={i} className={`pill ${i === 0 ? 'pill--accent' : ''}`} style={{ fontSize:7 }}>{pill}</span>
+              ))}
             </div>
 
             <h3 style={{ fontFamily:'var(--display)', fontSize:'clamp(2.8rem,8vw,5rem)', letterSpacing:2, lineHeight:0.9, marginBottom:16 }}>
-              Femme Fatale
+              {WRITING_FEATURE.title}
             </h3>
 
             <p style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, color:'var(--fg-subtle)', textTransform:'uppercase', marginBottom:20 }}>
-              Noir Thriller · Feature Film
+              {WRITING_FEATURE.subtitle}
             </p>
 
             <div style={{
@@ -246,28 +126,12 @@ function WritingSection() {
               borderLeft:'2px solid rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
               paddingLeft:20, maxWidth:600, transition:'border-color 0.6s',
             }}>
-              A deconstruction of narrative control set between Port-au-Prince in 1957 and 1960s Paris. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the story she chooses to tell.
+              {WRITING_FEATURE.desc}
             </div>
 
             <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
               <motion.a 
-                href="https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view"
-                target="_blank" rel="noopener noreferrer"
-                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                style={{ 
-                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
-                  letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', 
-                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
-                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
-                  border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.3)',
-                  background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.05)'
-                }}
-              >
-                <FileText size={13} /> View Show Bible <ChevronRight size={10} />
-              </motion.a>
-
-              <motion.a 
-                href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
+                href={WRITING_FEATURE.draftLink}
                 target="_blank" rel="noopener noreferrer"
                 whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 style={{ 
@@ -281,25 +145,64 @@ function WritingSection() {
               >
                 <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
               </motion.a>
+
+              <motion.a 
+                href={WRITING_FEATURE.bibleLink}
+                target="_blank" rel="noopener noreferrer"
+                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                style={{ 
+                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
+                  letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', 
+                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
+                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
+                  border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.3)',
+                  background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.05)'
+                }}
+              >
+                <FileText size={13} /> View Show Bible <ChevronRight size={10} />
+              </motion.a>
             </div>
           </div>
         </motion.div>
 
         {/* Other writing — compact grid */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:10 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:16 }}>
           {OTHER_WRITING.map((w, i) => (
             <motion.a key={i} href={`https://drive.google.com/file/d/${w.did}/view`} target="_blank" rel="noopener noreferrer"
               className="card" initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-              transition={{ delay:i*0.06, duration:0.5 }} whileHover={{ y:-4, transition:{ duration:0.25 } }}
-              style={{ textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'20px 18px', minHeight:110, cursor:'none' }}>
+              transition={{ delay:i*0.06, duration:0.5 }} 
+              whileHover={{ 
+                y: -6, 
+                borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.5)',
+                boxShadow: '0 12px 30px rgba(0,0,0,0.8), 0 0 40px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.1)'
+              }}
+              style={{ 
+                textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', 
+                padding:'32px 24px', minHeight:'180px', cursor:'none', 
+                background: 'linear-gradient(to bottom right, #111 0%, #080808 100%)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                transition: 'border-color 0.4s, box-shadow 0.4s'
+              }}>
+              
               <div>
-                <span className="pill" style={{ fontSize:7 }}>{w.type}</span>
-                <h4 style={{ fontFamily:'var(--display)', fontSize:'1.2rem', letterSpacing:2, marginTop:10 }}>{w.title}</h4>
-                <p style={{ fontFamily:'var(--mono)', fontSize:9, color:'var(--fg-subtle)', marginTop:4, letterSpacing:1 }}>{w.sub}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                  <FileText size={14} style={{ color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', opacity: 0.8 }} />
+                  <span className="pill" style={{ fontSize:7, margin: 0, border: 'none', background: 'rgba(255,255,255,0.03)' }}>{w.type}</span>
+                </div>
+                
+                <h4 style={{ fontFamily:'var(--display)', fontSize:'clamp(1.4rem, 3vw, 1.8rem)', letterSpacing:1, lineHeight: 1.1, color: 'var(--fg)' }}>{w.title}</h4>
+                <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:'1.05rem', color:'var(--fg-muted)', marginTop:8 }}>{w.sub}</p>
               </div>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:4, marginTop:12, fontSize:8, letterSpacing:3, fontFamily:'var(--mono)', color:'var(--fg-subtle)', textTransform:'uppercase' }}>
-                READ <ChevronRight size={10} />
-              </span>
+              
+              <motion.span 
+                style={{ 
+                  display:'inline-flex', alignItems:'center', gap:6, marginTop:24, 
+                  fontSize:9, letterSpacing:3, fontFamily:'var(--mono)', 
+                  color:'var(--fg)', textTransform:'uppercase', fontWeight: 500
+                }}
+              >
+                Read Document <ChevronRight size={12} style={{ color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' }} />
+              </motion.span>
             </motion.a>
           ))}
         </div>
@@ -309,63 +212,59 @@ function WritingSection() {
 }
 
 /* ═══ CONTACT ═══ */
-const CONTACT_LINKS = [
-  { label:'Email Me',             href:'mailto:peterolowude@icloud.com',                                                      icon:<Mail size={15} />,           primary: true },
-  { label:'X / Twitter',          href:'https://x.com/lonerfss',                                                              icon:<Twitter size={15} /> },
-  { label:'Instagram',            href:'https://www.instagram.com/lonerkid',                                                   icon:<Instagram size={15} /> },
-  { label:'Twitch',               href:'https://www.twitch.tv/lonerfs',                                                       icon:<Tv size={15} /> },
-  { label:'Full Drive Portfolio',  href:'https://drive.google.com/drive/folders/10kpdBuTKIWpCrARqTNSCW3OtyWzQnAg0',           icon:<ExternalLink size={15} /> },
-];
-
-function MagBtn({ href, icon, label, primary }) {
-  const ref = useRef(null);
-  const handleMove = (e) => {
-    if (!ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    ref.current.style.setProperty('--mouse-x', `${((e.clientX-r.left)/r.width)*100}%`);
-    ref.current.style.setProperty('--mouse-y', `${((e.clientY-r.top)/r.height)*100}%`);
-  };
-  return (
-    <motion.a ref={ref} href={href} target="_blank" rel="noopener noreferrer"
-      className="magnetic-btn" onMouseMove={handleMove} whileHover={{ y:-3 }} whileTap={{ scale:0.96 }}
-      style={{
-        width:'100%', maxWidth:340, textDecoration:'none', justifyContent:'center', cursor:'none',
-        ...(primary ? { background:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', color:'#080808', borderColor:'transparent', fontWeight:500, transition:'all 0.6s' } : {}),
-      }}>
-      {icon} {label}
-    </motion.a>
-  );
-}
 
 function ContactSection() {
   return (
-    <section id="contact" className="section" style={{ textAlign:'center', overflow:'visible', paddingTop:80 }}>
-      <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse at 50% 50%, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.09) 0%, transparent 55%)', transition:'background 0.6s' }} />
-      <div style={{ position:'relative', zIndex:2 }}>
-        <motion.div initial={{ opacity:0, scale:0.9, filter:'blur(10px)' }} whileInView={{ opacity:1, scale:1, filter:'blur(0px)' }}
-          viewport={{ once:true }} transition={{ duration:1, ease:[0.16,1,0.3,1] }}
-          style={{ fontFamily:'var(--display)', fontSize:'clamp(4rem,18vw,12rem)', lineHeight:0.84, letterSpacing:-3 }}>
-          I'M<br />
-          <span style={{ color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', transition:'color 0.6s' }}>YOUR</span><br />
-          GUY
-        </motion.div>
+    <section id="contact" className="section" style={{ textAlign:'center', overflow:'visible', paddingTop:120, paddingBottom:160 }}>
+      {/* Background Glow */}
+      <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse at 50% 50%, rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.09) 0%, transparent 60%)', transition:'background 0.6s' }} />
+      
+      <div style={{ position:'relative', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center' }}>
+        
         <motion.p initial={{ opacity:0, y:14 }} whileInView={{ opacity:0.4, y:0 }} viewport={{ once:true }} transition={{ delay:0.15, duration:0.6 }}
-          style={{ marginTop:24, fontFamily:'var(--serif)', fontSize:'1.05rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:340, margin:'24px auto 0', lineHeight:1.7 }}>
-          DM me directly. Let's get to work.
+          style={{ fontFamily:'var(--serif)', fontSize:'1.2rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:400, margin:'0 auto 40px', lineHeight:1.7 }}>
+          Let's build something real.
         </motion.p>
+
+        {/* Primary CTAs using MagBtn for the desired hover effect */}
         <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.2, duration:0.7 }}
-          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, marginTop:36 }}>
-          {CONTACT_LINKS.map((l,i) => (
-            <motion.div key={i} initial={{ opacity:0, y:15 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3+i*0.1 }}
-              style={{ width:'100%', display:'flex', justifyContent:'center' }}>
-              <MagBtn {...l} />
-            </motion.div>
+          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, width: '100%', maxWidth: '340px' }}>
+          
+          <MagBtn 
+            href="https://ig.me/m/lonerkid" 
+            label="Direct Message" 
+            icon={<Instagram size={15} />} 
+            primary={true} 
+          />
+          
+          <MagBtn 
+            href="mailto:peterolowude@icloud.com" 
+            label="Email Me" 
+            icon={<Mail size={15} />} 
+          />
+
+        </motion.div>
+
+        {/* Other Social Links Row */}
+        <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.4, duration:0.7 }}
+          style={{ display:'flex', justifyContent:'center', gap:24, marginTop:48, flexWrap:'wrap' }}>
+          {CONTACT_LINKS.filter(l => l.label !== 'Email Me' && l.label !== 'Instagram').map((l, i) => (
+            <motion.a key={i} href={l.href} target="_blank" rel="noopener noreferrer"
+              whileHover={{ y: -3, color: 'var(--fg)' }} whileTap={{ scale: 0.95 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 20px', borderRadius: 'var(--radius-full)',
+                fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: 2, textTransform: 'uppercase',
+                color: 'var(--fg-muted)', textDecoration: 'none',
+                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)',
+                cursor: 'none', transition: 'all 0.3s'
+              }}
+            >
+              {l.icon} {l.label}
+            </motion.a>
           ))}
         </motion.div>
-        <motion.p initial={{ opacity:0 }} whileInView={{ opacity:0.3 }} viewport={{ once:true }} transition={{ delay:0.7 }}
-          style={{ marginTop:40, fontFamily:'var(--mono)', fontSize:9, letterSpacing:3, textTransform:'uppercase', lineHeight:2.2 }}>
-          Available immediately · Calgary, AB<br />Ready to relocate · Full time · Passport ready
-        </motion.p>
+        
       </div>
     </section>
   );
@@ -373,8 +272,8 @@ function ContactSection() {
 
 /* ═══ SIDE DOT NAV ═══ */
 function DotNav({ activeSection }) {
-  const sections = ['pitch','story','work','writing','contact'];
-  const labels = ['Why Me','Story','Work','Writing','Contact'];
+  const sections = ['story','work','writing','contact'];
+  const labels = ['Story','Work','Writing','Contact'];
   return (
     <div style={{
       position:'fixed', right:16, top:'50%', transform:'translateY(-50%)',
@@ -404,8 +303,8 @@ export default function App() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeVideoColor, setActiveVideoColor] = useState(null);
 
-  const { setAmbientColor, extractColor, resetColor } = useColorExtractor();
-  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['pitch','story','work','writing','contact']);
+  const { setAmbientColor, extractColor, resetColor, triggerRainbow } = useColorExtractor();
+  const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['story','work','writing','contact']);
 
   const handleVideoClick = useCallback((video, color) => {
     setActiveVideo(video);
@@ -432,12 +331,9 @@ export default function App() {
         <ScrollProgress progress={scrollProgress} />
         <div className="grain" />
 
-        <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} />
-        <CinematicNav sections={['pitch','story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
-        <Hero scrollToSection={scrollToSection} />
-
-        <StatsBar />
-        <PitchStrip />
+        <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} triggerRainbow={triggerRainbow} />
+        <CinematicNav sections={['story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
+        <Hero scrollToSection={scrollToSection} isScrolled={isScrolled} />
 
         {/* ── STORY — early, personal ── */}
         <StorySection />

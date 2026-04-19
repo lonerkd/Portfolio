@@ -5,7 +5,6 @@ import { HERO_TAGLINE, HERO_TITLE_1, HERO_TITLE_2, HERO_SUBTEXT_1 } from '../dat
 
 const HERO_ACTIONS = [
   { label: 'See My Work', section: 'work' },
-  { label: 'Why Me', section: 'pitch' },
   { label: 'Contact', section: 'contact' },
 ];
 const DM_LINKS = [
@@ -13,7 +12,7 @@ const DM_LINKS = [
   { icon: <MessageCircle size={11} />, label: 'DM on IG', directHref: 'https://www.instagram.com/lonerkid' },
 ];
 
-export default function Hero({ scrollToSection }) {
+export default function Hero({ scrollToSection, isScrolled, triggerRainbow }) {
   const mouseX = useSpring(0, { stiffness: 60, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 60, damping: 20 });
 
@@ -57,52 +56,32 @@ export default function Hero({ scrollToSection }) {
       {/* ── KINETIC TEXT ── */}
       <div style={{ position: 'relative', zIndex: 3, width: '100%', maxWidth: 1000, textAlign: 'center', paddingBottom: '60px' }}>
 
-        {/* Built for PBM tag */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.7, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.05 }}
-          style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: 5, textTransform: 'uppercase', color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', marginBottom: 10, transition: 'color 0.6s' }}
-        >
-          {HERO_TAGLINE}
-        </motion.div>
-
-        {/* "I DON'T" — depth 1 (opposite direction) */}
-        <motion.div style={{ x: tx1 }}>
-          <motion.div
-            initial={{ opacity: 0, x: -80, filter: 'blur(12px)' }}
-            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: 'var(--display)',
-              fontSize: 'clamp(4rem, 18vw, 13rem)',
-              lineHeight: 0.85, letterSpacing: -2,
-              WebkitTextStroke: '1.5px rgba(240,236,228,0.85)',
-              color: 'transparent',
-              userSelect: 'none',
-            }}
-          >
-            {HERO_TITLE_1}
-          </motion.div>
-        </motion.div>
-
-        {/* "JUST FILM" — depth 2 */}
-        <motion.div style={{ x: tx0, y: ty1 }}>
-          <motion.div
-            initial={{ opacity: 0, x: 80, filter: 'blur(12px)' }}
-            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1.1, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: 'var(--display)',
-              fontSize: 'clamp(4rem, 18vw, 13rem)',
-              lineHeight: 0.85, letterSpacing: -2,
-              color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
-              transition: 'color 0.7s',
-              userSelect: 'none',
-            }}
-          >
-            {HERO_TITLE_2}
-          </motion.div>
-        </motion.div>
+        {/* Misfits Cavern Logo (Perfectly Centered) */}
+        <motion.button
+          onClick={() => triggerRainbow && triggerRainbow()}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            display: 'block',
+            width: '100%',
+            maxWidth: '800px', // Increased size
+            height: '350px', // Increased size
+            margin: '0 auto',
+            backgroundColor: 'var(--fg)',
+            WebkitMask: 'url(/logo.svg) no-repeat center',
+            mask: 'url(/logo.svg) no-repeat center',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+            filter: 'drop-shadow(0px 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4))',
+            transition: 'filter 0.7s ease, transform 0.3s ease',
+            cursor: 'pointer',
+            userSelect: 'none',
+            outline: 'none'
+          }}
+        />
 
         {/* Tagline — depth 0 */}
         <motion.div style={{ x: tx2, marginTop: 32 }}>
@@ -164,29 +143,6 @@ export default function Hero({ scrollToSection }) {
           ))}
         </motion.div>
       </div>
-
-      {/* Breathing scroll indicator */}
-      <motion.button
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        onClick={() => scrollToSection('work')}
-        style={{
-          position: 'absolute', bottom: 20, zIndex: 4,
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
-          background: 'none', border: 'none', color: 'var(--fg)', cursor: 'none',
-        }}
-      >
-        <motion.div
-          animate={{ opacity: [0.15, 0.5, 0.15], y: [0, 10, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
-        >
-          <span style={{ fontFamily: 'var(--mono)', fontSize: 7, letterSpacing: 4, textTransform: 'uppercase' }}>
-            Scroll
-          </span>
-          <ArrowDown size={13} />
-        </motion.div>
-      </motion.button>
     </section>
   );
 }
