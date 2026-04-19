@@ -35,22 +35,43 @@ function extractDominantColor(imgElement) {
       ctx.drawImage(imgElement, 0, 0, size, size);
       const data = ctx.getImageData(0, 0, size, size).data;
       const buckets = {};
-      let best = { score: 0, color: DEFAULT_COLOR };
-      for (let i = 0; i < data.length; i += 12) {
+      let best = { score: 0, color: null };
+      
+      for (let i = 0; i < data.length; i += 16) {
         const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
         if (a < 128) continue;
+        
         const max = Math.max(r,g,b), min = Math.min(r,g,b);
         const l = (max+min)/2;
-        if (l < 40 || l > 235) continue; // Raised minimum lightness so UI remains visible
+        
+        // Strict lightness filter to avoid dark/muddy colors and blown-out whites
+        if (l < 60 || l > 220) continue; 
+        
         const sat = max===min ? 0 : l>127 ? (max-min)/(510-max-min) : (max-min)/(max+min);
-        const key = `${Math.round(r/24)*24},${Math.round(g/24)*24},${Math.round(b/24)*24}`;
-        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: 0 };
+        
+        // Skip grayscales
+        if (sat < 0.25) continue;
+
+        const key = `${Math.round(r/32)*32},${Math.round(g/32)*32},${Math.round(b/32)*32}`;
+        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: sat, l: l };
+        
         buckets[key].count++;
-        buckets[key].sat = Math.max(buckets[key].sat, sat);
-        const score = buckets[key].sat * 1.5 * Math.sqrt(buckets[key].count);
-        if (score > best.score) best = { score, color: { r: buckets[key].r, g: buckets[key].g, b: buckets[key].b } };
+        
+        // Score algorithm heavily prioritizes vibrancy (saturation + lightness) over sheer pixel count.
+        // A small splash of neon will beat a massive wall of beige.
+        const score = (sat * 15) + ((l / 255) * 8) + Math.log(buckets[key].count);
+        
+        if (score > best.score) {
+          best = { score, color: { r: buckets[key].r, g: buckets[key].g, b: buckets[key].b } };
+        }
       }
-      resolve(best.color);
+      
+      // Fallback to the default orange if no vibrant color was found
+      if (!best.color) {
+        resolve(DEFAULT_COLOR);
+      } else {
+        resolve(best.color);
+      }
     } catch { resolve(DEFAULT_COLOR); }
   });
 }

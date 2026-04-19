@@ -188,20 +188,43 @@ function WritingSection() {
         </motion.div>
 
         {/* Other writing — compact grid */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:10 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:16 }}>
           {OTHER_WRITING.map((w, i) => (
             <motion.a key={i} href={`https://drive.google.com/file/d/${w.did}/view`} target="_blank" rel="noopener noreferrer"
               className="card" initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-              transition={{ delay:i*0.06, duration:0.5 }} whileHover={{ y:-4, transition:{ duration:0.25 } }}
-              style={{ textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'20px 18px', minHeight:110, cursor:'none' }}>
+              transition={{ delay:i*0.06, duration:0.5 }} 
+              whileHover={{ 
+                y: -6, 
+                borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.5)',
+                boxShadow: '0 12px 30px rgba(0,0,0,0.8), 0 0 40px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.1)'
+              }}
+              style={{ 
+                textDecoration:'none', display:'flex', flexDirection:'column', justifyContent:'space-between', 
+                padding:'32px 24px', minHeight:'180px', cursor:'none', 
+                background: 'linear-gradient(to bottom right, #111 0%, #080808 100%)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                transition: 'border-color 0.4s, box-shadow 0.4s'
+              }}>
+              
               <div>
-                <span className="pill" style={{ fontSize:7 }}>{w.type}</span>
-                <h4 style={{ fontFamily:'var(--display)', fontSize:'1.2rem', letterSpacing:2, marginTop:10 }}>{w.title}</h4>
-                <p style={{ fontFamily:'var(--mono)', fontSize:9, color:'var(--fg-subtle)', marginTop:4, letterSpacing:1 }}>{w.sub}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                  <FileText size={14} style={{ color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', opacity: 0.8 }} />
+                  <span className="pill" style={{ fontSize:7, margin: 0, border: 'none', background: 'rgba(255,255,255,0.03)' }}>{w.type}</span>
+                </div>
+                
+                <h4 style={{ fontFamily:'var(--display)', fontSize:'clamp(1.4rem, 3vw, 1.8rem)', letterSpacing:1, lineHeight: 1.1, color: 'var(--fg)' }}>{w.title}</h4>
+                <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:'1.05rem', color:'var(--fg-muted)', marginTop:8 }}>{w.sub}</p>
               </div>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:4, marginTop:12, fontSize:8, letterSpacing:3, fontFamily:'var(--mono)', color:'var(--fg-subtle)', textTransform:'uppercase' }}>
-                READ <ChevronRight size={10} />
-              </span>
+              
+              <motion.span 
+                style={{ 
+                  display:'inline-flex', alignItems:'center', gap:6, marginTop:24, 
+                  fontSize:9, letterSpacing:3, fontFamily:'var(--mono)', 
+                  color:'var(--fg)', textTransform:'uppercase', fontWeight: 500
+                }}
+              >
+                Read Document <ChevronRight size={12} style={{ color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' }} />
+              </motion.span>
             </motion.a>
           ))}
         </div>
