@@ -173,6 +173,43 @@ export function useColorExtractor() {
 
   const resetColor = useCallback(() => setAmbientColor(null), [setAmbientColor]);
 
+  const triggerRainbow = useCallback(() => {
+    if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
+    const startTime = performance.now();
+    const duration = 1500;
+    
+    const hslToRgb = (h, s, l) => {
+      s /= 100; l /= 100;
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+      return { r: Math.round(255 * f(0)), g: Math.round(255 * f(8)), b: Math.round(255 * f(4)) };
+    };
+
+    const tick = (now) => {
+      const p = Math.min((now - startTime) / duration, 1);
+      // Spin hue from 0 to 360
+      const currentHue = (p * 360) % 360;
+      const c = hslToRgb(currentHue, 100, 50);
+      
+      const root = document.documentElement;
+      root.style.setProperty('--ambient-r', c.r);
+      root.style.setProperty('--ambient-g', c.g);
+      root.style.setProperty('--ambient-b', c.b);
+      root.style.setProperty('--ambient-h', currentHue);
+      root.style.setProperty('--ambient-s', '100%');
+      root.style.setProperty('--ambient-l', '50%');
+      
+      if (p < 1) {
+        transitionRef.current = requestAnimationFrame(tick);
+      } else {
+        // Revert to active color
+        setAmbientColor(currentRef.current);
+      }
+    };
+    transitionRef.current = requestAnimationFrame(tick);
+  }, [setAmbientColor]);
+
   useEffect(() => () => {
     if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
     if (videoSamplerRef.current) cancelAnimationFrame(videoSamplerRef.current);
@@ -181,6 +218,6 @@ export function useColorExtractor() {
   return {
     activeColor, colorCache,
     setAmbientColor, extractColor, resetColor,
-    startLiveFrameSampling, stopLiveFrameSampling,
+    startLiveFrameSampling, stopLiveFrameSampling, triggerRainbow
   };
 }

@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { id: 'contact', label: 'Contact' },
 ];
 
-export default function Navigation({ isScrolled, activeSection, scrollToSection }) {
+export default function Navigation({ isScrolled, activeSection, scrollToSection, triggerRainbow }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isPulsingPO, setIsPulsingPO] = React.useState(false);
   const [isPulsingMC, setIsPulsingMC] = React.useState(false);
@@ -29,6 +29,7 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection 
   const handlePOClick = () => {
     setIsPulsingPO(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (triggerRainbow) triggerRainbow();
     setTimeout(() => setIsPulsingPO(false), 1500); // Remove class after animation
   };
 
@@ -46,47 +47,29 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection 
         transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         style={{ height: '80px' }} // Taller nav to accommodate bigger logos
       >
-        {/* Logo / Name */}
+        {/* Misfits Cavern Logo Top Left (Replaces PO.) */}
         <motion.button
           onClick={handlePOClick}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: isScrolled ? 1 : 0, x: isScrolled ? 0 : -20 }}
+          transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={isPulsingPO ? 'rainbow-pulse' : ''}
           style={{
-            fontFamily: 'var(--display)',
-            fontSize: '1.6rem', // Increased size
-            letterSpacing: 3,
-            color: 'var(--fg)',
             position: 'relative',
             zIndex: 2,
-            outline: 'none'
+            outline: 'none',
+            width: '60px',
+            height: '40px',
+            backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
+            WebkitMask: 'url(/logo.svg) no-repeat center left',
+            mask: 'url(/logo.svg) no-repeat center left',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+            pointerEvents: isScrolled ? 'auto' : 'none',
+            transition: 'background-color 0.6s'
           }}
-        >
-          <span style={{ color: 'var(--ambient)', transition: 'color 0.6s' }}>PO.</span>
-        </motion.button>
-
-        {/* Centered Misfits Cavern stamp */}
-        <motion.button
-          onClick={handleMCClick}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={isPulsingMC ? 'rainbow-pulse' : ''}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontFamily: 'var(--mono)',
-            fontSize: '12px', // Increased size
-            letterSpacing: 6,
-            textTransform: 'uppercase',
-            color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
-            transition: 'color 0.6s',
-            zIndex: 2,
-            outline: 'none'
-          }}
-        >
-          {HERO_TAGLINE}
-        </motion.button>
+        />
 
         {/* Mobile Toggle (Now used universally as hamburger menu) */}
         <button

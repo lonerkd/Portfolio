@@ -349,7 +349,7 @@ export default function App() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeVideoColor, setActiveVideoColor] = useState(null);
 
-  const { setAmbientColor, extractColor, resetColor } = useColorExtractor();
+  const { setAmbientColor, extractColor, resetColor, triggerRainbow } = useColorExtractor();
   const { scrollProgress, activeSection, isScrolled, scrollToSection } = useSmoothScroll(['pitch','story','work','writing','contact']);
 
   const handleVideoClick = useCallback((video, color) => {
@@ -377,9 +377,9 @@ export default function App() {
         <ScrollProgress progress={scrollProgress} />
         <div className="grain" />
 
-        <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} />
+        <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} triggerRainbow={triggerRainbow} />
         <CinematicNav sections={['pitch','story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
-        <Hero scrollToSection={scrollToSection} />
+        <Hero scrollToSection={scrollToSection} isScrolled={isScrolled} />
 
 <StatsBar />
 
