@@ -137,21 +137,36 @@ function sR(s) { return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2
 function PhotoItem({ photo, mouseX, mouseY }) {
   const x = useTransform(mouseX, [-1, 1], [-photo.px * 30, photo.px * 30]);
   const y = useTransform(mouseY, [-1, 1], [-photo.py * 20, photo.py * 20]);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div style={{
-      position: 'absolute',
-      left: `${photo.left}%`, top: `${photo.top}px`,
-      width: photo.w, height: photo.h,
-      zIndex: photo.z, x, y, rotate: photo.rot,
-    }}>
+    <motion.div
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ scale: 1.1, zIndex: 20 }}
+      whileTap={{ scale: 1.15, zIndex: 20 }}
+      animate={{
+         opacity: isHovered ? 0.95 : 0.12,
+         zIndex: isHovered ? 20 : photo.z
+      }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        position: 'absolute',
+        left: `${photo.left}%`, top: `${photo.top}px`,
+        width: photo.w, height: photo.h,
+        x, y, rotate: photo.rot,
+        pointerEvents: 'auto',
+        cursor: 'none'
+      }}
+    >
       <div style={{
         width: '100%', height: '100%', borderRadius: 6,
         overflow: 'hidden',
         border: '1px solid rgba(255,255,255,0.05)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+        boxShadow: isHovered ? '0 30px 80px rgba(0,0,0,0.8)' : '0 20px 60px rgba(0,0,0,0.6)',
+        transition: 'box-shadow 0.6s'
       }}>
-        <img src={IMG(photo.id, Math.round(photo.w))} alt="" loading="lazy"
+        <img src={IMG(photo.id, Math.round(photo.w * 1.5))} alt="" loading="lazy"
           style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.4) contrast(1.1)' }}
           onError={e => { e.target.style.display = 'none'; }}
         />
@@ -246,8 +261,7 @@ export default function PhotoField() {
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, height: pageHeight,
-      pointerEvents: 'none', zIndex: 0, overflow: 'hidden',
-      opacity: 0.12,
+      pointerEvents: 'none', zIndex: 0, overflow: 'hidden'
     }}>
       {photos.map((p, i) => (
         <PhotoItem key={i} photo={p} mouseX={mouseX} mouseY={mouseY} />

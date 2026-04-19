@@ -18,10 +18,23 @@ const NAV_ITEMS = [
 
 export default function Navigation({ isScrolled, activeSection, scrollToSection }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isPulsingPO, setIsPulsingPO] = React.useState(false);
+  const [isPulsingMC, setIsPulsingMC] = React.useState(false);
 
   const handleNavClick = (id) => {
     scrollToSection(id);
     setMobileOpen(false);
+  };
+
+  const handlePOClick = () => {
+    setIsPulsingPO(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => setIsPulsingPO(false), 1500); // Remove class after animation
+  };
+
+  const handleMCClick = () => {
+    setIsPulsingMC(true);
+    setTimeout(() => setIsPulsingMC(false), 1500);
   };
 
   return (
@@ -31,61 +44,56 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection 
         initial={{ y: -56, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        style={{ height: '80px' }} // Taller nav to accommodate bigger logos
       >
         {/* Logo / Name */}
         <motion.button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
+          onClick={handlePOClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={isPulsingPO ? 'rainbow-pulse' : ''}
           style={{
             fontFamily: 'var(--display)',
-            fontSize: '1.1rem',
+            fontSize: '1.6rem', // Increased size
             letterSpacing: 3,
             color: 'var(--fg)',
             position: 'relative',
             zIndex: 2,
+            outline: 'none'
           }}
         >
           <span style={{ color: 'var(--ambient)', transition: 'color 0.6s' }}>PO.</span>
         </motion.button>
 
         {/* Centered Misfits Cavern stamp */}
-        <motion.div
+        <motion.button
+          onClick={handleMCClick}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={isPulsingMC ? 'rainbow-pulse' : ''}
           style={{
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
             fontFamily: 'var(--mono)',
-            fontSize: 9,
-            letterSpacing: 5,
+            fontSize: '12px', // Increased size
+            letterSpacing: 6,
             textTransform: 'uppercase',
             color: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
             transition: 'color 0.6s',
             zIndex: 2,
+            outline: 'none'
           }}
         >
           {HERO_TAGLINE}
-        </motion.div>
+        </motion.button>
 
-        {/* Desktop Links */}
-        <ul className="nav__links">
-          {NAV_ITEMS.map((item) => (
-            <li key={item.id}>
-              <button
-                className={`nav__link ${activeSection === item.id ? 'nav__link--active' : ''}`}
-                onClick={() => handleNavClick(item.id)}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle (Now used universally as hamburger menu) */}
         <button
           className="nav__mobile-toggle"
           onClick={() => setMobileOpen(true)}
           aria-label="Open menu"
+          style={{ outline: 'none', cursor: 'none' }}
         >
           <span />
           <span style={{ width: 14 }} />
