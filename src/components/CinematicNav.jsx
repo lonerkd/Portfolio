@@ -8,7 +8,7 @@ import { ChevronDown } from 'lucide-react';
    ══════════════════════════════════════ */
 
 export default function CinematicNav({ sections, activeSection, scrollToSection }) {
-  const scrollSpeed = 8;
+  const scrollSpeed = 2.5; // Significantly slower for info consumption
   const tapThreshold = 250;
   
   const [isPressed, setIsPressed] = useState(false);
