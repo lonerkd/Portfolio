@@ -272,8 +272,8 @@ function ContactSection() {
 
 /* ═══ SIDE DOT NAV ═══ */
 function DotNav({ activeSection }) {
-  const sections = ['pitch','story','work','writing','contact'];
-  const labels = ['Why Me','Story','Work','Writing','Contact'];
+  const sections = ['story','work','writing','contact'];
+  const labels = ['Story','Work','Writing','Contact'];
   return (
     <div style={{
       position:'fixed', right:16, top:'50%', transform:'translateY(-50%)',
