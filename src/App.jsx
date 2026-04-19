@@ -71,28 +71,6 @@ function SectionLabel({ text }) {
   );
 }
 
-/* ═══ STATS BAR ═══ */
-function StatsBar() {
-  const stats = [
-    { num: '12', label: 'Projects' },
-    { num: '4+', label: 'Years' },
-    { num: '5', label: 'Hats' },
-    { num: '2', label: 'Working on Now' },
-  ];
-  return (
-    <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-      style={{ display:'flex', justifyContent:'center', gap:'clamp(20px,6vw,64px)', padding:'44px 20px', borderTop:'1px solid rgba(255,255,255,0.03)', borderBottom:'1px solid rgba(255,255,255,0.03)', background:'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.02)', transition:'background 0.6s' }}>
-      {stats.map((s,i) => (
-        <motion.div key={i} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*0.08, duration:0.5 }}
-          style={{ textAlign:'center' }}>
-          <div style={{ fontFamily:'var(--display)', fontSize:'clamp(2rem,6vw,3.5rem)', lineHeight:1, color:'var(--fg)', letterSpacing:1 }}>{s.num}</div>
-          <div style={{ fontFamily:'var(--mono)', fontSize:7, letterSpacing:3, textTransform:'uppercase', color:'var(--fg-subtle)', marginTop:6 }}>{s.label}</div>
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-}
-
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
 
 function WritingSection() {
@@ -355,8 +333,6 @@ export default function App() {
         <Navigation isScrolled={isScrolled} activeSection={activeSection} scrollToSection={scrollToSection} triggerRainbow={triggerRainbow} />
         <CinematicNav sections={['story','work','writing','contact']} activeSection={activeSection} scrollToSection={scrollToSection} />
         <Hero scrollToSection={scrollToSection} isScrolled={isScrolled} />
-
-<StatsBar />
 
         {/* ── STORY — early, personal ── */}
         <StorySection />
