@@ -60,8 +60,8 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection,
             position: 'relative',
             zIndex: 2,
             outline: 'none',
-            width: '120px', // Increased size
-            height: '60px', // Increased size
+            width: '180px', // Significantly increased size
+            height: '80px', // Significantly increased size
             backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
             WebkitMask: 'url(/logo.svg) no-repeat center left',
             mask: 'url(/logo.svg) no-repeat center left',

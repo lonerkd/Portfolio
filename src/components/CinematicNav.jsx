@@ -109,25 +109,32 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
 
   const goToNextSection = () => {
     if (!sections || sections.length === 0) return;
-    let currentIndex = sections.indexOf(activeSection);
-    let nextIndex = currentIndex === -1 ? 0 : currentIndex + 1;
     
-    if (nextIndex < sections.length) {
-      const targetId = sections[nextIndex];
-      const el = document.getElementById(targetId);
+    const navHeight = 80; // Updated nav height
+    const currentScroll = window.scrollY;
+    
+    // Find the first section whose top is at least 100px below current scroll
+    const nextSectionId = sections.find(id => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      const top = el.getBoundingClientRect().top + currentScroll - navHeight;
+      return top > currentScroll + 50; // Threshold to ensure we don't snap to same section
+    });
+
+    if (nextSectionId) {
+      const el = document.getElementById(nextSectionId);
+      const top = el.getBoundingClientRect().top + currentScroll - navHeight;
       
-      if (el) {
-        const navHeight = 56;
-        const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-        
-        animate(window.scrollY, top, {
-          type: "spring",
-          stiffness: 50,
-          damping: 18,
-          mass: 1,
-          onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'instant' })
-        });
-      }
+      animate(currentScroll, top, {
+        type: "spring",
+        stiffness: 45,
+        damping: 20,
+        mass: 1,
+        onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'auto' })
+      });
+    } else {
+      // If no next section, maybe we are at the end? Do nothing or scroll to top?
+      // User said "intelligently navigate perfectly to highlight whatever section is nearby"
     }
   };
 

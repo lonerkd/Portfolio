@@ -143,10 +143,10 @@ function PhotoItem({ photo, mouseX, mouseY }) {
     <motion.div
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ scale: 1.1, zIndex: 20 }}
-      whileTap={{ scale: 1.15, zIndex: 20 }}
+      whileHover={{ scale: 1.2, zIndex: 20 }}
+      whileTap={{ scale: 1.25, zIndex: 20 }}
       animate={{
-         opacity: isHovered ? 0.95 : 0.12,
+         opacity: isHovered ? 1 : 0.2, // Increased base opacity, and full opacity on hover
          zIndex: isHovered ? 20 : photo.z
       }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
