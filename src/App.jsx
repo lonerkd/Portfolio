@@ -240,80 +240,27 @@ function ContactSection() {
       
       <div style={{ position:'relative', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center' }}>
         
-        {/* Misfits Cavern Logo as a Portal */}
-        <motion.a 
-          href="#portal" 
-          initial={{ opacity:0, scale:0.9, filter:'blur(10px)' }} 
-          whileInView={{ opacity:1, scale:1, filter:'blur(0px)' }}
-          viewport={{ once:true }} 
-          transition={{ duration:1, ease:[0.16,1,0.3,1] }}
-          whileHover={{ scale: 1.05 }} 
-          whileTap={{ scale: 0.95 }}
-          style={{ 
-            display: 'block', textDecoration: 'none', cursor: 'none',
-            marginBottom: '40px', width: '100%', maxWidth: '340px', height: '140px',
-            backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
-            WebkitMask: 'url(/logo.svg) no-repeat center',
-            mask: 'url(/logo.svg) no-repeat center',
-            WebkitMaskSize: 'contain',
-            maskSize: 'contain',
-            filter: 'drop-shadow(0 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4))',
-            transition: 'filter 0.6s, background-color 0.6s'
-          }}
-          aria-label="Misfits Cavern Portal"
-        />
-
         <motion.p initial={{ opacity:0, y:14 }} whileInView={{ opacity:0.4, y:0 }} viewport={{ once:true }} transition={{ delay:0.15, duration:0.6 }}
           style={{ fontFamily:'var(--serif)', fontSize:'1.2rem', fontStyle:'italic', color:'var(--fg-muted)', maxWidth:400, margin:'0 auto 40px', lineHeight:1.7 }}>
-          Enter the portal. Or let's build something real.
+          Let's build something real.
         </motion.p>
 
-        {/* Primary CTAs */}
+        {/* Primary CTAs using MagBtn for the desired hover effect */}
         <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.2, duration:0.7 }}
           style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, width: '100%', maxWidth: '340px' }}>
           
-          {/* Main Direct Message Button */}
-          <motion.a 
+          <MagBtn 
             href="https://ig.me/m/lonerkid" 
-            target="_blank" rel="noopener noreferrer"
-            whileHover={{ y:-3, scale: 1.02 }} whileTap={{ scale:0.96 }}
-            style={{
-              width: '100%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
-              padding: '18px 32px',
-              borderRadius: 'var(--radius-full)',
-              background: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
-              color: '#080808',
-              fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 600,
-              textDecoration: 'none', cursor: 'none',
-              boxShadow: '0 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.2)',
-              transition: 'background 0.6s, box-shadow 0.6s'
-            }}
-          >
-            <Instagram size={18} /> Direct Message
-          </motion.a>
+            label="Direct Message" 
+            icon={<Instagram size={15} />} 
+            primary={true} 
+          />
           
-          {/* Secondary Email Button */}
-          <motion.a 
+          <MagBtn 
             href="mailto:peterolowude@icloud.com" 
-            target="_blank" rel="noopener noreferrer"
-            whileHover={{ y:-3, scale: 1.02 }} whileTap={{ scale:0.96 }}
-            style={{
-              width: '100%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
-              padding: '18px 32px',
-              borderRadius: 'var(--radius-full)',
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'var(--fg)',
-              fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 500,
-              textDecoration: 'none', cursor: 'none',
-              backdropFilter: 'blur(10px)',
-              transition: 'background 0.3s, border-color 0.3s'
-            }}
-          >
-            <Mail size={18} /> Email Me
-          </motion.a>
+            label="Email Me" 
+            icon={<Mail size={15} />} 
+          />
 
         </motion.div>
 
