@@ -140,13 +140,21 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
 
   const isAtBottom = activeSection === sections[sections.length - 1];
 
+  const handleBottomClick = () => {
+    if (isAtBottom) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      goToNextSection();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ 
-        opacity: isAtBottom ? 0 : 1, 
-        scale: isAtBottom ? 0.8 : 1,
-        y: isAtBottom ? 20 : 0
+        opacity: 1, 
+        scale: 1,
+        y: 0
       }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       style={{
@@ -198,10 +206,11 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
             <ChevronDown 
               size={20} 
               style={{ 
+                transform: isAtBottom ? 'rotate(180deg)' : 'none',
                 color: isHovered || isPressed 
                   ? 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' 
                   : 'rgba(255,255,255,0.7)',
-                transition: 'color 0.3s ease'
+                transition: 'color 0.3s ease, transform 0.3s ease'
               }} 
             />
           </motion.div>
