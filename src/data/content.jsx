@@ -27,7 +27,7 @@ export const WRITING_FEATURE = {
   title: 'Femme Fatale',
   subtitle: 'Noir Thriller · Feature Film',
   desc: 'A deconstruction of narrative control set between Port-au-Prince in 1957 and 1960s Paris. Femme Fatale follows Iris Beaumont — a woman who survives not with weapons, but with the story she chooses to tell.',
-  pills: ['Screenplay', '10 Pages', 'Draft 9', 'A24 / Proximity Media'],
+  pills: ['Screenplay', '100+ Pages'],
   draftLink: 'https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view',
   bibleLink: 'https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view'
 };
