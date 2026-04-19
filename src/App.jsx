@@ -129,9 +129,7 @@ function WritingSection() {
           <div style={{ position:'relative', zIndex:1, padding:'clamp(28px,5vw,48px)' }}>
             <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginBottom:16 }}>
               <span className="pill pill--accent" style={{ fontSize:7 }}>Screenplay</span>
-              <span className="pill" style={{ fontSize:7 }}>133 Pages</span>
-              <span className="pill" style={{ fontSize:7 }}>Draft 9</span>
-              <span className="pill" style={{ fontSize:7 }}>A24 / Proximity Media</span>
+              <span className="pill" style={{ fontSize:7 }}>10 Pages</span>
             </div>
 
             <h3 style={{ fontFamily:'var(--display)', fontSize:'clamp(2.8rem,8vw,5rem)', letterSpacing:2, lineHeight:0.9, marginBottom:16 }}>
@@ -153,22 +151,6 @@ function WritingSection() {
 
             <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
               <motion.a 
-                href="https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view"
-                target="_blank" rel="noopener noreferrer"
-                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                style={{ 
-                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
-                  letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', 
-                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
-                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
-                  border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.3)',
-                  background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.05)'
-                }}
-              >
-                <FileText size={13} /> View Show Bible <ChevronRight size={10} />
-              </motion.a>
-
-              <motion.a 
                 href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
                 target="_blank" rel="noopener noreferrer"
                 whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -182,6 +164,22 @@ function WritingSection() {
                 }}
               >
                 <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
+              </motion.a>
+
+              <motion.a 
+                href="https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view"
+                target="_blank" rel="noopener noreferrer"
+                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                style={{ 
+                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
+                  letterSpacing:3, textTransform:'uppercase', color:'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))', 
+                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
+                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
+                  border: '1px solid rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.3)',
+                  background: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b), 0.05)'
+                }}
+              >
+                <FileText size={13} /> View Show Bible <ChevronRight size={10} />
               </motion.a>
             </div>
           </div>

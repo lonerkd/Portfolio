@@ -51,7 +51,11 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection,
         <motion.button
           onClick={handlePOClick}
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: isScrolled ? 1 : 0, x: isScrolled ? 0 : -20 }}
+          animate={{ 
+            opacity: isScrolled ? 1 : 0, 
+            x: isScrolled ? 0 : -20,
+            display: isScrolled ? 'block' : 'none' // Completely remove from flow when not scrolled
+          }}
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -60,8 +64,8 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection,
             position: 'relative',
             zIndex: 2,
             outline: 'none',
-            width: '180px', // Significantly increased size
-            height: '80px', // Significantly increased size
+            width: '240px', // Further increased size
+            height: '100px', // Further increased size
             backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
             WebkitMask: 'url(/logo.svg) no-repeat center left',
             mask: 'url(/logo.svg) no-repeat center left',
