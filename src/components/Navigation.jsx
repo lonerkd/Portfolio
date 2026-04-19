@@ -55,12 +55,13 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection,
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          className={isPulsingPO ? 'rainbow-pulse' : ''}
           style={{
             position: 'relative',
             zIndex: 2,
             outline: 'none',
-            width: '60px',
-            height: '40px',
+            width: '120px', // Increased size
+            height: '60px', // Increased size
             backgroundColor: 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
             WebkitMask: 'url(/logo.svg) no-repeat center left',
             mask: 'url(/logo.svg) no-repeat center left',

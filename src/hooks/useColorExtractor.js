@@ -37,40 +37,54 @@ function extractDominantColor(imgElement) {
       const buckets = {};
       let best = { score: 0, color: null };
       
-      for (let i = 0; i < data.length; i += 16) {
+      for (let i = 0; i < data.length; i += 12) {
         const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
         if (a < 128) continue;
         
         const max = Math.max(r,g,b), min = Math.min(r,g,b);
         const l = (max+min)/2;
         
-        // Strict lightness filter to avoid dark/muddy colors and blown-out whites
-        if (l < 60 || l > 220) continue; 
+        // Very dark or very light colors are ignored
+        if (l < 20 || l > 240) continue; 
         
         const sat = max===min ? 0 : l>127 ? (max-min)/(510-max-min) : (max-min)/(max+min);
         
-        // Skip grayscales
-        if (sat < 0.25) continue;
-
-        const key = `${Math.round(r/32)*32},${Math.round(g/32)*32},${Math.round(b/32)*32}`;
-        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: sat, l: l };
+        const key = `${Math.round(r/24)*24},${Math.round(g/24)*24},${Math.round(b/24)*24}`;
+        if (!buckets[key]) buckets[key] = { r, g, b, count: 0, sat: 0 };
         
         buckets[key].count++;
+        buckets[key].sat = Math.max(buckets[key].sat, sat);
         
-        // Score algorithm heavily prioritizes vibrancy (saturation + lightness) over sheer pixel count.
-        // A small splash of neon will beat a massive wall of beige.
-        const score = (sat * 15) + ((l / 255) * 8) + Math.log(buckets[key].count);
+        // Base score: relies on frequency and saturation
+        let score = buckets[key].sat * 1.5 * Math.sqrt(buckets[key].count);
         
+        // If it's a very vibrant color, give it a massive boost
+        if (sat > 0.5) score *= 2;
+        
+        // Penalize likely skin tones or warm grays (r > g > b, lowish sat)
+        if (r > g && g > b && sat < 0.6 && r < 200) {
+          score *= 0.3; // Reduce priority of muddy browns/skin tones
+        }
+
         if (score > best.score) {
           best = { score, color: { r: buckets[key].r, g: buckets[key].g, b: buckets[key].b } };
         }
       }
       
-      // Fallback to the default orange if no vibrant color was found
-      if (!best.color) {
-        resolve(DEFAULT_COLOR);
+      // If we found a color, make sure it has at least *some* minimum lightness for the UI 
+      if (best.color) {
+        // Boost lightness artificially if it's too dark for UI visibility
+        let { r, g, b } = best.color;
+        const max = Math.max(r,g,b);
+        if (max < 100) {
+          const multiplier = 100 / max;
+          r = Math.min(255, Math.round(r * multiplier));
+          g = Math.min(255, Math.round(g * multiplier));
+          b = Math.min(255, Math.round(b * multiplier));
+        }
+        resolve({ r, g, b });
       } else {
-        resolve(best.color);
+        resolve(DEFAULT_COLOR);
       }
     } catch { resolve(DEFAULT_COLOR); }
   });
@@ -173,10 +187,22 @@ export function useColorExtractor() {
 
   const resetColor = useCallback(() => setAmbientColor(null), [setAmbientColor]);
 
+  const isRainbowActive = useRef(false);
+
   const triggerRainbow = useCallback(() => {
     if (transitionRef.current) cancelAnimationFrame(transitionRef.current);
-    const startTime = performance.now();
-    const duration = 1500;
+    
+    // Toggle rainbow mode
+    isRainbowActive.current = !isRainbowActive.current;
+    
+    if (!isRainbowActive.current) {
+      // Revert to active color if turning off
+      setAmbientColor(currentRef.current);
+      return;
+    }
+
+    let startTime = performance.now();
+    const duration = 3000; // 3 seconds per full rotation
     
     const hslToRgb = (h, s, l) => {
       s /= 100; l /= 100;
@@ -187,9 +213,11 @@ export function useColorExtractor() {
     };
 
     const tick = (now) => {
-      const p = Math.min((now - startTime) / duration, 1);
-      // Spin hue from 0 to 360
-      const currentHue = (p * 360) % 360;
+      if (!isRainbowActive.current) return;
+      
+      const elapsed = now - startTime;
+      // Spin hue from 0 to 360 endlessly
+      const currentHue = ((elapsed / duration) * 360) % 360;
       const c = hslToRgb(currentHue, 100, 50);
       
       const root = document.documentElement;
@@ -200,12 +228,7 @@ export function useColorExtractor() {
       root.style.setProperty('--ambient-s', '100%');
       root.style.setProperty('--ambient-l', '50%');
       
-      if (p < 1) {
-        transitionRef.current = requestAnimationFrame(tick);
-      } else {
-        // Revert to active color
-        setAmbientColor(currentRef.current);
-      }
+      transitionRef.current = requestAnimationFrame(tick);
     };
     transitionRef.current = requestAnimationFrame(tick);
   }, [setAmbientColor]);

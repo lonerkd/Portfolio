@@ -57,41 +57,32 @@ export default function Hero({ scrollToSection, isScrolled, triggerRainbow }) {
       {/* ── KINETIC TEXT ── */}
       <div style={{ position: 'relative', zIndex: 3, width: '100%', maxWidth: 1000, textAlign: 'center', paddingBottom: '60px' }}>
 
-        {/* Misfits Cavern Logo (Perfectly Centered, fades on scroll) */}
-        <motion.div
-          animate={{
-            opacity: isScrolled ? 0 : 1,
-            y: isScrolled ? -40 : 0,
-            scale: isScrolled ? 0.9 : 1
+        {/* Misfits Cavern Logo (Perfectly Centered) */}
+        <motion.button
+          onClick={() => triggerRainbow && triggerRainbow()}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            display: 'block',
+            width: '100%',
+            maxWidth: '600px',
+            height: '250px',
+            margin: '0 auto',
+            backgroundColor: 'var(--fg)',
+            WebkitMask: 'url(/logo.svg) no-repeat center',
+            mask: 'url(/logo.svg) no-repeat center',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+            filter: 'drop-shadow(0px 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4))',
+            transition: 'filter 0.7s ease, transform 0.3s ease',
+            cursor: 'pointer',
+            userSelect: 'none',
+            outline: 'none'
           }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <motion.button
-            onClick={() => triggerRainbow && triggerRainbow()}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              display: 'block',
-              width: '100%',
-              maxWidth: '600px',
-              height: '250px',
-              margin: '0 auto',
-              backgroundColor: 'var(--fg)',
-              WebkitMask: 'url(/logo.svg) no-repeat center',
-              mask: 'url(/logo.svg) no-repeat center',
-              WebkitMaskSize: 'contain',
-              maskSize: 'contain',
-              filter: 'drop-shadow(0px 10px 30px rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4))',
-              transition: 'filter 0.7s ease, transform 0.3s ease',
-              cursor: 'pointer',
-              userSelect: 'none',
-              outline: 'none'
-            }}
-          />
-        </motion.div>
+        />
 
         {/* Tagline — depth 0 */}
         <motion.div style={{ x: tx2, marginTop: 32 }}>
