@@ -107,16 +107,17 @@ function WritingSection() {
           {/* Content */}
           <div style={{ position:'relative', zIndex:1, padding:'clamp(28px,5vw,48px)' }}>
             <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginBottom:16 }}>
-              <span className="pill pill--accent" style={{ fontSize:7 }}>Screenplay</span>
-              <span className="pill" style={{ fontSize:7 }}>10 Pages</span>
+              {WRITING_FEATURE.pills.map((pill, i) => (
+                <span key={i} className={`pill ${i === 0 ? 'pill--accent' : ''}`} style={{ fontSize:7 }}>{pill}</span>
+              ))}
             </div>
 
             <h3 style={{ fontFamily:'var(--display)', fontSize:'clamp(2.8rem,8vw,5rem)', letterSpacing:2, lineHeight:0.9, marginBottom:16 }}>
-              Femme Fatale
+              {WRITING_FEATURE.title}
             </h3>
 
             <p style={{ fontFamily:'var(--mono)', fontSize:9, letterSpacing:2, color:'var(--fg-subtle)', textTransform:'uppercase', marginBottom:20 }}>
-              Noir Thriller · Feature Film
+              {WRITING_FEATURE.subtitle}
             </p>
 
             <div style={{
@@ -125,12 +126,12 @@ function WritingSection() {
               borderLeft:'2px solid rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))',
               paddingLeft:20, maxWidth:600, transition:'border-color 0.6s',
             }}>
-              A deconstruction of narrative control set between Port-au-Prince in 1957 and 1960s Paris. <span style={{ color:'var(--fg)' }}>Femme Fatale</span> follows Iris Beaumont — a woman who survives not with weapons, but with the story she chooses to tell.
+              {WRITING_FEATURE.desc}
             </div>
 
             <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
               <motion.a 
-                href="https://drive.google.com/file/d/15UV22p-90rGDGfhROKqiIxELp87vCsik/view"
+                href={WRITING_FEATURE.draftLink}
                 target="_blank" rel="noopener noreferrer"
                 whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 style={{ 
@@ -146,7 +147,7 @@ function WritingSection() {
               </motion.a>
 
               <motion.a 
-                href="https://drive.google.com/file/d/1xx9bJWGSEekWqqVmpVS64k7KWo276lVZ/view"
+                href={WRITING_FEATURE.bibleLink}
                 target="_blank" rel="noopener noreferrer"
                 whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 style={{ 
