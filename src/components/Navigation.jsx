@@ -61,6 +61,7 @@ export default function Navigation({ isScrolled, activeSection, scrollToSection,
           className={isPulsingPO ? 'rainbow-pulse' : ''}
           style={{
             position: 'relative',
+            left: '-16px', // Align better on mobile with hamburger
             zIndex: 2,
             outline: 'none',
             width: '240px', // Further increased size
