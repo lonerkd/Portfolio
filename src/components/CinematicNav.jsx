@@ -138,7 +138,20 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
     }
   };
 
-  const isAtBottom = activeSection === sections[sections.length - 1];
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const documentHeight = document.documentElement.offsetHeight;
+      setIsAtBottom(scrollPosition >= documentHeight - 50); // 50px threshold
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleBottomClick = () => {
     if (isAtBottom) {
@@ -162,7 +175,7 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         bottom: 40,
         right: 40,
         zIndex: 9000,
-        pointerEvents: isAtBottom ? 'none' : 'auto'
+        pointerEvents: 'auto'
       }}
     >
       <div 
@@ -173,6 +186,7 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         onPointerLeave={handlePointerLeave}
         onPointerEnter={handlePointerEnter}
         onContextMenu={(e) => e.preventDefault()}
+        onClick={isAtBottom ? handleBottomClick : undefined}
       >
         {/* Apple-style frosted base button */}
         <motion.button
