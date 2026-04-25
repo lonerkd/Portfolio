@@ -8,103 +8,26 @@ import { ChevronDown } from 'lucide-react';
    ══════════════════════════════════════ */
 
 export default function CinematicNav({ sections, activeSection, scrollToSection }) {
-  const scrollSpeed = 2.5; // Significantly slower for info consumption
-  const tapThreshold = 250;
-  
-  const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
-  const requestRef = useRef(null);
-  const pointerDownTime = useRef(0);
-  const isHolding = useRef(false);
-  const scrollTimeout = useRef(null);
-  
   const ringControls = useAnimation();
 
-  useEffect(() => {
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-    };
-  }, []);
-
-  const smoothScrollFrame = () => {
-    if (isHolding.current) {
-      window.scrollBy({ top: scrollSpeed, behavior: 'auto' });
-      requestRef.current = requestAnimationFrame(smoothScrollFrame);
-    }
-  };
-
-  const handlePointerDown = (e) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    
-    setIsPressed(true);
-    pointerDownTime.current = Date.now();
-    isHolding.current = true;
-    
-    // Animate ring filling up to indicate hold action
-    ringControls.start({
-      scale: 1.3,
-      borderWidth: '3px',
-      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.8)',
-      transition: { duration: 0.8, ease: 'easeOut' }
-    });
-
-    scrollTimeout.current = setTimeout(() => {
-      if (isHolding.current) {
-        requestRef.current = requestAnimationFrame(smoothScrollFrame);
-      }
-    }, tapThreshold);
-  };
-
-  const handlePointerUp = () => {
-    setIsPressed(false);
-    
-    // Reset ring
-    ringControls.start({
-      scale: isHovered ? 1.1 : 1,
-      borderWidth: '1px',
-      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
-      transition: { duration: 0.3, ease: 'easeOut' }
-    });
-
-    if (!isHolding.current) return;
-    isHolding.current = false;
-    
-    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-    if (requestRef.current) cancelAnimationFrame(requestRef.current);
-
-    const duration = Date.now() - pointerDownTime.current;
-    if (duration < tapThreshold) {
-      goToNextSection();
-    }
-  };
-
   const handlePointerLeave = () => {
-    setIsPressed(false);
     setIsHovered(false);
-    isHolding.current = false;
-    
     ringControls.start({
       scale: 1,
       borderWidth: '1px',
       borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
       transition: { duration: 0.3 }
     });
-
-    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-    if (requestRef.current) cancelAnimationFrame(requestRef.current);
   };
 
   const handlePointerEnter = () => {
     setIsHovered(true);
-    if (!isPressed) {
-      ringControls.start({
-        scale: 1.1,
-        borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4)',
-        transition: { duration: 0.3 }
-      });
-    }
+    ringControls.start({
+      scale: 1.1,
+      borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.4)',
+      transition: { duration: 0.3 }
+    });
   };
 
   const goToNextSection = () => {
@@ -167,24 +90,20 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
     >
       <div 
         style={{ position: 'relative', width: 54, height: 54 }}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerLeave}
+        onClick={handleBottomClick}
         onPointerLeave={handlePointerLeave}
         onPointerEnter={handlePointerEnter}
         onContextMenu={(e) => e.preventDefault()}
       >
         {/* Apple-style frosted base button */}
         <motion.button
-          animate={{ scale: isPressed ? 0.9 : 1 }}
+          whileTap={{ scale: 0.9 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
           style={{
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            background: isPressed 
-              ? 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.2)' 
-              : 'rgba(10,10,10,0.6)',
+            background: 'rgba(10,10,10,0.6)',
             border: '1px solid rgba(255,255,255,0.08)',
             display: 'flex',
             alignItems: 'center',
@@ -200,14 +119,14 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
           }}
         >
           <motion.div
-            animate={{ y: isPressed ? 0 : [0, 3, 0] }}
+            animate={{ y: [0, 3, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
             <ChevronDown 
               size={20} 
               style={{ 
                 transform: isAtBottom ? 'rotate(180deg)' : 'none',
-                color: isHovered || isPressed 
+                color: isHovered 
                   ? 'rgb(var(--ambient-r),var(--ambient-g),var(--ambient-b))' 
                   : 'rgba(255,255,255,0.7)',
                 transition: 'color 0.3s ease, transform 0.3s ease'
