@@ -33,8 +33,6 @@ export const WRITING_FEATURE = {
 };
 
 export const OTHER_WRITING = [
-  { type: 'Production Book', title: 'Studio Music Video', sub: 'Live Performance Concept', did: '174wk77-9dBwOoJlMvROLpIsnf-kByrC6' },
-  { type: 'Doc One Sheet', title: 'The Audio Blueprint', sub: 'Sound design doc', did: '1UvAxDRvO_6MvAAlUEFzVVTkou1ZNoxY-' },
   { type: 'PSA Script', title: 'A Stage for Every Story', sub: 'The Grand Theatre', did: '1JQpQAEyNJmQlRnt2FVXDvjIZRaN_hNWf' },
   { type: 'Short Film Script', title: 'The Briefcase', sub: 'Crime thriller', did: '1ht--f7NM3X5LVPyaoA0uxoTlnAlZTMHJ' },
 ];
