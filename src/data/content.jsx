@@ -57,9 +57,7 @@ export const PITCH_TEXT = "You said you need all five. I've got all five.";
 
 // 5. STORY SECTION PARAGRAPHS
 export const STORY_PARAGRAPHS = [
-  <>I'm a storyteller, a world-builder, a misfit. I'm the founder of Misfits Cavern, a creative collective dedicated to telling stories that matter. I'm a writer, director, and editor with a passion for building worlds and crafting narratives that resonate with audiences.</>,
-  <>I believe in the power of storytelling to change the world. I believe that every story matters, and that every voice deserves to be heard. That's why I created Misfits Cavern - to provide a platform for misfits and rebels to share their stories with the world.</>,
-  <>I'm not just a filmmaker. I'm a visionary, a leader, and a creative force. I'm here to make a difference, one story at a time.</>
+  <>I'm a storyteller, a world-builder, a misfit. I'm the founder of Misfits Cavern, a creative collective dedicated to telling stories that matter. I'm a writer, director, and editor with a passion for building worlds and crafting narratives that resonate with audiences.</>
 ];
 export const STORY_EXPANDED_PARAGRAPHS = [
   <>I've done every job on set because I wanted to understand the whole system. Camera, lighting, editing, writing, directing — I do all of it so that when I'm behind the camera, I'm not just holding a rig. <span style={{ color:'var(--fg)', fontWeight:500 }}>I'm crafting narrative.</span></>,
