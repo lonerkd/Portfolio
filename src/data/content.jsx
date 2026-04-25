@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Twitter, Instagram, Tv, ExternalLink } from 'lucide-react';
+import { Mail, Twitter, Instagram, Tv, ExternalLink, Youtube } from 'lucide-react';
 
 /* ══════════════════════════════════════
    SITE CONTENT CONFIGURATION
@@ -76,9 +76,10 @@ export const HERO_SUBTEXT_1 = "I build worlds and craft narratives.";
 // 7. CONTACT LINKS
 export const CONTACT_LINKS = [
   { label:'Email Me',             href:'mailto:peterolowude@icloud.com',                                                      icon:<Mail size={15} />,           primary: true },
-  { label:'X / Twitter',          href:'https://x.com/lonerfss',                                                              icon:<Twitter size={15} /> },
   { label:'Instagram',            href:'https://www.instagram.com/lonerkid',                                                   icon:<Instagram size={15} /> },
+  { label:'YouTube',              href:'https://www.youtube.com/@lonerkid',                                                   icon:<Youtube size={15} /> },
   { label:'Twitch',               href:'https://www.twitch.tv/lonerfs',                                                       icon:<Tv size={15} /> },
+  { label:'X / Twitter',          href:'https://x.com/lonerfss',                                                              icon:<Twitter size={15} /> },
 ];
 
 export const FOOTER_TEXT = "© 2026 Peter Olowude · Misfits Cavern";
