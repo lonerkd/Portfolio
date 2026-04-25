@@ -192,6 +192,10 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
           animate={{ scale: isPressed ? 0.9 : 1 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
           style={{
+            touchAction: 'none',
+            WebkitUserSelect: 'none',
+            userSelect: 'none',
+            WebkitTouchCallout: 'none',
             width: '100%',
             height: '100%',
             borderRadius: '50%',
