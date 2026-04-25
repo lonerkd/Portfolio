@@ -9,7 +9,6 @@ import { HERO_TAGLINE } from '../data/content';
    ══════════════════════════════════════ */
 
 const NAV_ITEMS = [
-  { id: 'pitch', label: 'Why Me' },
   { id: 'story', label: 'Story' },
   { id: 'work', label: 'Work' },
   { id: 'writing', label: 'Writing' },
