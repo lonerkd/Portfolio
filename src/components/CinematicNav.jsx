@@ -4,15 +4,16 @@ import { ChevronDown } from 'lucide-react';
 
 /* ══════════════════════════════════════
    CinematicNav - Apple Style
-   Hold to fast scroll, tap to next section
+   Hold to fast scroll, tap to next adaptable frame
    ══════════════════════════════════════ */
 
 export default function CinematicNav({ sections, activeSection, scrollToSection }) {
-  const scrollSpeed = 2.5; // Significantly slower for info consumption
+  const scrollSpeed = 2.5; // Smooth cinematic scroll speed
   const tapThreshold = 250;
   
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
   const requestRef = useRef(null);
   const pointerDownTime = useRef(0);
@@ -22,7 +23,16 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
   const ringControls = useAnimation();
 
   useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const documentHeight = document.documentElement.offsetHeight;
+      setIsAtBottom(scrollPosition >= documentHeight - 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     };
@@ -57,6 +67,43 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
     }, tapThreshold);
   };
 
+  const goToNextFrame = () => {
+    const navHeight = 80;
+    const currentScroll = window.scrollY;
+
+    // Context-driven targets: main sections, individual cards, and bento items
+    const frameElements = Array.from(document.querySelectorAll('section, .card, .bento-item'));
+
+    const positions = frameElements.map(el => {
+      return el.getBoundingClientRect().top + currentScroll - navHeight - 20;
+    });
+
+    // Deduplicate closely spaced positions (group items in the same row) and sort
+    const uniquePositions = [...new Set(positions.map(p => Math.round(p / 10) * 10))].sort((a, b) => a - b);
+
+    // Find the next logical stopping point below our current scroll
+    const nextPos = uniquePositions.find(pos => pos > currentScroll + 30);
+
+    if (nextPos) {
+      animate(currentScroll, nextPos, {
+        type: "spring",
+        stiffness: 45,
+        damping: 20,
+        mass: 1,
+        onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'auto' })
+      });
+    } else {
+      // Fallback scroll if no clear frame is found
+      animate(currentScroll, currentScroll + window.innerHeight * 0.8, {
+        type: "spring",
+        stiffness: 45,
+        damping: 20,
+        mass: 1,
+        onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'auto' })
+      });
+    }
+  };
+
   const handlePointerUp = () => {
     setIsPressed(false);
     
@@ -75,8 +122,15 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
     if (requestRef.current) cancelAnimationFrame(requestRef.current);
 
     const duration = Date.now() - pointerDownTime.current;
+    
+    // If it was a quick tap, advance frame
     if (duration < tapThreshold) {
-      goToNextSection();
+      const isActuallyBottom = window.innerHeight + window.scrollY >= document.documentElement.offsetHeight - 50;
+      if (isActuallyBottom) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        goToNextFrame();
+      }
     }
   };
 
@@ -107,60 +161,6 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
     }
   };
 
-  const goToNextSection = () => {
-    if (!sections || sections.length === 0) return;
-    
-    const navHeight = 80; // Updated nav height
-    const currentScroll = window.scrollY;
-    
-    // Find the first section whose top is at least 100px below current scroll
-    const nextSectionId = sections.find(id => {
-      const el = document.getElementById(id);
-      if (!el) return false;
-      const top = el.getBoundingClientRect().top + currentScroll - navHeight;
-      return top > currentScroll + 50; // Threshold to ensure we don't snap to same section
-    });
-
-    if (nextSectionId) {
-      const el = document.getElementById(nextSectionId);
-      const top = el.getBoundingClientRect().top + currentScroll - navHeight;
-      
-      animate(currentScroll, top, {
-        type: "spring",
-        stiffness: 45,
-        damping: 20,
-        mass: 1,
-        onUpdate: (latest) => window.scrollTo({ top: latest, behavior: 'auto' })
-      });
-    } else {
-      // If no next section, maybe we are at the end? Do nothing or scroll to top?
-      // User said "intelligently navigate perfectly to highlight whatever section is nearby"
-    }
-  };
-
-  const [isAtBottom, setIsAtBottom] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.innerHeight + window.scrollY;
-      const documentHeight = document.documentElement.offsetHeight;
-      setIsAtBottom(scrollPosition >= documentHeight - 50); // 50px threshold
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleBottomClick = () => {
-    if (isAtBottom) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      goToNextSection();
-    }
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -175,7 +175,7 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         bottom: 40,
         right: 40,
         zIndex: 9000,
-        pointerEvents: 'auto'
+        pointerEvents: 'auto' // ensure it can be clicked even at the bottom
       }}
     >
       <div 
@@ -186,7 +186,6 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
         onPointerLeave={handlePointerLeave}
         onPointerEnter={handlePointerEnter}
         onContextMenu={(e) => e.preventDefault()}
-        onClick={isAtBottom ? handleBottomClick : undefined}
       >
         {/* Apple-style frosted base button */}
         <motion.button
