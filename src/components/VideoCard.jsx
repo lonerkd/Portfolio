@@ -152,7 +152,7 @@ export default function VideoCard({ video, onClick, extractColor, setAmbientColo
           style={{
             fontFamily: 'var(--sans)',
             fontWeight: 600,
-            fontSize: featured ? 'clamp(1.8rem, 3vw, 2.8rem)' : 'clamp(1.4rem, 2vw, 2rem)',
+            fontSize: featured ? 'clamp(1.8rem, 3vw, 2.8rem)' : 'clamp(1.2rem, 4vw, 2rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.1,
             color: 'var(--fg)',
