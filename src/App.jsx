@@ -74,6 +74,8 @@ function SectionLabel({ text }) {
 /* ═══ WRITING — Femme Fatale cinematic feature + compact grid ═══ */
 
 function WritingSection() {
+  const requestEmailHref = `mailto:peterolowude@icloud.com?subject=${encodeURIComponent('Request: Full Femme Fatale Script & Production Representation Details')}&body=Hi Peter,%0D%0A%0D%0AI would like to request the full Femme Fatale script and discuss production representation capacity, timeline, budget, and any packaging materials you have available.%0D%0A%0D%0APlease send the script and relevant production details.%0D%0A%0D%0AThanks,%0D%0A`;
+
   return (
     <section id="writing" className="section" style={{ paddingTop:60, paddingBottom:60 }}>
       <div className="section__inner">
@@ -131,22 +133,6 @@ function WritingSection() {
 
             <div style={{ display:'flex', gap:16, marginTop:32, flexWrap:'wrap' }}>
               <motion.a 
-                href={WRITING_FEATURE.draftLink}
-                target="_blank" rel="noopener noreferrer"
-                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                style={{ 
-                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
-                  letterSpacing:3, textTransform:'uppercase', color:'var(--fg)', 
-                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
-                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.02)'
-                }}
-              >
-                <FileText size={13} /> Read Latest Draft <ChevronRight size={10} />
-              </motion.a>
-
-              <motion.a 
                 href={WRITING_FEATURE.bibleLink}
                 target="_blank" rel="noopener noreferrer"
                 whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -160,6 +146,22 @@ function WritingSection() {
                 }}
               >
                 <FileText size={13} /> View Show Bible <ChevronRight size={10} />
+              </motion.a>
+
+              <motion.a 
+                href={requestEmailHref}
+                target="_blank" rel="noopener noreferrer"
+                whileHover={{ y:-2, scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                style={{ 
+                  display:'flex', alignItems:'center', gap:8, fontFamily:'var(--mono)', fontSize:9, 
+                  letterSpacing:3, textTransform:'uppercase', color:'var(--fg)', 
+                  transition:'all 0.4s', textDecoration:'none', cursor:'none',
+                  padding: '12px 20px', borderRadius: 'var(--radius-full)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.02)'
+                }}
+              >
+                <FileText size={13} /> Request Full Script <ChevronRight size={10} />
               </motion.a>
             </div>
           </div>
