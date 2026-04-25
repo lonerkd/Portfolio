@@ -22,21 +22,63 @@ export default function CinematicNav({ sections, activeSection, scrollToSection 
   
   const ringControls = useAnimation();
 
+  // Ref to track manual scrolling
+  const lastUserScrollTime = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.scrollY;
       const documentHeight = document.documentElement.offsetHeight;
       setIsAtBottom(scrollPosition >= documentHeight - 50);
     };
+    
+    const handleWheel = () => {
+      lastUserScrollTime.current = Date.now();
+      // If user scrolls manually, stop the auto-scroll
+      if (isHolding.current) {
+        isHolding.current = false;
+        setIsPressed(false);
+        if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        
+        ringControls.start({
+          scale: 1,
+          borderWidth: '1px',
+          borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
+          transition: { duration: 0.3 }
+        });
+      }
+    };
+    
+    const handleTouchMove = () => {
+      lastUserScrollTime.current = Date.now();
+      if (isHolding.current) {
+        isHolding.current = false;
+        setIsPressed(false);
+        if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        
+        ringControls.start({
+          scale: 1,
+          borderWidth: '1px',
+          borderColor: 'rgba(var(--ambient-r),var(--ambient-g),var(--ambient-b),0.15)',
+          transition: { duration: 0.3 }
+        });
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    
     handleScroll(); // Initial check
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleTouchMove);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     };
-  }, []);
+  }, [ringControls]);
 
   const smoothScrollFrame = () => {
     if (isHolding.current) {
